@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "dist/index.js": {
+      "includeFiles": "src/data/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.js"
+    }
+  ]
+}

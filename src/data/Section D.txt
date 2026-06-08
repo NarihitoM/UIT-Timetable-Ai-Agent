@@ -1,0 +1,59 @@
+University of Information Technology
+2025–2026 Academic Year, Semester IV
+Second Year (Section D)
+
+TIME SLOTS
+08:30–09:30 | 09:40–10:40 | 10:50–11:50 | 12:40–01:40 | 01:50–02:50 | 03:00–04:00
+
+LUNCH BREAK: 11:50–12:40
+
+MONDAY
+08:30–09:30  CST-4204 (TDA) – Room 425
+09:40–10:40  CST-4405 (TDA) – Room 425
+10:50–11:50  CST-4306 (TDA) – Room 424
+12:40–01:40  CST-4404 (L) – Room 326
+01:50–02:50  CST-4503 (L) – Room 326
+03:00–04:00  CST-4104 (L) – Room 326
+
+TUESDAY
+08:30–09:30  CST-4105(231)/4307(233)/4406(433)/4407(434)/4408(421) (TDA)
+09:40–10:40  CST-4404 (TDA) – Room 233
+10:50–11:50  CST-4405 (TDA) – Room 235
+12:40–01:40  CST-4204 (L) – Room 326
+01:50–02:50  CST-4104 (L) – Room 326
+03:00–04:00  CST-4306 (L) – Room 326
+
+WEDNESDAY
+09:40–10:40  CST-4104 (TDA) – Room 424
+10:50–11:50  CST-4204 (TDA) – Room 424
+12:40–01:40  CST-4503 (TDA) – Room 432
+01:50–02:50  CST-4105(232)/4307(231)/4406(433)/4407(434)/4408(421) (TDA)
+
+THURSDAY
+08:30–09:30  CST-4104 (TDA) – Room 424
+09:40–10:40  CST-4306 (TDA) – Room 424
+10:50–11:50  CST-4503 (L) – Room 334
+12:40–01:40  CST-4404 (L) – Room 326
+01:50–02:50  CST-4405 (L) – Room 326
+03:00–04:00  CST-4204 (L) – Room 326
+
+FRIDAY
+08:30–09:30  CST-4105(233)/4307(233)/4406(433)/4407(434)/4408(421) (L)
+09:40–10:40  CST-4503 (TDA)
+10:50–11:50  CST-4404 (TDA)
+12:40–01:40  CST-4306 (L) – Room 326
+01:50–02:50  CST-4405 (L) – Room 326
+03:00–04:00  CST-4105(233)/4307(232)/4406(334)/4407(335)/4408(336) (L)
+
+SUBJECTS
+CST-4104  Artificial Intelligence
+CST-4204  Linear Algebra
+CST-4306  Management Principles and Engineering Economics
+CST-4404  Network Design and Engineering
+CST-4405  Computer Architecture and Organization
+CST-4503  IELTS Academic Skills and Strategies
+CST-4105  Enterprise Applications Development using Java (Keystone Project)
+CST-4307  Advanced Web Technology with PHP (Keystone Project)
+CST-4406  Data and Computer Communications
+CST-4407  Engineering Circuits
+CST-4408  Foundations of Cybersecurity
