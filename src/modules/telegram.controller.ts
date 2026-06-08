@@ -12,8 +12,13 @@ class Telegramcontroller extends Telegramcommand {
     ) => {
         try {
             //catch input from user
-            const chatid = req.body.message?.chat?.id;
-            const text = req.body.message?.text;
+            const currentMessage = req.body.message || req.body.channel_post;
+            const chatid = currentMessage?.chat?.id;
+            const text = currentMessage?.text;
+
+            if (!chatid || !text) {
+                return res.status(200).json({ success: true });
+            }
 
             if (text.startsWith(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
@@ -49,7 +54,8 @@ class Telegramcontroller extends Telegramcommand {
         catch (err: unknown) {
             //Error
             console.error("Telegram Controller Error:", err);
-            const chatid = req.body?.message?.chat?.id;
+            const currentMessage = req.body?.message || req.body?.channel_post;
+            const chatid = currentMessage?.chat?.id;
 
             await bot.sendMessage(chatid, "It seems something went wrong.")
 
