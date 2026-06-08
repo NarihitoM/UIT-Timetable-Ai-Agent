@@ -19,10 +19,10 @@ class Telegramcontroller extends Telegramcommand {
                 await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
             }
             else if (
-                text.startsWith("/Section A") ||
-                text.startsWith("/Section B") ||
-                text.startsWith("/Section C") ||
-                text.startsWith("/Section D")
+                text.startsWith("/section_a") ||
+                text.startsWith("/section_b") ||
+                text.startsWith("/section_c") ||
+                text.startsWith("/section_d")
             ) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
 
