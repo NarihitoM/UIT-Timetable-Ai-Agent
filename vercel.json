@@ -1,16 +1,21 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "functions": {
-    "dist/index.js": {
-      "includeFiles": "src/data/**"
+    "version": 2,
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "functions": {
+        "dist/index.js": {
+            "includeFiles": "src/data/**"
+        }
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/dist/index.js"
+        }
+    ],
+    "build": {
+        "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules"
+        }
     }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/index.js"
-    }
-  ]
 }
