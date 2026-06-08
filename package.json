@@ -27,9 +27,6 @@
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   },
-  "overrides": {
-    "uuid": "9.0.1"
-  },
   "dependencies": {
     "@langchain/core": "^1.1.48",
     "@langchain/groq": "^1.2.1",
