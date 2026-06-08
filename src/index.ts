@@ -12,6 +12,4 @@ app.use(cors());
 app.use("/",telegramroute);
 
 //Server Listen
-app.listen(3000, async () => {
-   console.log("Server running on port 3000")
-})
+export default app;
