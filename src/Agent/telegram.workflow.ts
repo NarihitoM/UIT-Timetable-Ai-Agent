@@ -24,7 +24,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     const aireply = response.content as string;
 
     if (aireply.includes("ROUTE:")) {
-        let targetAgent = "Main Agent";
+        let targetAgent = "__end__";
 
         switch (true) {
             case aireply.includes("ROUTE: section_a_agent"):
@@ -48,7 +48,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     }
 
     return {
-        nextAgent: "__end__", 
+        nextAgent: "__end__",
         messages: [response]
     };
 });
@@ -66,15 +66,15 @@ TelegramAgent.addConditionalEdges(
     "Section A" as any,
     toolsCondition as any,
     {
-        true: "Section A Tools",
-        false: "Main Agent"
+        tools: "Section A Tools",
+        __end__: END
     } as any
 );
 
 TelegramAgent.addNode("Section A Tools", new ToolNode([readSectionATool]));
 
 
-//Section B Agent 
+//Section B Agent
 TelegramAgent.addNode("Section B", async (state) => {
     const SectionBAgent = model.bindTools([readSectionBTool]);
     const response = await SectionBAgent.invoke([...state.messages]);
@@ -87,8 +87,8 @@ TelegramAgent.addConditionalEdges(
     "Section B" as any,
     toolsCondition as any,
     {
-        true: "Section B Tools",
-        false: "Main Agent"
+        tools: "Section B Tools",
+        __end__: END
     } as any
 );
 
@@ -107,8 +107,8 @@ TelegramAgent.addConditionalEdges(
     "Section C" as any,
     toolsCondition as any,
     {
-        true: "Section C Tools",
-        false: "Main Agent"
+        tools: "Section C Tools",
+        __end__: END
     } as any
 );
 
@@ -127,8 +127,8 @@ TelegramAgent.addConditionalEdges(
     "Section D" as any,
     toolsCondition as any,
     {
-        true: "Section D Tools",
-        false: "Main Agent"
+        tools: "Section D Tools",
+        __end__: END
     } as any
 );
 
@@ -145,8 +145,7 @@ TelegramAgent.addConditionalEdges(
         "Section B": "Section B",
         "Section C": "Section C",
         "Section D": "Section D",
-        "Main Agent": "Main Agent",
-        "__end__": "__end__"
+        "__end__": END
     } as any
 );
 

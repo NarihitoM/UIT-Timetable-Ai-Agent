@@ -24,56 +24,21 @@ class Telegramcontroller extends Telegramcommand {
                 text.startsWith("/Section C") ||
                 text.startsWith("/Section D")
             ) {
-                const eventStream = await TelegramTimetableagent.streamEvents(
-                    { messages: [new HumanMessage(text)] },
-                    { version: "v2" }
+                const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
+
+                const result = await TelegramTimetableagent.invoke(
+                    { messages: [new HumanMessage(text)] }
                 );
 
-                let statusMessageId: number | null = null;
-                let finalAnswer = "";
+                const finalAnswer = result.messages[result.messages.length - 1].content as string;
 
-                for await (const event of eventStream) {
-                    if (event.event === "on_chain_start" && event.metadata?.langgraph_node) {
-                        const nodeName = event.metadata.langgraph_node;
-
-                        if (nodeName === "Main Agent") continue;
-
-                        const statusMessage = nodeName.includes("Tools")
-                            ? `${nodeName.replace("Tools", "").trim()} is currently executing tools...`
-                            : `${nodeName} is processing your request...`;
-
-                        if (statusMessageId === null) {
-                            const sentMessage = await bot.sendMessage(chatid, statusMessage);
-                            statusMessageId = sentMessage.message_id;
-                        } else {
-                            try {
-                                await bot.editMessageText(statusMessage, {
-                                    chat_id: chatid,
-                                    message_id: statusMessageId
-                                });
-                            } catch (error) {
-                                console.error("Telegram edit error:", error);
-                            }
-                        }
-                    }
-
-                    if (event.event === "on_chain_end" && event.metadata?.langgraph_node === "Main Agent") {
-                        const outputMessages = event.data?.output?.messages;
-                        if (outputMessages && outputMessages.length > 0) {
-                            finalAnswer = outputMessages[outputMessages.length - 1].content || "";
-                        }
-                    }
-                }
-
-                if (statusMessageId !== null && finalAnswer) {
-                    try {
-                        await bot.editMessageText(finalAnswer, {
-                            chat_id: chatid,
-                            message_id: statusMessageId
-                        });
-                    } catch (error) {
-                        await bot.sendMessage(chatid, finalAnswer);
-                    }
+                try {
+                    await bot.editMessageText(finalAnswer, {
+                        chat_id: chatid,
+                        message_id: waitMessage.message_id
+                    });
+                } catch (_) {
+                    await bot.sendMessage(chatid, finalAnswer);
                 }
             }
 
