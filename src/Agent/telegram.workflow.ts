@@ -146,7 +146,7 @@ TelegramAgent.addConditionalEdges(
         "Section C": "Section C",
         "Section D": "Section D",
         "Main Agent": "Main Agent",
-        "__end__": END
+        "__end__": "__end__"
     } as any
 );
 
