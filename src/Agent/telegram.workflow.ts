@@ -1,7 +1,7 @@
 import { START, END, StateGraph } from "@langchain/langgraph"
 import Telegramagentstate from "./telegram.state.ts"
 import { SystemMessage } from "@langchain/core/messages";
-import { Supervisorprompt } from "../prompt/systemprompt.ts";
+import { getSupervisorPrompt } from "../prompt/systemprompt.ts";
 import model from "./telegram.model.ts";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
 import { readSectionATool } from "../Tools/SectionAtool.ts";
@@ -16,7 +16,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     const history = state.messages || [];
 
     const prompt = [
-        new SystemMessage(Supervisorprompt),
+        new SystemMessage(getSupervisorPrompt()),
         ...history
     ];
 
