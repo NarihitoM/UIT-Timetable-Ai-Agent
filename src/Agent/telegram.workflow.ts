@@ -15,17 +15,10 @@ const TelegramAgent = new StateGraph(Telegramagentstate);
 TelegramAgent.addNode("Main Agent", async (state) => {
     const history = state.messages || [];
 
-    const cleanHistory = history.filter(msg => {
-        if (msg.content && typeof msg.content === 'string') {
-            return !msg.content.includes("ROUTE:");
-        }
-        return true;
-    });
-
     if (state.data) {
         const prompt = [
             new SystemMessage(getSupervisorPrompt()),
-            ...cleanHistory
+            ...history
         ];
         const response = await model.invoke(prompt);
         return {
@@ -33,6 +26,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             messages: [response]
         };
     }
+
 
     const prompt = [
         new SystemMessage(getSupervisorPrompt()),
