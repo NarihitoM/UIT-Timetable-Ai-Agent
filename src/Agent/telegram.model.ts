@@ -4,7 +4,7 @@ import { ChatOpenAI } from "@langchain/openai";
 const mainmodel = new ChatOpenAI({
     model: "gpt-4.1-mini-2025-04-14",
     streaming: true,
-    apiKey: process.env.APIKEY,
+    openAIApiKey: process.env.APIKEY,
 });
 
 const submodel = new ChatGroq({
