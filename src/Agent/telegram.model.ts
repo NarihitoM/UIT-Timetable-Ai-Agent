@@ -1,7 +1,7 @@
 import { ChatGroq } from "@langchain/groq";
 
 const model = new ChatGroq({
-    model: "openai/gpt-oss-20b",
+    model: "openai/gpt-oss-120b",
     streaming : true,
     apiKey: process.env.APIKEY
 });
