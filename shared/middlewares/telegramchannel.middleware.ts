@@ -11,7 +11,7 @@ class BaseMiddleware {
             const currentMessage = req.body?.message || req.body?.channel_post || {};
             const chatid = currentMessage?.chat?.id;
 
-            if(String(chatid) !== String(process.env.CHANNEL)){
+            if(chatid !== Number(process.env.CHANNEL)){
                 await bot.sendMessage(chatid , "You do not have permission to use Timetable. Only Team SE Gp can use.")
                 return res.status(200).send("Ok")
             }
