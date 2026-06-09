@@ -10,7 +10,8 @@ const mainmodel = new ChatOpenAI({
 const submodel = new ChatGroq({
     model : "openai/gpt-oss-120b",
     streaming : true,
-    apiKey : process.env.SUBAPIKEY
+    apiKey : process.env.SUBAPIKEY,
+    reasoningEffort : "medium"
 })
 
 export {
