@@ -1,9 +1,9 @@
-import { ChatGroq } from "@langchain/groq"
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
-const model = new ChatGroq({
-    model: "meta-llama/llama-4-scout-17b-16e-instruct",
+const model = new ChatGoogleGenerativeAI({
+    model: "gemini-3.5-flash",
     streaming : true,
-    apiKey: process.env.GROQ_API_KEY
+    apiKey: process.env.APIKEY
 });
 
 export default model;
