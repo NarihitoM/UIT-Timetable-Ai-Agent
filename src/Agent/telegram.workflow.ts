@@ -15,6 +15,19 @@ const TelegramAgent = new StateGraph(Telegramagentstate);
 TelegramAgent.addNode("Main Agent", async (state) => {
     const history = state.messages || [];
 
+    //Read Tool Call Data
+    if (state.data) {
+        const prompt = [
+            new SystemMessage(getSupervisorPrompt()),
+            ...history
+        ];
+        const response = await model.invoke(prompt);
+        return {
+            nextAgent: "__end__",
+            messages: [response]
+        };
+    }
+
     const prompt = [
         new SystemMessage(getSupervisorPrompt()),
         ...history
@@ -59,8 +72,12 @@ TelegramAgent.addNode("Section A", async (state) => {
     const response = await SectionAAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section A")} Use 'read_section_a_file' to read the file`),
         ...state.messages]);
+
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+
     return {
-        messages: [response]
+        messages: [response],
+        data: isFinishedWithTools
     };
 })
 
@@ -82,8 +99,12 @@ TelegramAgent.addNode("Section B", async (state) => {
     const response = await SectionBAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section B")} Use 'read_section_b_file' to read the file`),
         ...state.messages]);
+
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+
     return {
-        messages: [response]
+        messages: [response],
+        data: isFinishedWithTools
     };
 })
 
@@ -104,8 +125,12 @@ TelegramAgent.addNode("Section C", async (state) => {
     const response = await SectionCAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section C")} Use 'read_section_c_file' to read the file`),
         ...state.messages]);
+
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    
     return {
-        messages: [response]
+        messages: [response],
+        data: isFinishedWithTools
     };
 });
 
@@ -126,8 +151,12 @@ TelegramAgent.addNode("Section D", async (state) => {
     const response = await SectionDAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section D")} Use 'read_section_d_file' to read the file`),
         ...state.messages]);
+
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    
     return {
-        messages: [response]
+        messages: [response],
+        data: isFinishedWithTools
     };
 });
 

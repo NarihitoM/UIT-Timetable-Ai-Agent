@@ -7,8 +7,12 @@ const Telegramagentstate = Annotation.Root({
         default: () => []
     }),
     nextAgent: Annotation<string>({
-        reducer: (x, y) => y ?? x, 
+        reducer: (x, y) => y ?? x,
         default: () => "main_agent",
+    }),
+    data: Annotation<boolean>({
+        reducer: (x, y) => y ?? x,
+        default: () => false,
     })
 })
 
