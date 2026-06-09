@@ -23,22 +23,18 @@ class Telegramcontroller extends Telegramcommand {
 
             if (data) {
                 const timeleft = await redisclient.ttl(cachekey);
-                bot.sendMessage(chatid, `Please wait ${timeleft} before sending again.`)
+                bot.sendMessage(chatid, `Please wait ${timeleft}s before sending again.`)
                 return res.status(200).send("OK");
-
             }
-
 
             //Condition
             if (text.startsWith(Telegramcontroller.commands[0])) {
-                await bot.sendMessage(chatid, "You can now get started.")
+                await bot.sendMessage(chatid, "You can now get started. Developer By Narihito From Section C. Happy Asking ^_^.")
                 return res.status(200).send("OK");
             }
             else if (text.startsWith(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
-                return res.status(200).json({
-                    success: true
-                });
+                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section d for each timetable.");
+                return res.status(200).send("OK");
             }
             else if (
                 text.startsWith(Telegramcontroller.commands[2]) ||
@@ -62,9 +58,12 @@ class Telegramcontroller extends Telegramcommand {
                 await redisclient.set(cachekey, `Set User: ${chatid}`, {
                     EX: 60
                 })
-            }
 
-            return res.status(200).send("OK");
+                return res.status(200).send("OK");
+            } else {
+                await bot.sendMessage(chatid, "There is no command with that function.");
+                return res.status(200).send("OK");
+            }
 
         }
         catch (err: unknown) {
