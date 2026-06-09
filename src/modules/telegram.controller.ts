@@ -32,7 +32,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
-                await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
+                await bot.sendMessage(chatid, "You can start. Dont make me talk too much Ok. Mf has been eager to run me huh now lets see.");
                 return res.status(200).send("OK");
             }
 
@@ -72,7 +72,7 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            await bot.sendMessage(chatid, "There is no command with that function.");
+            await bot.sendMessage(chatid, "TF you typing for There is no fucking function with that fucking name.");
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
