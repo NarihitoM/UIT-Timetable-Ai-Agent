@@ -11,23 +11,24 @@ class Telegramcontroller extends Telegramcommand {
         res: Response
     ) => {
         try {
-            //catch input from user
+            //catch input from user from message and channel
             const currentMessage = req.body.message || req.body.channel_post;
             const chatid = currentMessage?.chat?.id;
             const text = currentMessage?.text;
 
-            if (!chatid || !text) {
-                return res.status(200).json({ success: true });
-            }
 
-            if (text.startsWith(Telegramcontroller.commands[0])) {
+            //Condition
+            if(text.startsWith(Telegramcontroller.commands[0])){
+                await bot.sendMessage(chatid, "You can now get started.")
+            }
+            else if (text.startsWith(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
             }
             else if (
-                text.startsWith("/section_a") ||
-                text.startsWith("/section_b") ||
-                text.startsWith("/section_c") ||
-                text.startsWith("/section_d")
+                text.startsWith(Telegramcontroller.commands[2]) ||
+                text.startsWith(Telegramcontroller.commands[3]) ||
+                text.startsWith(Telegramcontroller.commands[4]) ||
+                text.startsWith(Telegramcontroller.commands[5])
             ) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
 
