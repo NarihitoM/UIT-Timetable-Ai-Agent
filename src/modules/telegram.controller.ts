@@ -6,6 +6,7 @@ import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
 
 class Telegramcontroller extends Telegramcommand {
+
     public static telegram = async (
         req: Request,
         res: Response
@@ -23,18 +24,15 @@ class Telegramcontroller extends Telegramcommand {
             if (data) {
                 const timeleft = await redisclient.ttl(cachekey);
                 bot.sendMessage(chatid, `Please wait ${timeleft} before sending again.`)
-                return res.status(200).json({
-                    success: true
-                });
+                return res.status(200).send("OK");
+
             }
 
 
             //Condition
             if (text.startsWith(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started.")
-                return res.status(200).json({
-                    success: true
-                });
+                return res.status(200).send("OK");
             }
             else if (text.startsWith(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
@@ -50,10 +48,6 @@ class Telegramcontroller extends Telegramcommand {
             ) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
 
-                res.status(200).json({
-                    success: true
-                });
-
                 const result = await TelegramTimetableagent.invoke(
                     { messages: [new HumanMessage(text)] }
                 );
@@ -68,13 +62,10 @@ class Telegramcontroller extends Telegramcommand {
                 await redisclient.set(cachekey, `Set User: ${chatid}`, {
                     EX: 60
                 })
-
-                return;
             }
 
-            return res.status(200).json({
-                success: true
-            });
+            return res.status(200).send("OK");
+
         }
         catch (err: unknown) {
             //Error
@@ -84,10 +75,8 @@ class Telegramcontroller extends Telegramcommand {
 
             await bot.sendMessage(chatid, "It seems something went wrong.")
 
-            return res.status(500).json({
-                success: false,
-                error: "Internal Server Error"
-            });
+            return res.status(200).send("OK");
+
         }
     }
 }
