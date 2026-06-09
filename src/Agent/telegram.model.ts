@@ -1,4 +1,4 @@
-import { ChatMistralAI } from "@langchain/mistralai";
+import { ChatGroq } from "@langchain/groq";
 import { ChatOpenAI } from "@langchain/openai";
 
 const mainmodel = new ChatOpenAI({
@@ -6,8 +6,8 @@ const mainmodel = new ChatOpenAI({
     apiKey: process.env.APIKEY,
 });
 
-const submodel = new ChatMistralAI({
-    model : "mistral-large-2512",
+const submodel = new ChatGroq({
+    model : "openai/gpt-oss-120b",
     apiKey : process.env.SUBAPIKEY,
 })
 
