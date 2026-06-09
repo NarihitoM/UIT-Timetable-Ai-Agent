@@ -2,7 +2,7 @@ import { START, END, StateGraph } from "@langchain/langgraph"
 import Telegramagentstate from "./telegram.state.ts"
 import { SystemMessage } from "@langchain/core/messages";
 import { getSubAgentPrompt, getSupervisorPrompt } from "../prompt/systemprompt.ts";
-import model from "./telegram.model.ts";
+import { mainmodel, submodel } from "./telegram.model.ts";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
 import { readSectionATool } from "../Tools/SectionAtool.ts";
 import { readSectionBTool } from "../Tools/SectionBtool.ts";
@@ -18,9 +18,9 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     if (state.data) {
         const prompt = [
             new SystemMessage(getSupervisorPrompt()),
-            ...history
+            ...state.messages
         ];
-        const response = await model.invoke(prompt);
+        const response = await mainmodel.invoke(prompt);
         return {
             nextAgent: "__end__",
             messages: [response]
@@ -33,7 +33,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
         ...history
     ];
 
-    const response = await model.invoke(prompt);
+    const response = await mainmodel.invoke(prompt);
     const aireply = response.content as string;
 
     if (aireply.includes("ROUTE:")) {
@@ -68,7 +68,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
 //Section A Agent
 TelegramAgent.addNode("Section A", async (state) => {
-    const SectionAAgent = model.bindTools([readSectionATool]);
+    const SectionAAgent = submodel.bindTools([readSectionATool]);
     const response = await SectionAAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section A")} Use 'read_section_a_file' to read the file`),
         ...state.messages]);
@@ -95,7 +95,7 @@ TelegramAgent.addNode("Section A Tools", new ToolNode([readSectionATool]));
 
 //Section B Agent
 TelegramAgent.addNode("Section B", async (state) => {
-    const SectionBAgent = model.bindTools([readSectionBTool]);
+    const SectionBAgent = submodel.bindTools([readSectionBTool]);
     const response = await SectionBAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section B")} Use 'read_section_b_file' to read the file`),
         ...state.messages]);
@@ -121,7 +121,7 @@ TelegramAgent.addNode("Section B Tools", new ToolNode([readSectionBTool]));
 
 //Section C Agent
 TelegramAgent.addNode("Section C", async (state) => {
-    const SectionCAgent = model.bindTools([readSectionCTool]);
+    const SectionCAgent = submodel.bindTools([readSectionCTool]);
     const response = await SectionCAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section C")} Use 'read_section_c_file' to read the file`),
         ...state.messages]);
@@ -147,7 +147,7 @@ TelegramAgent.addNode("Section C Tools", new ToolNode([readSectionCTool]));
 
 //Section D Agent
 TelegramAgent.addNode("Section D", async (state) => {
-    const SectionDAgent = model.bindTools([readSectionDTool]);
+    const SectionDAgent = submodel.bindTools([readSectionDTool]);
     const response = await SectionDAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Section D")} Use 'read_section_d_file' to read the file`),
         ...state.messages]);
