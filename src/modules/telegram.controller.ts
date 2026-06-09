@@ -50,20 +50,15 @@ class Telegramcontroller extends Telegramcommand {
 
                 const finalAnswer = result.messages[result.messages.length - 1].content as string;
 
-                try {
-                    await bot.editMessageText(finalAnswer, {
-                        chat_id: chatid,
-                        message_id: waitMessage.message_id
-                    });
-
-                    await redisclient.set(cachekey, `Set User: ${chatid}`, {
-                        EX: 60
-                    })
-
-                } catch (_) {
-                    await bot.sendMessage(chatid, finalAnswer);
-                }
+                await bot.editMessageText(finalAnswer, {
+                    chat_id: chatid,
+                    message_id: waitMessage.message_id
+                });
             }
+            
+            await redisclient.set(cachekey, `Set User: ${chatid}`, {
+                EX: 60
+            })
 
             return res.status(200).json({
                 success: true
