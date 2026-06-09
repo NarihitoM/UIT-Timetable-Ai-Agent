@@ -33,7 +33,7 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
             else if (text.startsWith(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section d for each timetable.");
+                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
                 return res.status(200).send("OK");
             }
             else if (
