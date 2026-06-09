@@ -46,11 +46,12 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            const isSectionCommand = [3, 4, 5, 6].some(
-                (index) => Telegramcontroller.commands[index] && text.startsWith(Telegramcontroller.commands[index])
-            );
-
-            if (isSectionCommand) {
+            if (
+                (Telegramcontroller.commands[3] && text.includes(Telegramcontroller.commands[3])) ||
+                (Telegramcontroller.commands[4] && text.includes(Telegramcontroller.commands[4])) ||
+                (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
+                (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
+            ) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
 
                 const result = await TelegramTimetableagent.invoke(

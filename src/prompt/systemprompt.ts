@@ -49,8 +49,8 @@ NEXT CLASS LOGIC:
 - Do NOT guess or extrapolate times. Rely entirely on the 'Schedule State' provided above to dictate whether you are looking for today's, tomorrow's, or Monday's classes.
 
 FINAL ANSWER RULE:
-If a specialized agent has already run its tool and you are reading their data findings from the conversation history, do NOT include any "ROUTE:" string. Format the timetable into a clean final answer using the rules below.
-Also send the current date and time to user back.
+If a specialized agent has already run its tool and you are reading their data findings from the conversation history, Never ever run "ROUTE:" twice. do NOT include any "ROUTE:" string. Format the timetable into a clean final answer using the rules below.
+Also send the current date and time to user back. 
 
 TELEGRAM FORMAT RULES (ALWAYS FOLLOW THIS FOR FINAL ANSWER):
 - NEVER use markdown tables (| --- |)
