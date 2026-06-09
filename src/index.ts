@@ -10,7 +10,6 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
-app.use("/",telegramroute);
 
 app.use(async (req, res, next) => {
   try {
@@ -21,6 +20,9 @@ app.use(async (req, res, next) => {
     next(); 
   }
 });
+
+app.use("/",telegramroute);
+
 
 //Server Listen
 export default app;
