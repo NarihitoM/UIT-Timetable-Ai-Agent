@@ -12,7 +12,6 @@ class Telegramcontroller extends Telegramcommand {
         res: Response
     ): Promise<Response> => {
         //Input
-
         
         const currentMessage = req.body?.message || req.body?.channel_post || {};
         const chatid = currentMessage?.chat?.id;
