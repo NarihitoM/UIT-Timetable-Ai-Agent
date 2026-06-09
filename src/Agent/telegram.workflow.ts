@@ -67,7 +67,7 @@ TelegramAgent.addConditionalEdges(
     toolsCondition as any,
     {
         tools: "Section A Tools",
-        __end__: END
+        __end__: "Main Agent"
     } as any
 );
 
@@ -88,7 +88,7 @@ TelegramAgent.addConditionalEdges(
     toolsCondition as any,
     {
         tools: "Section B Tools",
-        __end__: END
+        __end__: "Main Agent"
     } as any
 );
 
@@ -108,7 +108,7 @@ TelegramAgent.addConditionalEdges(
     toolsCondition as any,
     {
         tools: "Section C Tools",
-        __end__: END
+        __end__: "Main Agent"
     } as any
 );
 
@@ -128,7 +128,7 @@ TelegramAgent.addConditionalEdges(
     toolsCondition as any,
     {
         tools: "Section D Tools",
-        __end__: END
+        __end__: "Main Agent"
     } as any
 );
 
