@@ -31,17 +31,17 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            if (text.startsWith(Telegramcontroller.commands[0])) {
+            if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
                 return res.status(200).send("OK");
             }
 
-            if (text.startsWith(Telegramcontroller.commands[1])) {
+            if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
                 return res.status(200).send("OK");
             }
 
-            if (text.startsWith(Telegramcontroller.commands[2])) {
+            if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
                 await bot.sendMessage(chatid, "Contributors: Special thanks to Velluz(Hein Thu Aung) for openai api key.");
                 return res.status(200).send("OK");
             }

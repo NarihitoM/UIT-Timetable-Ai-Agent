@@ -12,7 +12,7 @@ class BaseMiddleware {
             const chatid = currentMessage?.chat?.id;
 
             if(chatid !== process.env.CHANNEL){
-                bot.sendMessage(chatid , "You do not have permission to use Timetable. Only Team SE Gp can use.")
+                await bot.sendMessage(chatid , "You do not have permission to use Timetable. Only Team SE Gp can use.")
                 return res.status(200).send("Ok")
             }
 
