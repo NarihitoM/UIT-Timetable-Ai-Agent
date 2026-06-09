@@ -55,6 +55,7 @@ class Telegramcontroller extends Telegramcommand {
                     message_id: waitMessage.message_id
                 });
             }
+
             
             await redisclient.set(cachekey, `Set User: ${chatid}`, {
                 EX: 60
