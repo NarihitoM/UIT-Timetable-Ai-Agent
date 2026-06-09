@@ -12,12 +12,15 @@ app.use(cors());
 
 app.use("/",telegramroute);
 
-
-async function main() {
-  await connectRedis();
-}
-
-main().catch(console.error);
+app.use(async (req, res, next) => {
+  try {
+    await connectRedis();
+    next();
+  } catch (error) {
+    console.error("Failed to establish Redis connection in middleware:", error);
+    next(); 
+  }
+});
 
 //Server Listen
 export default app;
