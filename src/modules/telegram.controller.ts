@@ -32,9 +32,15 @@ class Telegramcontroller extends Telegramcommand {
             //Condition
             if (text.startsWith(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started.")
+                return res.status(200).json({
+                    success: true
+                });
             }
             else if (text.startsWith(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /Section A,/Section B,/Section C,/Section D for each timetable.");
+                return res.status(200).json({
+                    success: true
+                });
             }
             else if (
                 text.startsWith(Telegramcontroller.commands[2]) ||
@@ -43,6 +49,10 @@ class Telegramcontroller extends Telegramcommand {
                 text.startsWith(Telegramcontroller.commands[5])
             ) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
+
+                res.status(200).json({
+                    success: true
+                });
 
                 const result = await TelegramTimetableagent.invoke(
                     { messages: [new HumanMessage(text)] }
@@ -54,12 +64,13 @@ class Telegramcontroller extends Telegramcommand {
                     chat_id: chatid,
                     message_id: waitMessage.message_id
                 });
-            }
 
-            
-            await redisclient.set(cachekey, `Set User: ${chatid}`, {
-                EX: 60
-            })
+                await redisclient.set(cachekey, `Set User: ${chatid}`, {
+                    EX: 60
+                })
+
+                return;
+            }
 
             return res.status(200).json({
                 success: true
