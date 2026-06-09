@@ -15,11 +15,17 @@ const TelegramAgent = new StateGraph(Telegramagentstate);
 TelegramAgent.addNode("Main Agent", async (state) => {
     const history = state.messages || [];
 
-    //Read Tool Call Data
+    const cleanHistory = history.filter(msg => {
+        if (msg.content && typeof msg.content === 'string') {
+            return !msg.content.includes("ROUTE:");
+        }
+        return true;
+    });
+
     if (state.data) {
         const prompt = [
             new SystemMessage(getSupervisorPrompt()),
-            ...history
+            ...cleanHistory
         ];
         const response = await model.invoke(prompt);
         return {
@@ -127,7 +133,7 @@ TelegramAgent.addNode("Section C", async (state) => {
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    
+
     return {
         messages: [response],
         data: isFinishedWithTools
@@ -153,7 +159,7 @@ TelegramAgent.addNode("Section D", async (state) => {
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    
+
     return {
         messages: [response],
         data: isFinishedWithTools
