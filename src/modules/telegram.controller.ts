@@ -3,7 +3,7 @@ import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
-import redisclient from "../lib/redis.ts";
+import { redisclient } from "../lib/redis.ts";
 
 class Telegramcontroller extends Telegramcommand {
     public static telegram = async (
