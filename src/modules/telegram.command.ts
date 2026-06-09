@@ -2,6 +2,7 @@ class Telegramcommand {
     protected static commands = [
         "/start",
         "/help", //Help Functions
+        "/contributors", //contributors
         "/section_a", //Section A
         "/section_b", //Section B
         "/section_c", //Section C

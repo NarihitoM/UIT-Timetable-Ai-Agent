@@ -27,7 +27,7 @@ export const getSupervisorPrompt = () => {
     let timeContext = "The user is asking during normal class hours.";
     if (day === "Saturday" || day === "Sunday") {
         timeContext = "CRITICAL: Today is the weekend. If the user asks for 'next class', look for MONDAY's first morning class.";
-    } else if (totalMinutesToday >= 960) { // 960 minutes = 16:00 (4:00 PM) Assuming last class ends around here
+    } else if (totalMinutesToday >= 960) { 
         timeContext = `CRITICAL: The current time is after school hours for today (${time}). If the user asks for 'next class', look for tomorrow's first morning class.`;
     }
 
@@ -61,16 +61,18 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW THIS FOR FINAL ANSWER):
 
 🕐 [start] – [end]
 📚 [course code] – [course name]
-📝 [type] | 📍 [room]
+📝 [type] 
+🚪 [room]
 
 EXAMPLE FOR NEXT CLASS:
 🎯 Your next class:
 
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
-📝 TDA | 📍 Room 422
+📝 TDA
+🚪 Room 422
 
-💬 Let me know if you need anything else!
+<Briefly Explain about the lecture>!
 
 ROUTING EXAMPLE:
 ROUTE: section_a_agent The user wants to know their next class for Section A. Current state: ${timeContext}`;
@@ -103,7 +105,7 @@ export const getSubAgentPrompt = (
     if (day === "Saturday" || day === "Sunday") {
         targetDay = "Monday";
         timingStrategy = "Find the very first class of the day on Monday.";
-    } else if (totalMinutesToday >= 960) { // After 4:00 PM (16:00)
+    } else if (totalMinutesToday >= 960) { 
         timingStrategy = "Find the very first class of the day tomorrow.";
 
         if (day === "Friday") {
