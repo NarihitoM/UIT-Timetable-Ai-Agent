@@ -10,38 +10,43 @@ class Telegramcontroller extends Telegramcommand {
     public static telegram = async (
         req: Request,
         res: Response
-    ) => {
+    ): Promise<Response> => {
+        //Input
+
+        
+        const currentMessage = req.body?.message || req.body?.channel_post || {};
+        const chatid = currentMessage?.chat?.id;
+        const text: string | undefined = currentMessage?.text;
+
+        if (!chatid || !text) {
+            return res.status(200).send("OK");
+        }
+
         try {
-            //catch input from user from message and channel
-            const currentMessage = req.body.message || req.body.channel_post;
-            const chatid = currentMessage?.chat?.id;
-            const text = currentMessage?.text;
-
-            const cachekey = `telegram:cache${chatid}`
-
+            const cachekey = `telegram:cache:${chatid}`;
             const data = await redisclient.get(cachekey);
 
             if (data) {
                 const timeleft = await redisclient.ttl(cachekey);
-                bot.sendMessage(chatid, `Please wait ${timeleft}s before sending again.`)
+                await bot.sendMessage(chatid, `Please wait ${timeleft}s before sending again.`);
                 return res.status(200).send("OK");
             }
 
-            //Condition
             if (text.startsWith(Telegramcontroller.commands[0])) {
-                await bot.sendMessage(chatid, "You can now get started. Developer By Narihito From Section C. Happy Asking ^_^.")
+                await bot.sendMessage(chatid, "You can now get started. Developer By Narihito From Section C. Happy Asking ^_^.");
                 return res.status(200).send("OK");
-            }
-            else if (text.startsWith(Telegramcontroller.commands[1])) {
+            } 
+            
+            if (text.startsWith(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
                 return res.status(200).send("OK");
-            }
-            else if (
-                text.startsWith(Telegramcontroller.commands[2]) ||
-                text.startsWith(Telegramcontroller.commands[3]) ||
-                text.startsWith(Telegramcontroller.commands[4]) ||
-                text.startsWith(Telegramcontroller.commands[5])
-            ) {
+            } 
+            
+            const isSectionCommand = [2, 3, 4, 5].some(
+                (index) => Telegramcontroller.commands[index] && text.startsWith(Telegramcontroller.commands[index])
+            );
+
+            if (isSectionCommand) {
                 const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
 
                 const result = await TelegramTimetableagent.invoke(
@@ -57,29 +62,28 @@ class Telegramcontroller extends Telegramcommand {
 
                 await redisclient.set(cachekey, `Set User: ${chatid}`, {
                     EX: 60
-                })
+                });
 
                 return res.status(200).send("OK");
-            } else {
-                await bot.sendMessage(chatid, "There is no command with that function.");
-                return res.status(200).send("OK");
-            }
-
-        }
-        catch (err: unknown) {
-            //Error
-            console.error("Telegram Controller Error:", err);
-            const currentMessage = req.body?.message || req.body?.channel_post;
-            const chatid = currentMessage?.chat?.id;
-
-            await bot.sendMessage(chatid, "It seems something went wrong.")
-
+            } 
+            
+            await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
 
+        } catch (err: unknown) {
+            console.error("Telegram Controller Error:", err);
+
+            if (chatid) {
+                try {
+                    await bot.sendMessage(chatid, "It seems something went wrong.");
+                } catch (telegramErr) {
+                    console.error("Failed to send error message to Telegram:", telegramErr);
+                }
+            }
+
+            return res.status(200).send("OK");
         }
-    }
+    };
 }
 
-export {
-    Telegramcontroller
-}
+export { Telegramcontroller };
