@@ -32,14 +32,15 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
-                await bot.sendMessage(chatid, "You can start. Dont make me talk too much Ok. Mf has been eager to run me huh now lets see.");
+                await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
                 return res.status(200).send("OK");
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "Help Ahhh! Im drowning and dying. YAMETE KUDASAI ");
+                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
                 return res.status(200).send("OK");
             }
+
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
                 await bot.sendMessage(chatid, "Contributors: Special thanks to Velluz(Hein Thu Aung) for openai api key.");
@@ -72,12 +73,11 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            await bot.sendMessage(chatid, "TF you typing for There is no fucking function with that fucking name.");
+            await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
-            console.error("Telegram Controller Error:", err);
-
+            console.log(err);
             if (chatid) {
                 try {
                     await bot.sendMessage(chatid, "It seems something went wrong.");
