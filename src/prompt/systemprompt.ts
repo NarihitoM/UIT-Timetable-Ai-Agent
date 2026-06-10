@@ -62,8 +62,7 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW THIS FOR FINAL ANSWER):
 
 🕐 [start] – [end]
 📚 [course code] – [course name]
-📝 [type] 
-🚪 [room]
+📝 [type] | 🚪 [room] 
 👩🏽‍🏫 [Teacher]
 
 EXAMPLE FOR NEXT CLASS:
@@ -71,8 +70,10 @@ EXAMPLE FOR NEXT CLASS:
 
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
-📝 TDA
-🚪 Room 422
+📝 TDA | 🚪 Room 422
+👩🏽‍🏫 [Teacher]
+
+
 
 <Briefly Explain about the lecture>!
 

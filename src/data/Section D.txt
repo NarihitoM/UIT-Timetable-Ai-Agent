@@ -1,60 +1,194 @@
-University of Information Technology
-2025–2026 Academic Year, Semester IV
-Second Year (Section D)
+📅 *Section D Timetable*
+🏫 University of Information Technology
+📚 2025-2026 Academic Year | Semester IV | Second Year
 
-TIME SLOTS
-08:30–09:30 | 09:40–10:40 | 10:50–11:50 | 12:40–01:40 | 01:50–02:50 | 03:00–04:00
+━━━━━━━━━━━━━━━━━━━━━━
+📆 MONDAY
+━━━━━━━━━━━━━━━━━━━━━━
 
-LUNCH BREAK: 11:50–12:40
+🕐 08:30 – 09:30
+📚 CST-4204 – Linear Algebra
+👨‍🏫 Dr. Sandar Win
+📝 TDA | 🚪 Room 425
 
-MONDAY
-08:30–09:30  CST-4204 (TDA) – Room 425
-09:40–10:40  CST-4405 (TDA) – Room 425
-10:50–11:50  CST-4306 (TDA) – Room 424
-12:40–01:40  CST-4404 (L) – Room 326
-01:50–02:50  CST-4503 (L) – Room 326
-03:00–04:00  CST-4104 (L) – Room 326
+🕐 09:40 – 10:40
+📚 CST-4405 – Computer Architecture and Organization
+👨‍🏫 Daw Hnin Pwint Zaw
+📝 TDA | 🚪 Room 425
 
-TUESDAY
-08:30–09:30  CST-4105(231)/4307(233)/4406(433)/4407(434)/4408(421) (TDA)
-09:40–10:40  CST-4404 (TDA) – Room 233
-10:50–11:50  CST-4405 (TDA) – Room 235
-12:40–01:40  CST-4204 (L) – Room 326
-01:50–02:50  CST-4104 (L) – Room 326
-03:00–04:00  CST-4306 (L) – Room 326
+🕐 10:50 – 11:50
+📚 CST-4306 – Management Principles and Engineering Economics
+👨‍🏫 Daw Khin Ei Ei Chaw
+📝 TDA | 🚪 Room 424
 
-WEDNESDAY
-08:30-09:30  No Period
-09:40–10:40  CST-4104 (TDA) – Room 424
-10:50–11:50  CST-4204 (TDA) – Room 424
-12:40–01:40  CST-4503 (TDA) – Room 432
-01:50–02:50  CST-4105(232)/4307(231)/4406(433)/4407(434)/4408(421) (TDA)
+🍽 11:50 – 12:40 Lunch Break
 
-THURSDAY
-08:30–09:30  CST-4104 (TDA) – Room 424
-09:40–10:40  CST-4306 (TDA) – Room 424
-10:50–11:50  CST-4503 (L) – Room 334
-12:40–01:40  CST-4404 (L) – Room 326
-01:50–02:50  CST-4405 (L) – Room 326
-03:00–04:00  CST-4204 (L) – Room 326
+🕐 12:40 – 13:40
+📚 CST-4404 – Network Design and Engineering
+👨‍🏫 Dr. Ei Thin Su
+📝 Lecture | 🚪 Room 326
 
-FRIDAY
-08:30–09:30  CST-4105(233)/4307(233)/4406(433)/4407(434)/4408(421) (L)
-09:40–10:40  CST-4503 (TDA)
-10:50–11:50  CST-4404 (TDA)
-12:40–01:40  CST-4306 (L) – Room 326
-01:50–02:50  CST-4405 (L) – Room 326
-03:00–04:00  CST-4105(233)/4307(232)/4406(334)/4407(335)/4408(336) (L)
+🕐 13:50 – 14:50
+📚 CST-4503 – IELTS Academic Skills and Strategies
+👨‍🏫 U Kyi Win
+📝 Lecture | 🚪 Room 326
 
-SUBJECTS
-CST-4104  Artificial Intelligence
-CST-4204  Linear Algebra
-CST-4306  Management Principles and Engineering Economics
-CST-4404  Network Design and Engineering
-CST-4405  Computer Architecture and Organization
-CST-4503  IELTS Academic Skills and Strategies
-CST-4105  Enterprise Applications Development using Java (Keystone Project)
-CST-4307  Advanced Web Technology with PHP (Keystone Project)
-CST-4406  Data and Computer Communications
-CST-4407  Engineering Circuits
-CST-4408  Foundations of Cybersecurity
+🕐 15:00 – 16:00
+📚 CST-4104 – Artificial Intelligence
+👨‍🏫 Dr. Ei Moh Moh Aung
+📝 Lecture | 🚪 Room 326
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 TUESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-4105(231) / CST-4307(233) / CST-4406(433) / CST-4407(434) / CST-4408(421)
+👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+📝 TDA | 🚪 See group room
+
+🕐 09:40 – 10:40
+📚 CST-4404 – Network Design and Engineering
+👨‍🏫 Dr. Ei Thin Su
+📝 TDA | 🚪 Room 233
+
+🕐 10:50 – 11:50
+📚 CST-4405 – Computer Architecture and Organization
+👨‍🏫 Daw Hnin Pwint Zaw
+📝 TDA | 🚪 Room 235
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-4204 – Linear Algebra
+👨‍🏫 Dr. Sandar Win
+📝 Lecture | 🚪 Room 326
+
+🕐 13:50 – 14:50
+📚 CST-4104 – Artificial Intelligence
+👨‍🏫 Dr. Ei Moh Moh Aung
+📝 Lecture | 🚪 Room 326
+
+🕐 15:00 – 16:00
+📚 CST-4306 – Management Principles and Engineering Economics
+👨‍🏫 Daw Khin Ei Ei Chaw
+📝 Lecture | 🚪 Room 326
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 WEDNESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+❌ No Class
+
+🕐 09:40 – 10:40
+📚 CST-4104 – Artificial Intelligence
+👨‍🏫 Dr. Ei Moh Moh Aung
+📝 TDA | 🚪 Room 424
+
+🕐 10:50 – 11:50
+📚 CST-4204 – Linear Algebra
+👨‍🏫 Dr. Sandar Win
+📝 TDA | 🚪 Room 424
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-4503 – IELTS Academic Skills and Strategies
+👨‍🏫 U Kyi Win
+📝 TDA | 🚪 Room 432
+
+🕐 13:50 – 14:50
+📚 CST-4105(232) / CST-4307(231) / CST-4406(433) / CST-4407(434) / CST-4408(421)
+👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+📝 TDA | 🚪 See group room
+
+🕐 15:00 – 16:00
+❌ No Class
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-4104 – Artificial Intelligence
+👨‍🏫 Dr. Ei Moh Moh Aung
+📝 TDA | 🚪 Room 424
+
+🕐 09:40 – 10:40
+📚 CST-4306 – Management Principles and Engineering Economics
+👨‍🏫 Daw Khin Ei Ei Chaw
+📝 TDA | 🚪 Room 424
+
+🕐 10:50 – 11:50
+📚 CST-4503 – IELTS Academic Skills and Strategies
+👨‍🏫 U Kyi Win
+📝 Lecture | 🚪 Room 334
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-4404 – Network Design and Engineering
+👨‍🏫 Dr. Ei Thin Su
+📝 Lecture | 🚪 Room 326
+
+🕐 13:50 – 14:50
+📚 CST-4405 – Computer Architecture and Organization
+👨‍🏫 Daw Hnin Pwint Zaw
+📝 Lecture | 🚪 Room 326
+
+🕐 15:00 – 16:00
+📚 CST-4204 – Linear Algebra
+👨‍🏫 Dr. Sandar Win
+📝 Lecture | 🚪 Room 326
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-4105(233) / CST-4307(233) / CST-4406(433) / CST-4407(434) / CST-4408(421)
+👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+📝 Lecture | 🚪 See group room
+
+🕐 09:40 – 10:40
+📚 CST-4503 – IELTS Academic Skills and Strategies
+👨‍🏫 U Kyi Win
+📝 TDA | 🚪 Room 244 E-Lab
+
+🕐 10:50 – 11:50
+📚 CST-4404 – Network Design and Engineering
+👨‍🏫 Dr. Ei Thin Su
+📝 TDA | 🚪 Room 425
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-4306 – Management Principles and Engineering Economics
+👨‍🏫 Daw Khin Ei Ei Chaw
+📝 Lecture | 🚪 Room 326
+
+🕐 13:50 – 14:50
+📚 CST-4405 – Computer Architecture and Organization
+👨‍🏫 Daw Hnin Pwint Zaw
+📝 Lecture | 🚪 Room 326
+
+🕐 15:00 – 16:00
+📚 CST-4105(233) / CST-4307(232) / CST-4406(334) / CST-4407(335) / CST-4408(336)
+👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+📝 Lecture | 🚪 See group room
+
+━━━━━━━━━━━━━━━━━━━━━━
+📖 SUBJECT CODES
+━━━━━━━━━━━━━━━━━━━━━━
+CST-4104 – Artificial Intelligence | Dr. Ei Moh Moh Aung
+CST-4204 – Linear Algebra | Dr. Sandar Win
+CST-4306 – Management Principles and Engineering Economics | Daw Khin Ei Ei Chaw
+CST-4404 – Network Design and Engineering | Dr. Ei Thin Su
+CST-4405 – Computer Architecture and Organization | Daw Hnin Pwint Zaw
+CST-4503 – IELTS Academic Skills and Strategies | U Kyi Win
+CST-4105 – Enterprise Applications Development using Java (Keystone) | Dr. Ei Moh Moh Aung
+CST-4307 – Advanced Web Technology with PHP (Keystone) | Dr. Lei Yi Win Iwin
+CST-4406 – Data and Computer Communications | Daw Akari Myint Soe
+CST-4407 – Engineering Circuits | Dr. Thiri Thitsar Khaing
+CST-4408 – Foundations of Cybersecurity | Dr. Aung Htein Maw
