@@ -73,7 +73,6 @@ EXAMPLE FOR NEXT CLASS:
 📚 CST-4404 – Network Design and Engineering
 📝 TDA
 🚪 Room 422
-👩🏽‍🏫 <name>
 
 <Briefly Explain about the lecture>!
 
@@ -137,6 +136,6 @@ YOUR INSTRUCTIONS:
 REPORTING BACK RULE:
 - Reply with a raw summary of the data findings.
 - Do not apply Telegram emojis or conversational fluff. 
-- Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Room: 422 | Teacher: <name>"
+- Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Room: 422"
 - If no class matches the criteria, reply explicitly with: "DATA_NOT_FOUND: No classes scheduled."`;
 };
