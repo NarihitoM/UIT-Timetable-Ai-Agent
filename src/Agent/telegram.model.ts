@@ -1,17 +1,16 @@
 import { ChatGroq } from "@langchain/groq";
-import { ChatOpenAI } from "@langchain/openai";
 
-const mainmodel = new ChatOpenAI({
-    model: "gpt-4o-mini-2024-07-18",
-    apiKey: process.env.APIKEY,
+const mainmodel =  new ChatGroq({
+    model : "openai/gpt-oss-120b",
+    apiKey : process.env.APIKEY,
+    reasoningEffort : "medium"
 });
 
 const submodel = new ChatGroq({
-    model : "openai/gpt-oss-120b",
+    model : "openai/gpt-oss-20b",
     apiKey : process.env.SUBAPIKEY,
     reasoningEffort : "medium"
 })
-
 
 
 export {
