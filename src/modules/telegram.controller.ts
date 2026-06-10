@@ -60,6 +60,16 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
             ) {
+                const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>
+                    cmd && text.includes(cmd)
+                );
+
+                if (matchedCommands.length > 1) {
+                    await bot.sendMessage(chatid, "Please request only one section timetable at a time.");
+                    await redisclient.del(cachekey);
+                    return res.status(200).send("OK");
+                }
+
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
                 const updates = [
