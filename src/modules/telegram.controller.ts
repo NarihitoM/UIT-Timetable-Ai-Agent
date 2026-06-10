@@ -53,8 +53,6 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
             ) {
-                const delay = () => new Promise(resolve => setTimeout(resolve, 3000));
-
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
                 const updates = [
@@ -65,29 +63,44 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
-                for (const text of updates) {
-                    await delay();
-                    await bot.editMessageText(text, {
-                        chat_id: chatid,
-                        message_id: waitMessage.message_id
-                    });
+                const agentPromise = TelegramTimetableagent.invoke({
+                    messages: [new HumanMessage(text)]
+                });
+
+                let finalAnswer: string | null = null;
+
+                const runStatusUpdates = async () => {
+                    for (const updateText of updates) {
+                        if (finalAnswer) break;
+
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+
+                        if (finalAnswer) break;
+
+                        await bot.editMessageText(updateText, {
+                            chat_id: chatid,
+                            message_id: waitMessage.message_id
+                        });
+                    }
+                };
+
+                const updatesPromise = runStatusUpdates();
+
+                try {
+                    const result = await agentPromise;
+                    finalAnswer = result.messages[result.messages.length - 1].content as string;
+                } finally {
+                    finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
                 }
 
-                const result = await TelegramTimetableagent.invoke(
-                    { messages: [new HumanMessage(text)] }
-                );
-
-                const finalAnswer = result.messages[result.messages.length - 1].content as string;
+                await updatesPromise;
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,
                     message_id: waitMessage.message_id
                 });
 
-                await redisclient.set(cachekey, `Set User: ${chatid}`, {
-                    EX: 90
-                });
-
+                await redisclient.set(cachekey, `Set User: ${chatid}`, { EX: 90 });
                 return res.status(200).send("OK");
             }
 
