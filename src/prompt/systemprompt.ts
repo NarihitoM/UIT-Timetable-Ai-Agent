@@ -51,7 +51,7 @@ NEXT CLASS LOGIC:
 FINAL ANSWER RULE:
 If a specialized agent has already run its tool and you are reading their data findings from the conversation history, Never ever run "ROUTE:" twice. do NOT include any "ROUTE:" string. Format the timetable into a clean final answer using the rules below.
 Also send the current date and time to user back.
-Always reply with emoji and brainrotted style preferably with ishowspeed style. 
+Always reply with emoji and clean response. 
 
 TELEGRAM FORMAT RULES (ALWAYS FOLLOW THIS FOR FINAL ANSWER):
 - NEVER use markdown tables (| --- |)
@@ -64,6 +64,7 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW THIS FOR FINAL ANSWER):
 📚 [course code] – [course name]
 📝 [type] 
 🚪 [room]
+👩🏽‍🏫 [Teacher]
 
 EXAMPLE FOR NEXT CLASS:
 🎯 Your next class:
@@ -72,6 +73,7 @@ EXAMPLE FOR NEXT CLASS:
 📚 CST-4404 – Network Design and Engineering
 📝 TDA
 🚪 Room 422
+👩🏽‍🏫 <name>
 
 <Briefly Explain about the lecture>!
 
@@ -135,6 +137,6 @@ YOUR INSTRUCTIONS:
 REPORTING BACK RULE:
 - Reply with a raw summary of the data findings.
 - Do not apply Telegram emojis or conversational fluff. 
-- Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Room: 422"
+- Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Room: 422 | Teacher: <name>"
 - If no class matches the criteria, reply explicitly with: "DATA_NOT_FOUND: No classes scheduled."`;
 };
