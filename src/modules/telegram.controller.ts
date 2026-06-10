@@ -23,34 +23,23 @@ class Telegramcontroller extends Telegramcommand {
         try {
             const cachekey = `telegram:cache:${chatid}`;
 
-            const acquiredLock = await redisclient.set(cachekey, "true", {
-                NX: true,
-                EX: 90
-            });
-
-            if (!acquiredLock) {
-                const timeleft = await redisclient.ttl(cachekey);
-                const displayTime = timeleft > 0 ? timeleft : 0;
-                await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
-                return res.status(200).send("OK");
-            }
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
-                await redisclient.del(cachekey);
+
                 return res.status(200).send("OK");
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
-                await redisclient.del(cachekey);
+
                 return res.status(200).send("OK");
             }
 
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
                 await bot.sendMessage(chatid, "Contributors: Special thanks to Velluz(Hein Thu Aung) for openai api key.");
-                await redisclient.del(cachekey);
+
                 return res.status(200).send("OK");
             }
 
@@ -60,15 +49,31 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
             ) {
+
+                const acquiredLock = await redisclient.set(cachekey, "true", {
+                    NX: true,
+                    EX: 90
+                });
+
+                if (!acquiredLock) {
+                    const timeleft = await redisclient.ttl(cachekey);
+                    const displayTime = timeleft > 0 ? timeleft : 0;
+                    await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
+                    return res.status(200).send("OK");
+                }
+
+
                 const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>
                     cmd && text.includes(cmd)
                 );
 
                 if (matchedCommands.length > 1) {
                     await bot.sendMessage(chatid, "Please request only one section timetable at a time.");
-                    await redisclient.del(cachekey);
+
                     return res.status(200).send("OK");
                 }
+
+
 
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
@@ -120,14 +125,12 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            await redisclient.del(cachekey);
             await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
             console.log(err);
             const cachekey = `telegram:cache:${chatid}`;
-            await redisclient.del(cachekey);
 
             if (chatid) {
                 try {
