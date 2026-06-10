@@ -53,8 +53,26 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
             ) {
-                const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is running.");
+                const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
+                const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
+
+                const updates = [
+                    "⏳ Starting the work search...",
+                    "☕ Grab a cup of coffee...",
+                    "🔍 Analyzing Section Timetable...",
+                    "📂 Sorting through data...",
+                    "🚀 Almost ready!"
+                ];
+
+                for (const text of updates) {
+                    await delay();
+                    await bot.editMessageText(text, {
+                        chat_id: chatid,
+                        message_id: waitMessage.message_id
+                    });
+                }
+                
                 const result = await TelegramTimetableagent.invoke(
                     { messages: [new HumanMessage(text)] }
                 );
