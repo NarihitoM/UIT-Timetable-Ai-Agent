@@ -12,7 +12,6 @@ class Telegramcontroller extends Telegramcommand {
         res: Response
     ): Promise<Response> => {
         //Input
-
         const currentMessage = req.body?.message || req.body?.channel_post || {};
         const chatid = currentMessage?.chat?.id;
         const text: string | undefined = currentMessage?.text;
@@ -23,27 +22,35 @@ class Telegramcontroller extends Telegramcommand {
 
         try {
             const cachekey = `telegram:cache:${chatid}`;
-            const data = await redisclient.get(cachekey);
 
-            if (data) {
+            const acquiredLock = await redisclient.set(cachekey, "true", {
+                NX: true,
+                EX: 90
+            });
+
+            if (!acquiredLock) {
                 const timeleft = await redisclient.ttl(cachekey);
-                await bot.sendMessage(chatid, `Please wait ${timeleft}s before sending again.`);
+                const displayTime = timeleft > 0 ? timeleft : 0;
+                await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
                 return res.status(200).send("OK");
             }
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
+                await redisclient.del(cachekey);
                 return res.status(200).send("OK");
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
                 await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
+                await redisclient.del(cachekey);
                 return res.status(200).send("OK");
             }
 
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
                 await bot.sendMessage(chatid, "Contributors: Special thanks to Velluz(Hein Thu Aung) for openai api key.");
+                await redisclient.del(cachekey);
                 return res.status(200).send("OK");
             }
 
@@ -100,20 +107,23 @@ class Telegramcontroller extends Telegramcommand {
                     message_id: waitMessage.message_id
                 });
 
-                await redisclient.set(cachekey, `Set User: ${chatid}`, { EX: 90 });
                 return res.status(200).send("OK");
             }
 
+            await redisclient.del(cachekey);
             await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
             console.log(err);
+            const cachekey = `telegram:cache:${chatid}`;
+            await redisclient.del(cachekey);
+
             if (chatid) {
                 try {
                     await bot.sendMessage(chatid, "It seems something went wrong.");
-                } catch (telegramErr) {
-                    console.error("Failed to send error message to Telegram:", telegramErr);
+                } catch (err) {
+                    console.log(err);
                 }
             }
 
