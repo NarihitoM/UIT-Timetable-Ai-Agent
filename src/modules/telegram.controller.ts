@@ -65,41 +65,19 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
-                let isWorking = true;
-                const workPromise = TelegramTimetableagent.invoke({
-                    messages: [new HumanMessage(text)]
-                }).then((result) => {
-                    isWorking = false;
-                    return result;
-                });
-
-                let lastIndex = -1;
-
-                while (isWorking) {
+                for (const text of updates) {
                     await delay();
-
-                    if (!isWorking) break;
-
-                    let randomIndex;
-                    do {
-                        randomIndex = Math.floor(Math.random() * updates.length);
-                    } while (randomIndex === lastIndex && updates.length > 1);
-
-                    lastIndex = randomIndex;
-
-                    await bot.editMessageText(updates[randomIndex], {
+                    await bot.editMessageText(text, {
                         chat_id: chatid,
                         message_id: waitMessage.message_id
-                    }).catch(() => { });
+                    });
                 }
 
-                const result = await workPromise;
+                const result = await TelegramTimetableagent.invoke(
+                    { messages: [new HumanMessage(text)] }
+                );
 
-                const rawContent = result.messages[result.messages.length - 1].content;
-
-                const finalAnswer = typeof rawContent === "string"
-                    ? rawContent
-                    : rawContent.map(block => "text" in block ? block.text : "").join("");
+                const finalAnswer = result.messages[result.messages.length - 1].content as string;
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,
@@ -109,9 +87,13 @@ class Telegramcontroller extends Telegramcommand {
                 await redisclient.set(cachekey, `Set User: ${chatid}`, {
                     EX: 90
                 });
+
+                return res.status(200).send("OK");
             }
+
+            await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
-            
+
         } catch (err: unknown) {
             console.log(err);
             if (chatid) {
