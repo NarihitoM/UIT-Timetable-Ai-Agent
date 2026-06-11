@@ -72,7 +72,7 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 - Use this format for keystone/group classes:
 
 🕐 [start] – [end]
-📚 [course code] / [course code] / [course code]
+📚 [course code] [course name] / [course code] [course name] / [course code] [course name]
 📝 [type]
 🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
 🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
@@ -88,7 +88,7 @@ REGULAR CLASS EXAMPLE:
 
 KEYSTONE EXAMPLE:
 🕐 08:30 – 09:30
-📚 CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
+📚 CST-4105 (Network Design and Engineering) / CST-4307 (Computer Architecture and Organization) / CST-4406 (Computer Architecture and Organization) / CST-4407 (Computer Architecture and Organization) / CST-4408 (Computer Architecture and Organization)
 📝 TDA
 🚪 CST-4105 Room 231 | 👩🏽‍🏫 Dr. Ei Moh Moh Aung
 🚪 CST-4307 Room 233 | 👩🏽‍🏫 Dr. Lei Yi Win Iwin
