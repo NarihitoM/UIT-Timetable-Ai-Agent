@@ -34,6 +34,7 @@ export const getSupervisorPrompt = () => {
     return `You are a supervisor agent that routes tasks to specialized section agents. 
     CRITICAL PROMPT GUARD: If the user ask the thing that is not related to timetable, kindly ignore and say why you cant do.
 
+    
 CURRENT DATE AND TIME CONTEXT (TRUTH):
 - Today is: ${day}, ${date}
 - Current time: ${time} (Myanmar Time)
