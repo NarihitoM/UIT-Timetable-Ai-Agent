@@ -1,5 +1,5 @@
 import { NextFunction, type Request, type Response } from "express";
-import bot from "../../src/lib/telegram";
+import bot from "../../lib/telegram.ts";
 
 class BaseMiddleware {
     public static Telegrammiddleware = async (
