@@ -85,7 +85,7 @@ REGULAR CLASS EXAMPLE:
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
 👩🏻‍🏫 Dr. Ei Thin Su
-💡 Covers the principles of designing and managing computer networks, including topologies, protocols, and infrastructure planning.
+💡  [1-2 sentence brief description of what this subject is about]
 
 KEYSTONE EXAMPLE:
 🕐 08:30 – 09:30
@@ -96,7 +96,7 @@ KEYSTONE EXAMPLE:
 🚪 CST-4406 Room 433 | 👩🏻‍🏫 Daw Akari Myint Soe
 🚪 CST-4407 Room 434 | 👩🏻‍🏫 Dr. Thiri Thitsar Khaing
 🚪 CST-4408 Room 421 | 👩🏻‍🏫 Dr. Aung Htein Maw
-💡 Students attend their assigned keystone project group. Each group works on a different technology track.
+💡 [1-3 sentence brief description of what these subject are about]
 
 NEXT CLASS EXAMPLE:
 🎯 Your next class:
@@ -105,7 +105,7 @@ NEXT CLASS EXAMPLE:
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
 👩🏻‍🏫 Dr. Ei Thin Su
-💡 Covers the principles of designing and managing computer networks, including topologies, protocols, and infrastructure planning.
+💡  [1-2 sentence brief description of what this subject is about]
 
 Always end with a friendly closing line like:
 💬 Let me know if you need another day or section!
