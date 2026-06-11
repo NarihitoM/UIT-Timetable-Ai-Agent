@@ -43,9 +43,9 @@
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🕐 08:30 – 09:30
-📚 CST-4105(235) / CST-4307(233) / CST-4406(433) / CST-4407(434) / CST-4408(236)
+📚 CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
 👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4105 Room 235, 🚪 CST-4307 Room 233, 🚪 CST-4406 Room 433, 🚪 CST-4407 Room 434, 🚪 CST-4408 Room 236
 
 🕐 09:40 – 10:40
 📚 CST-4404 – Network Design and Engineering
@@ -101,9 +101,9 @@
 📝 TDA | 🚪 Room 432
 
 🕐 13:50 – 14:50
-📚 CST-4105(232) / CST-4307(231) / CST-4406(433) / CST-4407(434) / CST-4408(424)
+📚 CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
 👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
-📝 TDA | 🚪 See group room
+📝 TDA | 🚪 CST-4105 Room 232, 🚪 CST-4307 Room 231, 🚪 CST-4406 Room 433, 🚪 CST-4407 Room 434, 🚪 CST-4408 Room 424
 
 🕐 15:00 – 16:00
 ❌ No Class
@@ -149,9 +149,9 @@
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🕐 08:30 – 09:30
-📚 CST-4105(231) / CST-4307(233) / CST-4406(433) / CST-4407(434)
+📚 CST-4105 / CST-4307 / CST-4406 / CST-4407
 👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4105 Room 231, 🚪 CST-4307 Room 233, 🚪 CST-4406 Room 433, 🚪 CST-4407 Room 434
 
 🕐 09:40 – 10:40
 📚 CST-4503 – IELTS Academic Skills and Strategies
@@ -176,9 +176,9 @@
 📝 Lecture | 🚪 Room 326
 
 🕐 15:00 – 16:00
-📚 CST-4105(233) / CST-4307(232) / CST-4406(334) / CST-4407(335) / CST-4408(336)
+📚 CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
 👨‍🏫 Dr. Ei Moh Moh Aung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4105 Room 233, 🚪 CST-4307 Room 232, 🚪 CST-4406 Room 334, 🚪 CST-4407 Room 335, 🚪 CST-4408 Room 336
 
 ━━━━━━━━━━━━━━━━━━━━━━
 📖 SUBJECT CODES

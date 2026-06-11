@@ -43,9 +43,9 @@
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🕐 08:30 – 09:30
-📚 CST-4307(233) / CST-4406(433) / CST-4407(434) / CST-4408(236)
+📚 CST-4307 / CST-4406 / CST-4407 / CST-4408
 👨‍🏫 Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4307 Room 233, 🚪 CST-4406 Room 433, 🚪 CST-4407 Room 434, 🚪 CST-4408 Room 236
 
 🕐 09:40 – 10:40
 📚 CST-4204 – Linear Algebra
@@ -79,9 +79,9 @@
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🕐 08:30 – 09:30
-📚 CST-4205(231) / CST-4408(421)
+📚 CST-4105 / CST-4408
 👨‍🏫 Dr. Dim Em Nyaung / Dr. Aung Htein Maw
-📝 TDA | 🚪 See group room
+📝 TDA | 🚪 CST-4105 Room 231, 🚪 CST-4408 Room 421
 
 🕐 09:40 – 10:40
 📚 CST-4104 – Artificial Intelligence
@@ -101,9 +101,9 @@
 📝 TDA | 🚪 Room 426
 
 🕐 13:50 – 14:50
-📚 CST-4406(433) / CST-4408(424)
+📚 CST-4406 / CST-4408
 👨‍🏫 Daw Akari Myint Soe / Dr. Aung Htein Maw
-📝 TDA | 🚪 See group room
+📝 TDA | 🚪 CST-4406 Room 433, 🚪 CST-4408 Room 424
 
 🕐 15:00 – 16:00
 📚 CST-4503 – IELTS Academic Skills and Strategies
@@ -151,9 +151,9 @@
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🕐 08:30 – 09:30
-📚 CST-4105(235) / CST-4406(433)
+📚 CST-4105 / CST-4406
 👨‍🏫 Dr. Dim Em Nyaung / Daw Akari Myint Soe
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4105 Room 235, 🚪 CST-4406 Room 433
 
 🕐 09:40 – 10:40
 📚 CST-4405 – Computer Architecture and Organization
@@ -178,9 +178,9 @@
 📝 Lecture | 🚪 Room 324
 
 🕐 15:00 – 16:00
-📚 CST-4105(235) / CST-4307(232) / CST-4406(334) / CST-4407(335) / CST-4408(336)
+📚 CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
 👨‍🏫 Dr. Dim Em Nyaung / Dr. Lei Yi Win Iwin / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
-📝 Lecture | 🚪 See group room
+📝 Lecture | 🚪 CST-4105 Room 235, 🚪 CST-4307 Room 232, 🚪 CST-4406 Room 334, 🚪 CST-4407 Room 335, 🚪 CST-4408 Room 336
 
 ━━━━━━━━━━━━━━━━━━━━━━
 📖 SUBJECT CODES

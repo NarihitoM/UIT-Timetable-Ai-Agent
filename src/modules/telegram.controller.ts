@@ -21,6 +21,7 @@ class Telegramcontroller extends Telegramcommand {
         }
 
         try {
+            //Cache
             const cachekey = `telegram:cache:${chatid}`;
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
@@ -47,6 +48,7 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
+            //Agent Message route
             if (
                 (Telegramcontroller.commands[4] && text.includes(Telegramcontroller.commands[4])) ||
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
@@ -131,8 +133,8 @@ class Telegramcontroller extends Telegramcommand {
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
+            //Error
             console.log(err);
-
             if (chatid) {
                 try {
                     await bot.sendMessage(chatid, "It seems something went wrong.");
