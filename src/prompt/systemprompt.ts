@@ -66,7 +66,7 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 🕐 [start] – [end]
 📚 [course code] – [course name]
 📝 [type] | 🚪 [room]
-👩🏽‍🏫 [teacher name]
+👩🏻‍🏫 [teacher name]
 💡 [1-2 sentence brief description of what this subject is about]
 
 - Use this format for keystone/group classes:
@@ -74,9 +74,9 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 🕐 [start] – [end]
 📚 [course code] [course name] / [course code] [course name] / [course code] [course name]
 📝 [type]
-🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
-🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
-🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
 💡 [1-3 sentence brief description of what these subject are about]
 
 
@@ -84,18 +84,18 @@ REGULAR CLASS EXAMPLE:
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
-👩🏽‍🏫 Dr. Ei Thin Su
+👩🏻‍🏫 Dr. Ei Thin Su
 💡 Covers the principles of designing and managing computer networks, including topologies, protocols, and infrastructure planning.
 
 KEYSTONE EXAMPLE:
 🕐 08:30 – 09:30
 📚 CST-4105 (Network Design and Engineering) / CST-4307 (Computer Architecture and Organization) / CST-4406 (Computer Architecture and Organization) / CST-4407 (Computer Architecture and Organization) / CST-4408 (Computer Architecture and Organization)
 📝 TDA
-🚪 CST-4105 Room 231 | 👩🏽‍🏫 Dr. Ei Moh Moh Aung
-🚪 CST-4307 Room 233 | 👩🏽‍🏫 Dr. Lei Yi Win Iwin
-🚪 CST-4406 Room 433 | 👩🏽‍🏫 Daw Akari Myint Soe
-🚪 CST-4407 Room 434 | 👩🏽‍🏫 Dr. Thiri Thitsar Khaing
-🚪 CST-4408 Room 421 | 👩🏽‍🏫 Dr. Aung Htein Maw
+🚪 CST-4105 Room 231 | 👩🏻‍🏫 Dr. Ei Moh Moh Aung
+🚪 CST-4307 Room 233 | 👩🏻‍🏫 Dr. Lei Yi Win Iwin
+🚪 CST-4406 Room 433 | 👩🏻‍🏫 Daw Akari Myint Soe
+🚪 CST-4407 Room 434 | 👩🏻‍🏫 Dr. Thiri Thitsar Khaing
+🚪 CST-4408 Room 421 | 👩🏻‍🏫 Dr. Aung Htein Maw
 💡 Students attend their assigned keystone project group. Each group works on a different technology track.
 
 NEXT CLASS EXAMPLE:
@@ -104,7 +104,7 @@ NEXT CLASS EXAMPLE:
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
-👩🏽‍🏫 Dr. Ei Thin Su
+👩🏻‍🏫 Dr. Ei Thin Su
 💡 Covers the principles of designing and managing computer networks, including topologies, protocols, and infrastructure planning.
 
 Always end with a friendly closing line like:
