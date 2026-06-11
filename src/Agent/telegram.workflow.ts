@@ -20,15 +20,9 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             new SystemMessage(getSupervisorPrompt()),
             ...state.messages
         ];
+        
         const response = await mainmodel.invoke(prompt);
         
-        if (response.additional_kwargs?.tool_calls) {
-            delete response.additional_kwargs.tool_calls;
-        }
-        if ((response as any).tool_calls) {
-            (response as any).tool_calls = [];
-        }
-
         return {
             nextAgent: "__end__",
             messages: [response],
