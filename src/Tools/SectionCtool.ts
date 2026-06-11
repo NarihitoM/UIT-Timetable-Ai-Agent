@@ -33,7 +33,7 @@ export const readSectionCTool = tool(
         }
     },
     {
-        name: "read_section_a_file",
+        name: "read_section_c_file",
         description: "Use this tool to read, parse, or lookup information inside the Section C timetable and schedule text documentation. You can provide an optional search query string to filter lines.",
         schema: z.object({
             query: z.string().optional().describe("An optional keyword or search term (like a class name, subject, or code) to filter relevant lines from Section C.txt.")
