@@ -77,7 +77,8 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
 🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
 🚪 [CST-XXXX] Room [YYY] | 👩🏽‍🏫 [teacher]
-💡 Students attend their assigned keystone project group. Each group works on a different technology track.
+💡 [1-3 sentence brief description of what these subject are about]
+
 
 REGULAR CLASS EXAMPLE:
 🕐 10:50 – 11:50
