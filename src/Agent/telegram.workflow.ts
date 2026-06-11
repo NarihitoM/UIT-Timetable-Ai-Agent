@@ -72,7 +72,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 TelegramAgent.addNode("Section A", async (state) => {
     const SectionAAgent = submodel.bindTools([readSectionATool]);
     const response = await SectionAAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section A")} Use 'read_section_a_file' to read the file`),
+        new SystemMessage(`${getSubAgentPrompt("Section A")} Use 'read_section_a_file' tool to read the file`),
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
@@ -99,7 +99,7 @@ TelegramAgent.addNode("Section A Tools", new ToolNode([readSectionATool]));
 TelegramAgent.addNode("Section B", async (state) => {
     const SectionBAgent = submodel.bindTools([readSectionBTool]);
     const response = await SectionBAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section B")} Use 'read_section_b_file' to read the file`),
+        new SystemMessage(`${getSubAgentPrompt("Section B")} Use 'read_section_b_file' tool to read the file`),
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
@@ -125,7 +125,7 @@ TelegramAgent.addNode("Section B Tools", new ToolNode([readSectionBTool]));
 TelegramAgent.addNode("Section C", async (state) => {
     const SectionCAgent = submodel.bindTools([readSectionCTool]);
     const response = await SectionCAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section C")} Use 'read_section_c_file' to read the file`),
+        new SystemMessage(`${getSubAgentPrompt("Section C")} Use 'read_section_c_file' tool to read the file`),
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
@@ -151,7 +151,7 @@ TelegramAgent.addNode("Section C Tools", new ToolNode([readSectionCTool]));
 TelegramAgent.addNode("Section D", async (state) => {
     const SectionDAgent = submodel.bindTools([readSectionDTool]);
     const response = await SectionDAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section D")} Use 'read_section_d_file' to read the file`),
+        new SystemMessage(`${getSubAgentPrompt("Section D")} Use 'read_section_d_file' tool to read the file`),
         ...state.messages]);
 
     const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
