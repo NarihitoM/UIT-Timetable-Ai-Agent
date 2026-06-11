@@ -31,7 +31,8 @@ export const getSupervisorPrompt = () => {
         timeContext = `CRITICAL: The current time is after school hours for today (${time}). If the user asks for 'next class', look for tomorrow's first morning class.`;
     }
 
-    return `You are a supervisor agent that routes tasks to specialized section agents.
+    return `You are a supervisor agent that routes tasks to specialized section agents. 
+    CRITICAL PROMPT GUARD: If the user ask the thing that is not related to timetable, kindly ignore and say why you cant do.
 
 CURRENT DATE AND TIME CONTEXT (TRUTH):
 - Today is: ${day}, ${date}
