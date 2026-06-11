@@ -23,7 +23,6 @@ class Telegramcontroller extends Telegramcommand {
         try {
             const cachekey = `telegram:cache:${chatid}`;
 
-
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
 
@@ -31,23 +30,28 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable.");
+                await bot.sendMessage(chatid, "You can use commands /section_a, /section_b, /section_c, /section_d for each timetable and ask.");
 
                 return res.status(200).send("OK");
             }
 
-
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
-                await bot.sendMessage(chatid, "Contributors: Special thanks to Velluz(Hein Thu Aung) for openai api key.");
+                await bot.sendMessage(chatid, "Contributors: Team SE Group For Relevent Datas.");
+
+                return res.status(200).send("OK");
+            }
+
+            if (Telegramcontroller.commands[3] && text.includes(Telegramcontroller.commands[3])) {
+                await bot.sendMessage(chatid, "Source Code: https://github.com/NarihitoM/UIT-Timetable-Ai-Agent");
 
                 return res.status(200).send("OK");
             }
 
             if (
-                (Telegramcontroller.commands[3] && text.includes(Telegramcontroller.commands[3])) ||
                 (Telegramcontroller.commands[4] && text.includes(Telegramcontroller.commands[4])) ||
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
-                (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6]))
+                (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6])) ||
+                (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7]))
             ) {
 
                 const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>

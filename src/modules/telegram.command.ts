@@ -3,6 +3,7 @@ class Telegramcommand {
         "/start",
         "/help", //Help Functions
         "/contributors", //contributors
+        "/sourcecode",
         "/section_a", //Section A
         "/section_b", //Section B
         "/section_c", //Section C
