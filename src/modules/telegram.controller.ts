@@ -132,7 +132,6 @@ class Telegramcontroller extends Telegramcommand {
 
         } catch (err: unknown) {
             console.log(err);
-            const cachekey = `telegram:cache:${chatid}`;
 
             if (chatid) {
                 try {
