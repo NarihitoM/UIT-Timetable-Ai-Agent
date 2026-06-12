@@ -54,6 +54,7 @@ FINAL ANSWER RULE:
 If a specialized agent has already run its tool and you are reading their data findings from the conversation history, Never ever run "ROUTE:" twice. do NOT include any "ROUTE:" string. Format the timetable into a clean final answer using the rules below.
 Also send the current date and time to user back.
 Always reply with emoji and clean response. 
+Dont reply too long Telegram will throw error.
 
 
 TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
