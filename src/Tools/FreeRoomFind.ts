@@ -1,105 +1,147 @@
-import { tool } from "@langchain/core/tools";
 import * as path from "path";
 import * as fs from "fs";
+import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 
 export const findFreeRoomsTool = tool(
     async (input) => {
         try {
             const dataDir = path.resolve(process.cwd(), "src", "data");
-            const roomsFilePath = path.join(dataDir, "availableroom.txt");
-            if (!fs.existsSync(roomsFilePath)) {
-                return `Error: The master room list file "availableroom.txt" could not be found in ${dataDir}.`;
-            }
-
-            const ALL_ROOMS = fs.readFileSync(roomsFilePath, "utf-8")
-                .split("\n")
-                .map(room => room.trim())
-                .filter(room => room.length > 0);
-
-            if (ALL_ROOMS.length === 0) {
-                return `Error: "availableroom.txt" was read successfully, but it contains no room names.`;
-            }
 
             if (!fs.existsSync(dataDir)) {
                 return `Error: The data directory ${dataDir} does not exist.`;
             }
+
+            const roomsFilePath = path.join(dataDir, "availableroom.txt");
+
+            if (!fs.existsSync(roomsFilePath)) {
+                return `Error: The master room list file "availableroom.txt" could not be found in ${dataDir}.`;
+            }
+            const rawRooms = fs.readFileSync(roomsFilePath, "utf-8")
+                .split("\n")
+                .map(line => line.trim())
+                .filter(Boolean);
+
+            const ROOM_MAP = new Map<string, Set<string>>();
+
+            for (const line of rawRooms) {
+                const match = line.match(/room\s*(\d+)/i);
+
+                if (match) {
+                    const key = match[1];
+
+                    if (!ROOM_MAP.has(key)) {
+                        ROOM_MAP.set(key, new Set());
+                    }
+
+                    ROOM_MAP.get(key)!.add(line);
+                }
+            }
+
+            if (ROOM_MAP.size === 0) {
+                return `Error: No valid rooms found in availableroom.txt.`;
+            }
             const scheduleFiles = fs.readdirSync(dataDir).filter(file => {
-                return file.endsWith(".txt") && file.toLowerCase() !== "availableroom.txt";
+                return file.endsWith(".txt") &&
+                    file.toLowerCase() !== "availableroom.txt";
             });
 
             if (scheduleFiles.length === 0) {
                 return `Warning: No schedule text files were found in the data directory.`;
             }
+            const normalizeTime = (time: string) =>
+                time.trim().replace(/^(\d):/, "0$1:");
+
             const targetDay = input.day.toLowerCase().trim();
-            const targetTime = input.time.toLowerCase().trim();
-            const occupiedRooms = new Set<string>();
-            for (const sectionFile of scheduleFiles) {
-                const filePath = path.join(dataDir, sectionFile);
+            const targetTime = normalizeTime(input.time.toLowerCase());
+
+            const occupiedRoomNumbers = new Set<string>();
+            for (const file of scheduleFiles) {
+
+                const filePath = path.join(dataDir, file);
                 const lines = fs.readFileSync(filePath, "utf-8").split("\n");
 
-                let currentReadingDay = "";
-                let inTargetTimeSlot = false;
+                let currentDay = "";
+                let inTargetSlot = false;
 
                 for (const line of lines) {
-                    const lowerLine = line.toLowerCase();
+                    if (!line.trim()) continue;
                     if (
-                        lowerLine.includes("monday") || 
-                        lowerLine.includes("tuesday") || 
-                        lowerLine.includes("wednesday") || 
-                        lowerLine.includes("thursday") || 
-                        lowerLine.includes("friday") ||
-                        lowerLine.includes("saturday") ||
-                        lowerLine.includes("sunday")
-                    ) {
-                        currentReadingDay = lowerLine;
-                        inTargetTimeSlot = false;
+                        line.includes("━━━━━━━━") ||
+                        line.includes("📅") ||
+                        line.includes("📚") ||
+                        line.includes("🍽")
+                    ) continue;
+                    const lowerLine = line.toLowerCase();
+                    const dayMatch = /(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/.exec(lowerLine);
+
+                    if (dayMatch) {
+                        currentDay = dayMatch[1];
+                        inTargetSlot = false;
                         continue;
                     }
-                    if (currentReadingDay.includes(targetDay)) {
-                        if (lowerLine.includes(":") && (lowerLine.includes("–") || lowerLine.includes("-"))) {
-                            if (lowerLine.includes(targetTime)) {
-                                inTargetTimeSlot = true;
-                            } else {
-                                inTargetTimeSlot = false;
-                            }
-                            continue;
-                        }
-                        if (inTargetTimeSlot) {
-                            for (const room of ALL_ROOMS) {
-                                if (lowerLine.includes(room.toLowerCase())) {
-                                    occupiedRooms.add(room);
-                                }
-                            }
+                    if (currentDay !== targetDay) continue;
+                    if (lowerLine.includes("🕐")) {
+                        const normalized = lowerLine.replace(/[–—]/g, "-");
+                        inTargetSlot = normalized.includes(targetTime);
+                        continue;
+                    }
+                    if (inTargetSlot) {
+
+                        const roomMatches = [...lowerLine.matchAll(/room\s*(\d+)/g)];
+
+                        for (const match of roomMatches) {
+                            occupiedRoomNumbers.add(match[1]);
                         }
                     }
                 }
             }
-            const freeRooms = ALL_ROOMS.filter(room => !occupiedRooms.has(room));
+            const freeRooms: string[] = [];
+            const occupiedLabels = new Set<string>();
+
+            for (const [roomNumber, labels] of ROOM_MAP.entries()) {
+
+                if (!occupiedRoomNumbers.has(roomNumber)) {
+                    for (const label of labels) {
+                        freeRooms.push(label);
+                    }
+                } else {
+                    for (const label of labels) {
+                        occupiedLabels.add(label);
+                    }
+                }
+            }
             if (freeRooms.length === 0) {
                 return `Checked ${scheduleFiles.length} schedules. All rooms are occupied on ${input.day} at ${input.time}.`;
             }
 
-            let responseText = `Successfully verified availability across ${scheduleFiles.length} schedule files.\n\n`;
-            responseText += `📅 **Day:** ${input.day}\n🕒 **Time:** ${input.time}\n\n`;
-            responseText += `✅ **Available Free Rooms:**\n${freeRooms.map(room => `- ${room}`).join("\n")}\n\n`;
-            
-            if (occupiedRooms.size > 0) {
-                responseText += `🚫 **Occupied Rooms:** ${Array.from(occupiedRooms).join(", ")}\n`;
+            let result =
+                `Successfully verified availability across ${scheduleFiles.length} schedule files.\n\n`;
+
+            result += `📅 Day: ${input.day}\n`;
+            result += `🕒 Time: ${input.time}\n\n`;
+
+            result += `✅ Available Free Rooms:\n`;
+            result += freeRooms.map(r => `- ${r}`).join("\n");
+
+            if (occupiedLabels.size > 0) {
+                result += `\n\n🚫 Occupied Rooms:\n` +
+                    Array.from(occupiedLabels).join(", ");
             }
 
-            return responseText;
+            return result;
 
         } catch (error) {
-            return `Failed to calculate free rooms. Error details: ${String(error)}`;
+            return `Failed to calculate free rooms. Error: ${String(error)}`;
         }
     },
     {
         name: "find_free_rooms",
-        description: "Scans multi-line text schedules dynamically to find unbooked rooms for a specific day and time, automatically reading all .txt files in the data folder.",
+        description:
+            "Fast timetable scanner that finds available rooms for a given day and time.",
         schema: z.object({
-            day: z.string().describe("Day of the week (e.g., 'Monday', 'Tuesday')"),
-            time: z.string().describe("Start time of the class block to look up (e.g., '08:30', '13:50', '09:40')")
+            day: z.string().describe("Day of the week (e.g. Monday)"),
+            time: z.string().describe("Start time (e.g. 08:30, 13:50)")
         })
     }
 );
