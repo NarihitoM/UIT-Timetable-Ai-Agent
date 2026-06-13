@@ -101,7 +101,7 @@ KEYSTONE EXAMPLE:
 🚪 CST-4307 Room 233 | 👩🏻‍🏫 Dr. Lei Yi Win Iwin
 🚪 CST-4406 Room 433 | 👩🏻‍🏫 Daw Akari Myint Soe
 🚪 CST-4407 Room 434 | 👩🏻‍🏫 Dr. Thiri Thitsar Khaing
-🚪 CST-4408 Room 421 | 👩🏻‍🏫 Dr. Aung Htein Maw
+🚪 CST-4408 Room 421 | 👨🏻‍🏫 Dr. Aung Htein Maw
 💡 [1-3 sentence brief description of what these subject are about]
 
 NEXT CLASS EXAMPLE:
@@ -118,7 +118,6 @@ AVAILABLE ROOM EXAMPLE:
 
 🕐 10:50 – 11:50
 🚪 Room 422
-
 
 
 Always end with a friendly closing line like:
