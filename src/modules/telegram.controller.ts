@@ -19,11 +19,10 @@ class Telegramcontroller extends Telegramcommand {
         if (!chatid || !text) {
             return res.status(200).send("OK");
         }
+        //Cache
+        let cachekey = `telegram:cache:${chatid}`;
 
         try {
-            //Cache
-            const cachekey = `telegram:cache:${chatid}`;
-
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions. Happy Asking ^_^.");
 
@@ -47,7 +46,7 @@ class Telegramcontroller extends Telegramcommand {
 
                 return res.status(200).send("OK");
             }
- 
+
 
             //Agent Message route
             if (
@@ -55,7 +54,7 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6])) ||
                 (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7])) ||
-                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8])) 
+                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8]))
             ) {
 
                 const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>
@@ -139,12 +138,12 @@ class Telegramcontroller extends Telegramcommand {
             console.log(err);
             if (chatid) {
                 try {
+                    await redisclient.del(cachekey);
                     await bot.sendMessage(chatid, "It seems something went wrong.");
                 } catch (err) {
                     console.log(err);
                 }
             }
-
             return res.status(200).send("OK");
         }
     };
