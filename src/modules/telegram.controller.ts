@@ -68,7 +68,7 @@ class Telegramcontroller extends Telegramcommand {
 
                 const acquiredLock = await redisclient.set(cachekey, "true", {
                     NX: true,
-                    EX: 90
+                    EX: 15
                 });
 
                 if (!acquiredLock) {
