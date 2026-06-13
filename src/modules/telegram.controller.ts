@@ -36,7 +36,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
-                await bot.sendMessage(chatid, "Contributors: Team SE Group For Relevent Datas.");
+                await bot.sendMessage(chatid, "Contributors: Team SE Group Members:\nHein Htet Aung\nHein Thu Aung\nAung Than Lwin Oo\nHtoo Myat Min Eain\nAung Htoo Pyae\nThaw Thaw Tun\nBhone Wint Kyaw.");
 
                 return res.status(200).send("OK");
             }
@@ -63,7 +63,6 @@ class Telegramcontroller extends Telegramcommand {
 
                 if (matchedCommands.length > 1) {
                     await bot.sendMessage(chatid, "Please request only one section timetable at a time.");
-
                     return res.status(200).send("OK");
                 }
 
@@ -84,7 +83,6 @@ class Telegramcontroller extends Telegramcommand {
 
                 const updates = [
                     "⏳ Starting the work search...",
-                    "☕ Grab a cup of coffee...",
                     "🔍 Analyzing Section Timetable...",
                     "📂 Sorting through data...",
                     "🚀 Almost ready!"
