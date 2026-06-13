@@ -25,7 +25,7 @@ class Telegramcontroller extends Telegramcommand {
             const cachekey = `telegram:cache:${chatid}`;
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
-                await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C. Happy Asking ^_^.");
+                await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions. Happy Asking ^_^.");
 
                 return res.status(200).send("OK");
             }
