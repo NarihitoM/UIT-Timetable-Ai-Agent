@@ -31,7 +31,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "You can use commands\n- /section_a,\n- /section_b,\n- /section_c,\n- /section_d\nfor each timetable and ask.\n- /room to find available rooms.\n\n\nAlso If you wanna add to groups or channels, Don't forget to give bot permission admin.");
+                await bot.sendMessage(chatid, "You can use commands\n- /section_a,\n- /section_b,\n- /section_c,\n- /section_d\nfor each timetable and ask.\n- /room to find available rooms.(Pending due to insufficient datas.).\n\n\nAlso If you wanna add to groups or channels, Don't forget to give bot permission admin.");
 
                 return res.status(200).send("OK");
             }
