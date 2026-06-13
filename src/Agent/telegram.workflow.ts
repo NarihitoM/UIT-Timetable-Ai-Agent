@@ -1,13 +1,14 @@
 import { START, END, StateGraph } from "@langchain/langgraph"
 import Telegramagentstate from "./telegram.state.ts"
 import { SystemMessage } from "@langchain/core/messages";
-import { getSubAgentPrompt, getSupervisorPrompt } from "../prompt/systemprompt.ts";
+import { getRoomAgentPrompt, getSubAgentPrompt, getSupervisorPrompt } from "../prompt/systemprompt.ts";
 import { mainmodel, submodel } from "./telegram.model.ts";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
 import { readSectionATool } from "../Tools/SectionAtool.ts";
 import { readSectionBTool } from "../Tools/SectionBtool.ts";
 import { readSectionCTool } from "../Tools/SectionCtool.ts";
 import { readSectionDTool } from "../Tools/SectionDtool.ts";
+import { findFreeRoomsTool } from "../Tools/FreeRoomFind.ts";
 
 const TelegramAgent = new StateGraph(Telegramagentstate);
 
@@ -20,9 +21,9 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             new SystemMessage(getSupervisorPrompt()),
             ...state.messages
         ];
-        
+
         const response = await mainmodel.invoke(prompt);
-        
+
         return {
             nextAgent: "__end__",
             messages: [response],
@@ -54,6 +55,9 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             case aireply.includes("ROUTE: section_d_agent"):
                 targetAgent = "Section D";
                 break;
+            case aireply.includes("ROUTE: room_agent"):
+                targetAgent = "Room Agent"
+                break;
         }
 
         return {
@@ -67,6 +71,32 @@ TelegramAgent.addNode("Main Agent", async (state) => {
         messages: [response]
     };
 });
+
+//Freeroom Agent
+TelegramAgent.addNode("Room Agent", async (state) => {
+    const RoomAgent = submodel.bindTools([findFreeRoomsTool]);
+    const response = await RoomAgent.invoke([
+        new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
+        ...state.messages]);
+
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+
+    return {
+        messages: [response],
+        data: isFinishedWithTools
+    };
+})
+
+TelegramAgent.addConditionalEdges(
+    "Room Agent" as any,
+    toolsCondition as any,
+    {
+        tools: "Room Agent tool",
+        __end__: "Main Agent"
+    } as any
+);
+
+TelegramAgent.addNode("Room Agent tool", new ToolNode([findFreeRoomsTool]));
 
 //Section A Agent
 TelegramAgent.addNode("Section A", async (state) => {
@@ -184,6 +214,7 @@ TelegramAgent.addConditionalEdges(
         "Section B": "Section B",
         "Section C": "Section C",
         "Section D": "Section D",
+        "Room Agent" : "Room Agent",
         "__end__": END
     } as any
 );
@@ -192,6 +223,7 @@ TelegramAgent.addEdge("Section A Tools" as any, "Section A" as any);
 TelegramAgent.addEdge("Section B Tools" as any, "Section B" as any);
 TelegramAgent.addEdge("Section C Tools" as any, "Section C" as any);
 TelegramAgent.addEdge("Section D Tools" as any, "Section D" as any);
+TelegramAgent.addEdge("Room Agent tool" as any, "Room Agent" as any);
 
 const TelegramTimetableagent = TelegramAgent.compile();
 

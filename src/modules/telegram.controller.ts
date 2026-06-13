@@ -47,13 +47,15 @@ class Telegramcontroller extends Telegramcommand {
 
                 return res.status(200).send("OK");
             }
+ 
 
             //Agent Message route
             if (
                 (Telegramcontroller.commands[4] && text.includes(Telegramcontroller.commands[4])) ||
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6])) ||
-                (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7]))
+                (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7])) ||
+                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8])) 
             ) {
 
                 const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>

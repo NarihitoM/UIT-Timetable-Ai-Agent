@@ -32,7 +32,7 @@ export const getSupervisorPrompt = () => {
     }
 
     return `You are a supervisor agent that routes tasks to specialized section agents. 
-    CRITICAL PROMPT GUARD: If the user ask the thing that is not related to timetable, kindly ignore and say why you cant do.
+    CRITICAL PROMPT GUARD: If the user ask the thing that is not related to timetable and available room finding, kindly ignore and say why you cant do.
 
     
 CURRENT DATE AND TIME CONTEXT (TRUTH):
@@ -45,6 +45,7 @@ CRITICAL ROUTING RULES:
 2. If the user message starts with "/section_b" or asks about Section B, route to section_b_agent and ask that agent what user wanted.
 3. If the user message starts with "/section_c" or asks about Section C, route to section_c_agent and ask that agent what user wanted.
 4. If the user message starts with "/section_d" or asks about Section D, route to section_d_agent and ask that agent what user wanted.
+5. If the user message starts with "/room" or asks about Available Rooms, route to room_agent and ask that agent what user wanted.
 
 NEXT CLASS LOGIC:
 - Pass the CURRENT DATE, TIME, and Schedule State explicitly down to the sub-agent when routing.
@@ -80,6 +81,10 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
 💡 [1-3 sentence brief description of what these subject are about]
 
+- Use this format for available room:
+
+🕐 [start] – [end]
+🚪  Room [YYY]
 
 REGULAR CLASS EXAMPLE:
 🕐 10:50 – 11:50
@@ -107,6 +112,14 @@ NEXT CLASS EXAMPLE:
 📝 TDA | 🚪 Room 422
 👩🏻‍🏫 Dr. Ei Thin Su
 💡  [1-2 sentence brief description of what this subject is about]
+
+AVAILABLE ROOM EXAMPLE:
+🚪 Your Current Available Room:
+
+🕐 10:50 – 11:50
+🚪 Room 422
+
+
 
 Always end with a friendly closing line like:
 💬 Let me know if you need another day or section!
@@ -175,4 +188,63 @@ REPORTING BACK RULE:
 - Do not apply Telegram emojis or conversational fluff. 
 - Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Room: 422"
 - If no class matches the criteria, reply explicitly with: "DATA_NOT_FOUND: No classes scheduled."`;
+};
+
+
+export const getRoomAgentPrompt = () => {
+    const now = new Date();
+
+    const day = now.toLocaleDateString("en-GB", {
+        timeZone: "Asia/Yangon",
+        weekday: "long"
+    });
+
+    const time = now.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Asia/Yangon"
+    });
+
+    const currentHour = parseInt(time.split(":")[0], 10);
+    const currentMinute = parseInt(time.split(":")[1], 10);
+    const totalMinutesToday = currentHour * 60 + currentMinute;
+
+    let targetDay = day;
+    let timingStrategy = `Find all classes currently happening at ${time} or scheduled later today.`;
+
+    if (day === "Saturday" || day === "Sunday") {
+        targetDay = "Monday";
+        timingStrategy = "Find all classes scheduled for Monday to determine room availability.";
+    } else if (totalMinutesToday >= 960) {
+        timingStrategy = "Find all classes scheduled for tomorrow to determine room availability.";
+
+        if (day === "Friday") {
+            targetDay = "Monday";
+        } else {
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const nextDayIndex = (now.getDay() + 1) % 7;
+            targetDay = daysOfWeek[nextDayIndex];
+        }
+    }
+
+    return `You are the specialized Room Availability Agent. 
+Your sole responsibility is to check and extract timetable data across rooms to determine empty or occupied spaces.
+
+CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
+- Real-world current day: ${day}
+- Real-world current time: ${time}
+- Target Day to look up: ${targetDay}
+- Time matching strategy: ${timingStrategy}
+
+YOUR INSTRUCTIONS:
+1. Execute your room-lookup tool to scan the timetable database across all sections.
+2. Filter the schedules strictly using the Target Day and Time parameters provided above.
+3. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
+
+REPORTING BACK RULE:
+- Reply with a raw summary of your data findings.
+- Do not apply Telegram emojis or conversational fluff.
+- Example response: "DATA_FOUND: Day: ${targetDay} | Room: 422 | Time: 10:50-11:50"
+- If searching for an empty room and matches are confirmed, list them plainly: "DATA_FOUND: Free Rooms: 102, 204, 401"
+- If no data matches the specific room query or criteria, reply explicitly with: "DATA_NOT_FOUND: No room data found."`;
 };
