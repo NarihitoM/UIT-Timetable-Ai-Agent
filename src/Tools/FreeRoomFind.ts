@@ -7,7 +7,7 @@ export const findFreeRoomsTool = tool(
     async (input) => {
         try {
             const dataDir = path.resolve(process.cwd(), "src", "data");
-            const roomsFilePath = path.join(dataDir, "availableroom.txt");
+            const roomsFilePath = path.join(dataDir, "AvailableRooms.txt");
             if (!fs.existsSync(roomsFilePath)) {
                 return `Error: The master room list file "availableroom.txt" could not be found in ${dataDir}.`;
             }
