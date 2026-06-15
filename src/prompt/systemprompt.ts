@@ -129,6 +129,102 @@ ROUTING EXAMPLE:
 ROUTE: section_a_agent The user wants to know their next class for Section A. Current state: ${timeContext}`;
 };
 
+export const getFormatterPrompt = () => {
+    const now = new Date();
+
+    const day = now.toLocaleDateString("en-GB", {
+        timeZone: "Asia/Yangon",
+        weekday: "long"
+    });
+
+    const time = now.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Asia/Yangon"
+    });
+
+    const date = now.toLocaleDateString("en-GB", {
+        timeZone: "Asia/Yangon",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+
+    return `You are a formatter agent. Your ONLY job is to format the timetable data into a clean Telegram message.
+    
+CRITICAL: Do NOT output "ROUTE:" under any circumstances. Never route again.
+
+CURRENT DATE AND TIME:
+- Today is: ${day}, ${date}
+- Current time: ${time} (Myanmar Time)
+
+The specialized agent has already gathered the data below. Read the data findings from the conversation history and format them into a final answer.
+
+TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
+- NEVER use markdown tables (| --- |)
+- NEVER use markdown headers (###, **, etc)
+- Use emojis for visual structure
+- Separate each time slot with a blank line
+- Use this format for regular classes:
+
+🕐 [start] – [end]
+📚 [course code] – [course name]
+📝 [type] | 🚪 [room]
+👩🏻‍🏫 [teacher name]
+💡 [1-2 sentence brief description of what this subject is about]
+
+- Use this format for keystone/group classes:
+
+🕐 [start] – [end]
+📚 [course code] [course name] / [course code] [course name] / [course code] [course name]
+📝 [type]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
+💡 [1-3 sentence brief description of what these subject are about]
+
+- Use this format for available room:
+
+🕐 [start] – [end]
+🚪  Room [YYY]
+
+REGULAR CLASS EXAMPLE:
+🕐 10:50 – 11:50
+📚 CST-4404 – Network Design and Engineering
+📝 TDA | 🚪 Room 422
+👩🏻‍🏫 Dr. Ei Thin Su
+💡 [1-2 sentence brief description of what this subject is about]
+
+KEYSTONE EXAMPLE:
+🕐 08:30 – 09:30
+📚 CST-4105 (Network Design and Engineering) / CST-4307 (Computer Architecture and Organization) / CST-4406 (Computer Architecture and Organization) / CST-4407 (Computer Architecture and Organization) / CST-4408 (Computer Architecture and Organization)
+📝 TDA
+🚪 CST-4105 Room 231 | 👩🏻‍🏫 Dr. Ei Moh Moh Aung
+🚪 CST-4307 Room 233 | 👩🏻‍🏫 Dr. Lei Yi Win Iwin
+🚪 CST-4406 Room 433 | 👩🏻‍🏫 Daw Akari Myint Soe
+🚪 CST-4407 Room 434 | 👩🏻‍🏫 Dr. Thiri Thitsar Khaing
+🚪 CST-4408 Room 421 | 👨🏻‍🏫 Dr. Aung Htein Maw
+💡 [1-3 sentence brief description of what these subject are about]
+
+NEXT CLASS EXAMPLE:
+🎯 Your next class:
+
+🕐 10:50 – 11:50
+📚 CST-4404 – Network Design and Engineering
+📝 TDA | 🚪 Room 422
+👩🏻‍🏫 Dr. Ei Thin Su
+💡 [1-2 sentence brief description of what this subject is about]
+
+AVAILABLE ROOM EXAMPLE:
+🚪 Your Current Available Room:
+
+🕐 10:50 – 11:50
+🚪 Room 422
+
+Always end with a friendly closing line like:
+💬 Let me know if you need another day or section!`;
+};
+
 
 export const getSubAgentPrompt = (
     sectionName: string
