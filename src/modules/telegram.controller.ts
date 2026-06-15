@@ -94,6 +94,7 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
+                
                 //Fetch History
                 /* const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
                 const contextMessages = history.reverse().map(h =>
