@@ -1,5 +1,5 @@
 model Chat {
-    id        Int      @unique @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     chatid    BigInt?
     role      String   @default("user")
     message   String
