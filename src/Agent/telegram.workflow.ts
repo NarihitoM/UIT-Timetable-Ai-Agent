@@ -43,15 +43,15 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
     let targetAgent = "__end__";
 
-    if (aireply.includes("ROUTE: section_a_agent") || /section_a|section a/i.test(userText)) {
+    if (/section_a|section a/i.test(userText)) {
         targetAgent = "Section A";
-    } else if (aireply.includes("ROUTE: section_b_agent") || /section_b|section b/i.test(userText)) {
+    } else if (/section_b|section b/i.test(userText)) {
         targetAgent = "Section B";
-    } else if (aireply.includes("ROUTE: section_c_agent") || /section_c|section c/i.test(userText)) {
+    } else if (/section_c|section c/i.test(userText)) {
         targetAgent = "Section C";
-    } else if (aireply.includes("ROUTE: section_d_agent") || /section_d|section d/i.test(userText)) {
+    } else if (/section_d|section d/i.test(userText)) {
         targetAgent = "Section D";
-    } else if (aireply.includes("ROUTE: room_agent") || /\/room|available room|free room|empty room/i.test(userText)) {
+    } else if (/\/room|available room|free room|empty room/i.test(userText)) {
         targetAgent = "Room Agent";
     }
 
@@ -63,6 +63,13 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
 //Freeroom Agent
 TelegramAgent.addNode("Room Agent", async (state) => {
+    const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
+
+    if (toolAlreadyCalled) {
+        const lastMsg = state.messages[state.messages.length - 1];
+        return { messages: [lastMsg], data: true };
+    }
+
     const RoomAgent = submodel.bindTools([findFreeRoomsTool]);
     const response = await RoomAgent.invoke([
         new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
@@ -87,109 +94,40 @@ TelegramAgent.addConditionalEdges(
 
 TelegramAgent.addNode("Room Agent tool", new ToolNode([findFreeRoomsTool]));
 
-//Section A Agent
-TelegramAgent.addNode("Section A", async (state) => {
-    const SectionAAgent = submodel.bindTools([readSectionATool]);
-    const response = await SectionAAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section A")} Use 'read_section_a_file' tool to read the file`),
-        ...state.messages]);
+const makeSectionNode = (sectionName: string, tool: any, toolName: string) => {
+    return async (state: typeof Telegramagentstate.State) => {
+        const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
 
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+        if (toolAlreadyCalled) {
+            const lastMsg = state.messages[state.messages.length - 1];
+            return { messages: [lastMsg], data: true };
+        }
 
-    return {
-        messages: [response],
-        data: isFinishedWithTools
+        const agent = submodel.bindTools([tool]);
+        const response = await agent.invoke([
+            new SystemMessage(`${getSubAgentPrompt(sectionName)} Use '${toolName}' tool to read the file`),
+            ...state.messages]);
+
+        return {
+            messages: [response],
+            data: !response.tool_calls || response.tool_calls.length === 0
+        };
     };
-})
+};
 
-TelegramAgent.addConditionalEdges(
-    "Section A" as any,
-    toolsCondition as any,
-    {
-        tools: "Section A Tools",
-        __end__: "Main Agent"
-    } as any
-);
+TelegramAgent.addNode("Section A", makeSectionNode("Section A", readSectionATool, "read_section_a_file"));
+TelegramAgent.addNode("Section B", makeSectionNode("Section B", readSectionBTool, "read_section_b_file"));
+TelegramAgent.addNode("Section C", makeSectionNode("Section C", readSectionCTool, "read_section_c_file"));
+TelegramAgent.addNode("Section D", makeSectionNode("Section D", readSectionDTool, "read_section_d_file"));
+
+TelegramAgent.addConditionalEdges("Section A" as any, toolsCondition as any, { tools: "Section A Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addConditionalEdges("Section B" as any, toolsCondition as any, { tools: "Section B Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addConditionalEdges("Section C" as any, toolsCondition as any, { tools: "Section C Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addConditionalEdges("Section D" as any, toolsCondition as any, { tools: "Section D Tools", __end__: "Main Agent" } as any);
 
 TelegramAgent.addNode("Section A Tools", new ToolNode([readSectionATool]));
-
-
-//Section B Agent
-TelegramAgent.addNode("Section B", async (state) => {
-    const SectionBAgent = submodel.bindTools([readSectionBTool]);
-    const response = await SectionBAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section B")} Use 'read_section_b_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-})
-
-TelegramAgent.addConditionalEdges(
-    "Section B" as any,
-    toolsCondition as any,
-    {
-        tools: "Section B Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
 TelegramAgent.addNode("Section B Tools", new ToolNode([readSectionBTool]));
-
-//Section C Agent
-TelegramAgent.addNode("Section C", async (state) => {
-    const SectionCAgent = submodel.bindTools([readSectionCTool]);
-    const response = await SectionCAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section C")} Use 'read_section_c_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-});
-
-TelegramAgent.addConditionalEdges(
-    "Section C" as any,
-    toolsCondition as any,
-    {
-        tools: "Section C Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
 TelegramAgent.addNode("Section C Tools", new ToolNode([readSectionCTool]));
-
-//Section D Agent
-TelegramAgent.addNode("Section D", async (state) => {
-    const SectionDAgent = submodel.bindTools([readSectionDTool]);
-    const response = await SectionDAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Section D")} Use 'read_section_d_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-});
-
-TelegramAgent.addConditionalEdges(
-    "Section D" as any,
-    toolsCondition as any,
-    {
-        tools: "Section D Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
 TelegramAgent.addNode("Section D Tools", new ToolNode([readSectionDTool]));
 
 //Main Entry Point
