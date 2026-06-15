@@ -15,6 +15,8 @@ const TelegramAgent = new StateGraph(Telegramagentstate);
 //Supervisor
 TelegramAgent.addNode("Main Agent", async (state) => {
     const history = state.messages || [];
+    const lastUserMessage = [...history].reverse().find(m => m._getType() === "human");
+    const userText = (lastUserMessage?.content as string) || "";
 
     if (state.data) {
         const prompt = [
@@ -39,35 +41,22 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     const response = await mainmodel.invoke(prompt);
     const aireply = response.content as string;
 
-    if (aireply.includes("ROUTE:")) {
-        let targetAgent = "__end__";
+    let targetAgent = "__end__";
 
-        switch (true) {
-            case aireply.includes("ROUTE: section_a_agent"):
-                targetAgent = "Section A";
-                break;
-            case aireply.includes("ROUTE: section_b_agent"):
-                targetAgent = "Section B";
-                break;
-            case aireply.includes("ROUTE: section_c_agent"):
-                targetAgent = "Section C";
-                break;
-            case aireply.includes("ROUTE: section_d_agent"):
-                targetAgent = "Section D";
-                break;
-            case aireply.includes("ROUTE: room_agent"):
-                targetAgent = "Room Agent"
-                break;
-        }
-
-        return {
-            nextAgent: targetAgent,
-            messages: [response]
-        };
+    if (aireply.includes("ROUTE: section_a_agent") || /section_a|section a/i.test(userText)) {
+        targetAgent = "Section A";
+    } else if (aireply.includes("ROUTE: section_b_agent") || /section_b|section b/i.test(userText)) {
+        targetAgent = "Section B";
+    } else if (aireply.includes("ROUTE: section_c_agent") || /section_c|section c/i.test(userText)) {
+        targetAgent = "Section C";
+    } else if (aireply.includes("ROUTE: section_d_agent") || /section_d|section d/i.test(userText)) {
+        targetAgent = "Section D";
+    } else if (aireply.includes("ROUTE: room_agent") || /\/room|available room|free room|empty room/i.test(userText)) {
+        targetAgent = "Room Agent";
     }
 
     return {
-        nextAgent: "__end__",
+        nextAgent: targetAgent,
         messages: [response]
     };
 });
