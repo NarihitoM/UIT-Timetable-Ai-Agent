@@ -94,7 +94,7 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
-                
+
                 //Fetch History
                 /* const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
                 const contextMessages = history.reverse().map(h =>
@@ -103,6 +103,8 @@ class Telegramcontroller extends Telegramcommand {
 
                 const agentPromise = TelegramTimetableagent.invoke({
                     messages: [new HumanMessage(text)]
+                }, {
+                    recursionLimit: 3 
                 });
 
                 let finalAnswer: string | null = null;
