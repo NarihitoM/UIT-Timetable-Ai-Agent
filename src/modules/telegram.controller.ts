@@ -83,7 +83,7 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
                 //Save message
-                await TelegramDatabaseService.saveText(chatIdBig, text);
+                /* await TelegramDatabaseService.saveText(chatIdBig, text); */
 
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
@@ -95,13 +95,13 @@ class Telegramcontroller extends Telegramcommand {
                 ];
 
                 //Fetch History
-                const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
+                /* const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
                 const contextMessages = history.reverse().map(h =>
                     h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
-                );
+                ); */
 
                 const agentPromise = TelegramTimetableagent.invoke({
-                    messages: contextMessages
+                    messages: [new HumanMessage(text)]
                 });
 
                 let finalAnswer: string | null = null;
@@ -133,7 +133,7 @@ class Telegramcontroller extends Telegramcommand {
                 await updatesPromise;
 
                 //Save to db
-                await TelegramDatabaseService.saveText(chatIdBig, finalAnswer, "assistant");
+                /* await TelegramDatabaseService.saveText(chatIdBig, finalAnswer, "assistant"); */
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,
