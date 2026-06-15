@@ -1,0 +1,8 @@
+model Chat {
+    id        Int      @unique @default(autoincrement())
+    chatid    Int?
+    role      String   @default("user")
+    message   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

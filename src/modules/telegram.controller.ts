@@ -1,9 +1,10 @@
-import { HumanMessage } from "@langchain/core/messages";
+import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
+import { TelegramDatabaseService } from "./telegram.service.ts";
 
 class Telegramcontroller extends Telegramcommand {
 
@@ -19,6 +20,8 @@ class Telegramcontroller extends Telegramcommand {
         if (!chatid || !text) {
             return res.status(200).send("OK");
         }
+
+
         //Cache
         let cachekey = `telegram:cache:${chatid}`;
 
@@ -78,6 +81,8 @@ class Telegramcontroller extends Telegramcommand {
                     return res.status(200).send("OK");
                 }
 
+                //Save message
+                await TelegramDatabaseService.saveText(chatid, text);
 
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
@@ -88,8 +93,14 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
+                //Fetch History
+                const history = await TelegramDatabaseService.getChatHistory(chatid, 5);
+                const contextMessages = history.reverse().map(h =>
+                    h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
+                );
+
                 const agentPromise = TelegramTimetableagent.invoke({
-                    messages: [new HumanMessage(text)]
+                    messages: contextMessages
                 });
 
                 let finalAnswer: string | null = null;
@@ -119,6 +130,9 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
                 await updatesPromise;
+
+                //Save to db
+                await TelegramDatabaseService.saveText(chatid, finalAnswer, "assistant");
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,
