@@ -21,6 +21,7 @@ class Telegramcontroller extends Telegramcommand {
             return res.status(200).send("OK");
         }
 
+        const chatIdBig = BigInt(chatid);
 
         //Cache
         let cachekey = `telegram:cache:${chatid}`;
@@ -82,7 +83,7 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
                 //Save message
-                await TelegramDatabaseService.saveText(chatid, text);
+                await TelegramDatabaseService.saveText(chatIdBig, text);
 
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
@@ -94,7 +95,7 @@ class Telegramcontroller extends Telegramcommand {
                 ];
 
                 //Fetch History
-                const history = await TelegramDatabaseService.getChatHistory(chatid, 5);
+                const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
                 const contextMessages = history.reverse().map(h =>
                     h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
                 );
@@ -132,7 +133,7 @@ class Telegramcontroller extends Telegramcommand {
                 await updatesPromise;
 
                 //Save to db
-                await TelegramDatabaseService.saveText(chatid, finalAnswer, "assistant");
+                await TelegramDatabaseService.saveText(chatIdBig, finalAnswer, "assistant");
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,

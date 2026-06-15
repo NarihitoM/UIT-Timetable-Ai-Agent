@@ -3,7 +3,7 @@ import type { Message } from "node-telegram-bot-api";
 
 class TelegramDatabaseService {
 
-    static async saveMessage(chatId: number, message: Message, role = "user"): Promise<void> {
+    static async saveMessage(chatId: bigint, message: Message, role = "user"): Promise<void> {
         await prisma.chat.create({
             data: {
                 chatid: chatId,
@@ -13,7 +13,7 @@ class TelegramDatabaseService {
         });
     }
 
-    static async saveText(chatId: number, text: string, role = "user"): Promise<void> {
+    static async saveText(chatId: bigint, text: string, role = "user"): Promise<void> {
         await prisma.chat.create({
             data: {
                 chatid: chatId,
@@ -23,7 +23,7 @@ class TelegramDatabaseService {
         });
     }
 
-    static async getChatHistory(chatId: number, limit = 50): Promise<{ id: number; role: string; message: string; createdAt: Date }[]> {
+    static async getChatHistory(chatId: bigint, limit = 50): Promise<{ id: number; role: string; message: string; createdAt: Date }[]> {
         return await prisma.chat.findMany({
             where: { chatid: chatId },
             orderBy: { createdAt: "desc" },

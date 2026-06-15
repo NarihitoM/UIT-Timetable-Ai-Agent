@@ -1,6 +1,6 @@
 model Chat {
     id        Int      @unique @default(autoincrement())
-    chatid    Int?
+    chatid    BigInt?
     role      String   @default("user")
     message   String
     createdAt DateTime @default(now())
