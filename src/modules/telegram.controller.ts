@@ -104,7 +104,7 @@ class Telegramcontroller extends Telegramcommand {
                 const agentPromise = TelegramTimetableagent.invoke({
                     messages: [new HumanMessage(text)]
                 }, {
-                    recursionLimit: 3 
+                    recursionLimit: 10 
                 });
 
                 let finalAnswer: string | null = null;
