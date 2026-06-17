@@ -1,0 +1,148 @@
+📅 Third Year (CS) Section D Timetable
+🏫 University of Information Technology
+📚 2025-2026 Academic Year | Semester VI | Third Year
+Source: photo_2026-06-16_21-30-46_2.jpg
+━━━━━━━━━━━━━━━━━━━━━━
+📆 MONDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+❌ No Class
+🕐 09:40 – 10:40
+📚 CST-6308 – Management Principles and Engineering Economics
+👩🏻‍🏫 Daw San San Nwe
+📝 L | 🚪 Room 214
+🕐 10:50 – 11:50
+📚 CST-6406 – Network Design & Engineering
+👩🏻‍🏫 Dr. Thuzar Hsan
+📝 L | 🚪 Room 331
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-6204 – Linear Algebra
+👩🏻‍🏫 Dr. Win Lai Lai Aung
+📝 L | 🚪 Room 331
+🕐 13:50 – 14:50
+📚 CST-6106 – Social Issues and Ethics
+👩🏻‍🏫 Daw Htar Htar Aung
+📝 L | 🚪 Room 331
+🕐 15:00 – 16:00
+❌ No Class
+━━━━━━━━━━━━━━━━━━━━━━
+📆 TUESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 CST-6406 – Network Design & Engineering
+👩🏻‍🏫 Dr. Thuzar Hsan
+📝 L | 🚪 Room 325
+🕐 09:40 – 10:40
+📚 CST-6106 – Social Issues and Ethics
+👩🏻‍🏫 Daw Htar Htar Aung
+📝 TDA | 🚪 Room 336
+🕐 10:50 – 11:50
+📚 CST-6107 – Computer Organization
+👩🏻‍🏫 Dr. Thet Thet Aung
+📝 L | 🚪 Room 333
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-6204 – Linear Algebra
+👩🏻‍🏫 Dr. Win Lai Lai Aung
+📝 TDA | 🚪 Room 426
+🕐 13:50 – 14:50
+📚 CST-6406 – Network Design & Engineering
+👩🏻‍🏫 Dr. Thuzar Hsan
+📝 TDA | 🚪 Room 425
+🕐 15:00 – 16:00
+📚 Elective Tracks (TDA):
+• CST-6108 | 🚪 Room 236
+• CS-6310 | 🚪 Room 431
+━━━━━━━━━━━━━━━━━━━━━━
+📆 WEDNESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+❌ No Class
+🕐 09:40 – 10:40
+📚 CST-6204 – Linear Algebra
+👩🏻‍🏫 Dr. Win Lai Lai Aung
+📝 TDA | 🚪 Room 331
+🕐 10:50 – 11:50
+❌ No Class
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-6308 – Management Principles and Engineering Economics
+👩🏻‍🏫 Daw San San Nwe
+📝 TDA | 🚪 Room 214
+🕐 13:50 – 14:50
+📚 CST-6107 – Computer Organization
+👩🏻‍🏫 Dr. Thet Thet Aung
+📝 TDA | 🚪 Room 421
+🕐 15:00 – 16:00
+❌ No Class
+━━━━━━━━━━━━━━━━━━━━━━
+📆 THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 CST-6308 – Management Principles and Engineering Economics
+👩🏻‍🏫 Daw San San Nwe
+📝 L | 🚪 Room 215
+🕐 09:40 – 10:40
+📚 Elective Tracks (L):
+• CST-6108 | 🚪 Room 233
+• CS-6310 | 🚪 Room 324
+• CST-6410 | 🚪 Room 214
+🕐 10:50 – 11:50
+📚 CST-6107 – Computer Organization
+👩🏻‍🏫 Dr. Thet Thet Aung
+📝 L | 🚪 Room 332
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-6107 – Computer Organization
+👩🏻‍🏫 Dr. Thet Thet Aung
+📝 TDA | 🚪 Room 233
+🕐 13:50 – 14:50
+📚 CST-6106 – Social Issues and Ethics
+👩🏻‍🏫 Daw Htar Htar Aung
+📝 TDA | 🚪 Room 423
+🕐 15:00 – 16:00
+📚 Elective Tracks (TDA):
+• CST-6108 | 🚪 Room 235
+• CS-6310 | 🚪 Room 424
+• CST-6410 | 🚪 Room 215
+━━━━━━━━━━━━━━━━━━━━━━
+📆 FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 CST-6204 – Linear Algebra
+👩🏻‍🏫 Dr. Win Lai Lai Aung
+📝 L | 🚪 Room 331
+🕐 09:40 – 10:40
+📚 Elective Tracks (L):
+• CST-6108 | 🚪 Room 235
+• CS-6310 | 🚪 Room 346
+• CST-6410 | 🚪 Room 214
+🕐 10:50 – 11:50
+📚 CST-6106 – Social Issues and Ethics
+👩🏻‍🏫 Daw Htar Htar Aung
+📝 L | 🚪 Room 334
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-6406 – Network Design & Engineering
+👩🏻‍🏫 Dr. Thuzar Hsan
+📝 TDA | 🚪 Room 235
+🕐 13:50 – 14:50
+📚 CST-6410 – Foundations of Cybersecurity
+👩🏻‍🏫 Dr. Aung Htein Maw
+📝 TDA | 🚪 Room 233
+🕐 15:00 – 16:00
+📚 CST-6308 – Management Principles and Engineering Economics
+👩🏻‍🏫 Daw San San Nwe
+📝 TDA | 🚪 Room 214
+━━━━━━━━━━━━━━━━━━━━━━
+📖 SUBJECT CODES
+━━━━━━━━━━━━━━━━━━━━━━
+CST-6106 – Social Issues and Ethics | Daw Htar Htar Aung
+CST-6107 – Computer Organization | Dr. Thet Thet Aung
+CST-6204 – Linear Algebra | Dr. Win Lai Lai Aung
+CST-6308 – Management Principles and Engineering Economics | Daw San San Nwe
+CST-6406 – Network Design & Engineering | Dr. Thuzar Hsan
+CS-6108 – Enterprise Application Development Using Java | Dr. Thiri Mar Lar Swe
+CS-6310 – Introduction to Entrepreneurship | Dr. Lai Yee Win Lwin
+CST-6410 – Foundations of Cybersecurity | Dr. Aung Htein Maw

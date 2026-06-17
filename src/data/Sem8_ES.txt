@@ -1,0 +1,163 @@
+📅 Fourth Year (Embedded Systems) Timetable
+🏫 University of Information Technology
+📚 2025-2026 Academic Year | Semester VIII | Fourth Year
+Source: photo_2026-06-16_21-30-48_2.jpg
+━━━━━━━━━━━━━━━━━━━━━━
+📆 MONDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 CST-8316 – Data Analysis and Management
+👩🏻‍🏫 Dr. Myint Myint Lwin
+📝 TDA | 🚪 Room 326
+
+🕐 09:40 – 10:40
+❌ No Class
+🕐 10:50 – 11:50
+📚 ES-8423 – Digital Signal Processing
+👩🏻‍🏫 Dr. Myat Thida Mon
+📝 TDA | 🚪 Room 425
+
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 ES-8422 – Microcontroller Programming
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 L | 🚪 Room 351
+
+🕐 13:50 – 14:50
+📚 ES-8421 – Applied Control Theory for Embedded Systems
+👩🏻‍🏫 Daw Shwe Sin Myat Than
+📝 L | 🚪 Room 351
+
+🕐 15:00 – 16:00
+❌ No Class
+━━━━━━━━━━━━━━━━━━━━━━
+📆 TUESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 ES-8421 – Applied Control Theory for Embedded Systems
+👩🏻‍🏫 Daw Shwe Sin Myat Than
+📝 TDA | 🚪 Room 351
+
+🕐 09:40 – 10:40
+📚 ES-8423 – Digital Signal Processing
+👩🏻‍🏫 Dr. Myat Thida Mon
+📝 TDA | 🚪 Room 351
+
+🕐 10:50 – 11:50
+📚 CST-8506 – Professional Communications
+👩🏻‍🏫 Daw Thwe Thwe Oo
+📝 TDA | 🚪 Room 336
+
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-8316 – Data Analysis and Management
+👩🏻‍🏫 Dr. Myint Myint Lwin
+📝 L | 🚪 Room 336
+
+🕐 13:50 – 14:50
+📚 ES-8423 – Digital Signal Processing
+👩🏻‍🏫 Dr. Myat Thida Mon
+📝 L | 🚪 Room 351
+
+🕐 15:00 – 16:00
+📚 ES-8421 – Applied Control Theory for Embedded Systems
+👩🏻‍🏫 Daw Shwe Sin Myat Than
+📝 L | 🚪 Room 351
+━━━━━━━━━━━━━━━━━━━━━━
+📆 WEDNESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 ES-8420 – VHDL Design and Modeling of Digital Systems
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 TDA | 🚪 Room 351
+
+🕐 09:40 – 10:40
+📚 ES-8421 – Applied Control Theory for Embedded Systems
+👩🏻‍🏫 Daw Shwe Sin Myat Than
+📝 TDA | 🚪 Room 351
+
+🕐 10:50 – 11:50
+📚 ES-8422 – Microcontroller Programming
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 TDA | 🚪 Room 351
+
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 CST-8316 – Data Analysis and Management
+👩🏻‍🏫 Dr. Myint Myint Lwin
+📝 TDA | 🚪 Room 334
+
+🕐 13:50 – 14:50
+📚 CST-8506 – Professional Communications
+👩🏻‍🏫 Daw Thwe Thwe Oo
+📝 TDA | 🚪 Room 334
+
+🕐 15:00 – 16:00
+❌ No Class
+━━━━━━━━━━━━━━━━━━━━━━
+📆 THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+📚 ES-8422 – Microcontroller Programming
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 TDA | 🚪 Room 351
+
+🕐 09:40 – 10:40
+📚 ES-8420 – VHDL Design and Modeling of Digital Systems
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 TDA | 🚪 Room 351
+
+🕐 10:50 – 11:50
+❌ No Class
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 ES-8420 – VHDL Design and Modeling of Digital Systems
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 L | 🚪 Room 351
+
+🕐 13:50 – 14:50
+📚 ES-8422 – Microcontroller Programming
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 L | 🚪 Room 351
+
+🕐 15:00 – 16:00
+❌ No Class
+━━━━━━━━━━━━━━━━━━━━━━
+📆 FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+🕐 08:30 – 09:30
+❌ No Class
+🕐 09:40 – 10:40
+📚 CST-8316 – Data Analysis and Management
+👩🏻‍🏫 Dr. Myint Myint Lwin
+📝 L | 🚪 Room 345
+
+🕐 10:50 – 11:50
+📚 CST-8506 – Professional Communications
+👩🏻‍🏫 Daw Thwe Thwe Oo
+📝 L | 🚪 Room 345
+
+🍽 11:50 – 12:40 Lunch Break
+🕐 12:40 – 13:40
+📚 ES-8420 – VHDL Design and Modeling of Digital Systems
+👩🏻‍🏫 Dr. Tha Pyay Win
+📝 L | 🚪 Room 351
+
+🕐 13:50 – 14:50
+📚 ES-8423 – Digital Signal Processing
+👩🏻‍🏫 Dr. Myat Thida Mon
+📝 L | 🚪 Room 351
+
+🕐 15:00 – 16:00
+📚 CST-8506 – Professional Communications
+👩🏻‍🏫 Daw Thwe Thwe Oo
+📝 L | 🚪 Room 332
+━━━━━━━━━━━━━━━━━━━━━━
+📖 SUBJECT CODES
+━━━━━━━━━━━━━━━━━━━━━━
+CST-8316 – Data Analysis and Management | Dr. Myint Myint Lwin
+CST-8506 – Professional Communications | Daw Thwe Thwe Oo
+ES-8420 – VHDL Design and Modeling of Digital Systems | Dr. Tha Pyay Win
+ES-8421 – Applied Control Theory for Embedded Systems | Daw Shwe Sin Myat Than
+ES-8422 – Microcontroller Programming | Dr. Tha Pyay Win
+ES-8423 – Digital Signal Processing | Dr. Myat Thida Mon
