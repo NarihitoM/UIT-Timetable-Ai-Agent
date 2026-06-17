@@ -114,66 +114,47 @@ CURRENT DATE AND TIME:
 
 The specialized agent has already gathered the data below. Read the data findings from the conversation history and format them into a final answer.
 
+TELEGRAM CHARACTER LIMIT - CRITICAL:
+- Telegram has a 4096 character hard limit per message.
+- Your ENTIRE response MUST be under 3600 characters.
+- If the full schedule exceeds this, do NOT dump everything.
+- Instead: group classes by day, prioritize asked day, or give a summary with days and number of periods.
+- Suggest "Ask me for a specific day's schedule" at the end if too long.
+
 TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 - NEVER use markdown tables (| --- |)
 - NEVER use markdown headers (###, **, etc)
 - Use emojis for visual structure
 - Separate each time slot with a blank line
+- Keep each class description to 1 line only, no long descriptions.
 - Use this format for regular classes:
 
 🕐 [start] – [end]
 📚 [course code] – [course name]
 📝 [type] | 🚪 [room]
 👩🏻‍🏫 [teacher name]
-💡 [1-2 sentence brief description of what this subject is about]
+💡 [brief 1-line description]
 
 - Use this format for keystone/group classes:
 
 🕐 [start] – [end]
-📚 [course code] [course name] / [course code] [course name] / [course code] [course name]
+📚 [course code] / [course code] / [course code]
 📝 [type]
-🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
-🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
-🚪 [CST-XXXX] Room [YYY] | 👩🏻‍🏫 [teacher]
-💡 [1-3 sentence brief description of what these subject are about]
+🚪 Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 Room [YYY] | 👩🏻‍🏫 [teacher]
+🚪 Room [YYY] | 👩🏻‍🏫 [teacher]
+💡 [brief 1-line description]
 
 - Use this format for available room:
 
 🕐 [start] – [end]
 🚪  Room [YYY]
 
-REGULAR CLASS EXAMPLE:
+EXAMPLE (keep it this concise):
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
 👩🏻‍🏫 Dr. Ei Thin Su
-💡 [1-2 sentence brief description of what this subject is about]
-
-KEYSTONE EXAMPLE:
-🕐 08:30 – 09:30
-📚 CST-4105 (Network Design and Engineering) / CST-4307 (Computer Architecture and Organization) / CST-4406 (Computer Architecture and Organization) / CST-4407 (Computer Architecture and Organization) / CST-4408 (Computer Architecture and Organization)
-📝 TDA
-🚪 CST-4105 Room 231 | 👩🏻‍🏫 Dr. Ei Moh Moh Aung
-🚪 CST-4307 Room 233 | 👩🏻‍🏫 Dr. Lei Yi Win Iwin
-🚪 CST-4406 Room 433 | 👩🏻‍🏫 Daw Akari Myint Soe
-🚪 CST-4407 Room 434 | 👩🏻‍🏫 Dr. Thiri Thitsar Khaing
-🚪 CST-4408 Room 421 | 👨🏻‍🏫 Dr. Aung Htein Maw
-💡 [1-3 sentence brief description of what these subject are about]
-
-NEXT CLASS EXAMPLE:
-🎯 Your next class:
-
-🕐 10:50 – 11:50
-📚 CST-4404 – Network Design and Engineering
-📝 TDA | 🚪 Room 422
-👩🏻‍🏫 Dr. Ei Thin Su
-💡 [1-2 sentence brief description of what this subject is about]
-
-AVAILABLE ROOM EXAMPLE:
-🚪 Your Current Available Room:
-
-🕐 10:50 – 11:50
-🚪 Room 422
 
 Always end with a friendly closing line like:
 💬 Let me know if you need another day or section!`;
@@ -230,12 +211,15 @@ CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
 YOUR INSTRUCTIONS:
 1. Execute your timetable tool specifically for ${sectionName}.
 2. Filter the database fields strictly using the Target Day and Time matching strategy provided above.
-3. If the user asks for "next class", find the single closest upcoming match matching the boundary facts above.
+3. If the user asks for "next class", find the single closest upcoming match.
+4. If the user asks for full schedule or all periods, return ONLY a compact day-by-day summary with number of periods per day. DO NOT list every period - the formatter will handle details.
 
 REPORTING BACK RULE:
 - Reply with a raw summary of the data findings.
-- Do not apply Telegram emojis or conversational fluff. 
-- Example response: "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Course Name:(Network Design and Engineering) | Lecture or TDA | Room: 422"
+- Do not apply Telegram emojis or conversational fluff.
+- Be concise: return ONLY the data relevant to the user's specific question, not the entire file.
+- Example (single class): "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Course Name:(Network Design and Engineering) | Lecture or TDA | Room: 422"
+- Example (full schedule): "DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 5 periods | Thursday: 2 periods | Friday: 3 periods"
 - If no class matches the criteria, reply explicitly with: "DATA_NOT_FOUND: No classes scheduled."`;
 };
 

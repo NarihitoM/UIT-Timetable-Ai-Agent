@@ -53,6 +53,7 @@ class Telegramcontroller extends Telegramcommand {
 
 
             //Agent Message route
+<<<<<<< HEAD
             if (
                 (Telegramcontroller.commands[4] && text.includes(Telegramcontroller.commands[4])) ||
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
@@ -78,6 +79,12 @@ class Telegramcontroller extends Telegramcommand {
             ) {
 
                 const matchedCommands = Telegramcontroller.commands.slice(4).filter(cmd =>
+=======
+            const sectionCmds = Telegramcontroller.commands.slice(4);
+            if (sectionCmds.some(cmd => cmd && text.includes(cmd))) {
+
+                const matchedCommands = sectionCmds.filter(cmd =>
+>>>>>>> c52272dfe891d8b6517c7388a943df4cf5af06bb
                     cmd && text.includes(cmd)
                 );
 
