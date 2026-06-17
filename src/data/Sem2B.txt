@@ -1,0 +1,187 @@
+📅 Sem2B Timetable
+🏫 University of Information Technology
+📚 2025-2026 Academic Year | Semester II | First Year
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 MONDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-2303 – Human Computer Interaction and Information Security
+👩🏻‍🏫 Daw Htay Htay Win
+📝 L | 🚪 Room 322
+
+🕐 09:40 – 10:40
+📚 CST-2502 – Professional Communications
+👩🏻‍🏫 Daw Me Me Swe Win
+📝 L | 🚪 Room 322
+
+🕐 10:50 – 11:50
+📚 CST-2101 – Programming in C++ (Cornerstone Project)
+👩🏻‍🏫 Daw Laet Laet Lin
+📝 L | 🚪 Room 232
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-2602 – Myanmar Literature and Language (Social Communication and Culture)
+👩🏻‍🏫 Daw Hnin Thidar
+📝 TDA | 🚪 Room 422
+
+🕐 13:50 – 14:50
+📚 CST-2303 – Human Computer Interaction and Information Security
+👩🏻‍🏫 Daw Htay Htay Win
+📝 TDA | 🚪 Room 422
+
+🕐 15:00 – 16:00
+📚 CST-2101 – Programming in C++ (Cornerstone Project)
+👩🏻‍🏫 Daw Laet Laet Lin
+📝 TDA | 🚪 Room 231
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 TUESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-2402 – Networking Fundamentals
+👩🏻‍🏫 Dr. Hnin Thiri Zaw
+📝 L | 🚪 Room 322
+
+🕐 09:40 – 10:40
+📚 CST-2303 – Human Computer Interaction and Information Security
+👩🏻‍🏫 Daw Htay Htay Win
+📝 L | 🚪 Room 322
+
+🕐 10:50 – 11:50
+📚 CST-2602 – Myanmar Literature and Language (Social Communication and Culture)
+👩🏻‍🏫 Daw Hnin Thidar
+📝 L | 🚪 Room 322
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-2101 – Programming in C++ (Cornerstone Project)
+👩🏻‍🏫 Daw Laet Laet Lin
+📝 TDA | 🚪 Room 233
+
+🕐 13:50 – 14:50
+📚 CST-2402 – Networking Fundamentals
+👩🏻‍🏫 Dr. Hnin Thiri Zaw
+📝 TDA | 🚪 Room 232
+
+🕐 15:00 – 16:00
+📚 CST-2302 – Web Technology (Cornerstone Project)
+👩🏻‍🏫 Daw Kay Zin Htun
+📝 L | 🚪 Room 232
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 WEDNESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-2202 – Discrete Mathematics
+👩🏻‍🏫 Dr. Khin Hnin Hnin Thein
+📝 TDA | 🚪 Room 425
+
+🕐 09:40 – 10:40
+📚 CST-2502 – Professional Communications
+👩🏻‍🏫 Daw Me Me Swe Win
+📝 TDA | 🚪 Room 433
+
+🕐 10:50 – 11:50
+📚 CST-2302 – Web Technology (Cornerstone Project)
+👩🏻‍🏫 Daw Kay Zin Htun
+📝 TDA | 🚪 Room 231
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-2202 – Discrete Mathematics
+👩🏻‍🏫 Dr. Khin Hnin Hnin Thein
+📝 TDA | 🚪 Room 422
+
+🕐 13:50 – 16:00
+❌ No Class
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-2602 – Myanmar Literature and Language (Social Communication and Culture)
+👩🏻‍🏫 Daw Hnin Thidar
+📝 L | 🚪 Room 333
+
+🕐 09:40 – 10:40
+📚 CST-2202 – Discrete Mathematics
+👩🏻‍🏫 Dr. Khin Hnin Hnin Thein
+📝 L | 🚪 Room 322
+
+🕐 10:50 – 11:50
+📚 CST-2302 – Web Technology (Cornerstone Project)
+👩🏻‍🏫 Daw Kay Zin Htun
+📝 L | 🚪 Room 231
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-2502 – Professional Communications
+👩🏻‍🏫 Daw Me Me Swe Win
+📝 TDA | 🚪 Room 244
+
+🕐 13:50 – 14:50
+📚 CST-2303 – Human Computer Interaction and Information Security
+👩🏻‍🏫 Daw Htay Htay Win
+📝 TDA | 🚪 Room 422
+
+🕐 15:00 – 16:00
+📚 CST-2602 – Myanmar Literature and Language (Social Communication and Culture)
+👩🏻‍🏫 Daw Hnin Thidar
+📝 TDA | 🚪 Room 422
+
+━━━━━━━━━━━━━━━━━━━━━━
+📆 FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+🕐 08:30 – 09:30
+📚 CST-2402 – Networking Fundamentals
+👩🏻‍🏫 Dr. Hnin Thiri Zaw
+📝 TDA | 🚪 Room 214
+
+🕐 09:40 – 10:40
+📚 CST-2402 – Networking Fundamentals
+👩🏻‍🏫 Dr. Hnin Thiri Zaw
+📝 L | 🚪 Room 322
+
+🕐 10:50 – 11:50
+📚 CST-2101 – Programming in C++ (Cornerstone Project)
+👩🏻‍🏫 Daw Laet Laet Lin
+📝 L | 🚪 Room 231
+
+🍽 11:50 – 12:40 Lunch Break
+
+🕐 12:40 – 13:40
+📚 CST-2302 – Web Technology (Cornerstone Project)
+👩🏻‍🏫 Daw Kay Zin Htun
+📝 TDA | 🚪 Room 231
+
+🕐 13:50 – 14:50
+📚 CST-2202 – Discrete Mathematics
+👩🏻‍🏫 Dr. Khin Hnin Hnin Thein
+📝 L | 🚪 Room 325
+
+🕐 15:00 – 16:00
+📚 CST-2502 – Professional Communications
+👩🏻‍🏫 Daw Me Me Swe Win
+📝 L | 🚪 Room 325
+
+━━━━━━━━━━━━━━━━━━━━━━
+📖 SUBJECT CODES
+━━━━━━━━━━━━━━━━━━━━━━
+CST-2101 – Programming in C++ (Cornerstone Project) | Daw Laet Laet Lin
+CST-2202 – Discrete Mathematics | Dr. Khin Hnin Hnin Thein
+CST-2302 – Web Technology (Cornerstone Project) | Daw Kay Zin Htun
+CST-2303 – Human Computer Interaction and Information Security | Daw Htay Htay Win
+CST-2402 – Networking Fundamentals | Dr. Hnin Thiri Zaw
+CST-2502 – Professional Communications | Daw Me Me Swe Win
+CST-2602 – Myanmar Literature and Language | Daw Hnin Thidar
