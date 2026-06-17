@@ -4,6 +4,8 @@ import { SystemMessage } from "@langchain/core/messages";
 import { getRoomAgentPrompt, getSubAgentPrompt, getSupervisorPrompt, getFormatterPrompt } from "../prompt/systemprompt.ts";
 import { mainmodel, submodel } from "./telegram.model.ts";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
+import { readSem2ATool } from "../Tools/Sem2Atool.ts";
+import { readSem2BTool } from "../Tools/Sem2Btool.ts";
 import { readSem2CTool } from "../Tools/Sem2Ctool.ts";
 import { readSem2DTool } from "../Tools/Sem2Dtool.ts";
 import { readSem2ETool } from "../Tools/Sem2Etool.ts";
@@ -55,7 +57,11 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
     let targetAgent = "__end__";
 
-    if (/sem2_c|sem2c/i.test(userText)) {
+    if (/sem2_a|sem2a/i.test(userText)) {
+        targetAgent = "Sem2A";
+    } else if (/sem2_b|sem2b/i.test(userText)) {
+        targetAgent = "Sem2B";
+    } else if (/sem2_c|sem2c/i.test(userText)) {
         targetAgent = "Sem2C";
     } else if (/sem2_d|sem2d/i.test(userText)) {
         targetAgent = "Sem2D";
@@ -235,6 +241,30 @@ TelegramAgent.addConditionalEdges(
 
 TelegramAgent.addNode("Sem4D Tools", new ToolNode([readSem4DTool]));
 
+//Sem2A Agent
+TelegramAgent.addNode("Sem2A", async (state) => {
+    const Sem2AAgent = submodel.bindTools([readSem2ATool]);
+    const response = await Sem2AAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem2A")} Use 'read_sem2_a_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem2A" as any, toolsCondition as any, { tools: "Sem2A Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem2A Tools", new ToolNode([readSem2ATool]));
+
+//Sem2B Agent
+TelegramAgent.addNode("Sem2B", async (state) => {
+    const Sem2BAgent = submodel.bindTools([readSem2BTool]);
+    const response = await Sem2BAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem2B")} Use 'read_sem2_b_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem2B" as any, toolsCondition as any, { tools: "Sem2B Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem2B Tools", new ToolNode([readSem2BTool]));
+
 //Sem2C Agent
 TelegramAgent.addNode("Sem2C", async (state) => {
     const Sem2CAgent = submodel.bindTools([readSem2CTool]);
@@ -386,6 +416,8 @@ TelegramAgent.addConditionalEdges(
     "Main Agent" as any,
     (state) => state.nextAgent,
     {
+        "Sem2A": "Sem2A",
+        "Sem2B": "Sem2B",
         "Sem2C": "Sem2C",
         "Sem2D": "Sem2D",
         "Sem2E": "Sem2E",
@@ -407,6 +439,8 @@ TelegramAgent.addConditionalEdges(
     } as any
 );
 
+TelegramAgent.addEdge("Sem2A Tools" as any, "Sem2A" as any);
+TelegramAgent.addEdge("Sem2B Tools" as any, "Sem2B" as any);
 TelegramAgent.addEdge("Sem2C Tools" as any, "Sem2C" as any);
 TelegramAgent.addEdge("Sem2D Tools" as any, "Sem2D" as any);
 TelegramAgent.addEdge("Sem2E Tools" as any, "Sem2E" as any);
