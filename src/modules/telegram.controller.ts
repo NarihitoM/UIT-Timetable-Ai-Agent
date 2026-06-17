@@ -1,10 +1,9 @@
-import { HumanMessage, AIMessage } from "@langchain/core/messages";
+import { HumanMessage } from "@langchain/core/messages";
 import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
-import { TelegramDatabaseService } from "./telegram.service.ts";
 
 class Telegramcontroller extends Telegramcommand {
 
@@ -20,9 +19,6 @@ class Telegramcontroller extends Telegramcommand {
         if (!chatid || !text) {
             return res.status(200).send("OK");
         }
-
-        const chatIdBig = BigInt(chatid);
-
         //Cache
         let cachekey = `telegram:cache:${chatid}`;
 
@@ -34,7 +30,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
-                await bot.sendMessage(chatid, "You can use these commands for each timetable:\n\nSemester 2:\n- /sem2_a, /sem2_b, /sem2_c, /sem2_d, /sem2_e\n\nSemester 4:\n- /sem4_a, /sem4_b, /sem4_c, /sem4_d\n\nSemester 6:\n- /sem6_ct, /sem6_a_cs, /sem6_b_cs, /sem6_c_cs, /sem6_d_cs\n\nSemester 8:\n- /sem8_se, /sem8_ke, /sem8_hpc, /sem8_es, /sem8_ccn, /sem8_bis\n\n- /room to find available rooms. (Pending due to insufficient data.)\n\nAlso if you want to add to groups or channels, don't forget to give the bot admin permissions.");
+                await bot.sendMessage(chatid, "You can use these commands for each timetable:\n\nSemester 2:\n- /sem2_a, /sem2_b, /sem2_c, /sem2_d, /sem2_e\n\nSemester 4:\n- /sem4_a, /sem4_b, /sem4_c, /sem4_d\n\nSemester 6:\n- /sem6_ct, /sem6_a_cs, /sem6_b_cs, /sem6_c_cs, /sem6_d_cs\n\nSemester 8:\n- /sem8_se, /sem8_ke, /sem8_hpc, /sem8_es, /sem8_ccn, /sem8_bis\n\n- /room to find available rooms. \n\nAlso if you want to add to groups or channels, don't forget to give the bot admin permissions.");
 
                 return res.status(200).send("OK");
             }
@@ -58,26 +54,10 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6])) ||
                 (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7])) ||
-                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8])) ||
-                (Telegramcontroller.commands[9] && text.includes(Telegramcontroller.commands[9])) ||
-                (Telegramcontroller.commands[10] && text.includes(Telegramcontroller.commands[10])) ||
-                (Telegramcontroller.commands[11] && text.includes(Telegramcontroller.commands[11])) ||
-                (Telegramcontroller.commands[12] && text.includes(Telegramcontroller.commands[12])) ||
-                (Telegramcontroller.commands[13] && text.includes(Telegramcontroller.commands[13])) ||
-                (Telegramcontroller.commands[14] && text.includes(Telegramcontroller.commands[14])) ||
-                (Telegramcontroller.commands[15] && text.includes(Telegramcontroller.commands[15])) ||
-                (Telegramcontroller.commands[16] && text.includes(Telegramcontroller.commands[16])) ||
-                (Telegramcontroller.commands[17] && text.includes(Telegramcontroller.commands[17])) ||
-                (Telegramcontroller.commands[18] && text.includes(Telegramcontroller.commands[18])) ||
-                (Telegramcontroller.commands[19] && text.includes(Telegramcontroller.commands[19])) ||
-                (Telegramcontroller.commands[20] && text.includes(Telegramcontroller.commands[20])) ||
-                (Telegramcontroller.commands[21] && text.includes(Telegramcontroller.commands[21])) ||
-                (Telegramcontroller.commands[22] && text.includes(Telegramcontroller.commands[22])) ||
-                (Telegramcontroller.commands[23] && text.includes(Telegramcontroller.commands[23])) ||
-                (Telegramcontroller.commands[24] && text.includes(Telegramcontroller.commands[24]))
+                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8]))
             ) {
 
-                const matchedCommands = Telegramcontroller.commands.slice(4).filter(cmd =>
+                const matchedCommands = Telegramcontroller.commands.slice(4, 9).filter(cmd =>
                     cmd && text.includes(cmd)
                 );
 
@@ -98,8 +78,6 @@ class Telegramcontroller extends Telegramcommand {
                     return res.status(200).send("OK");
                 }
 
-                //Save message
-                /* await TelegramDatabaseService.saveText(chatIdBig, text); */
 
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
@@ -110,17 +88,8 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
-
-                //Fetch History
-                /* const history = await TelegramDatabaseService.getChatHistory(chatIdBig, 5);
-                const contextMessages = history.reverse().map(h =>
-                    h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
-                ); */
-
                 const agentPromise = TelegramTimetableagent.invoke({
                     messages: [new HumanMessage(text)]
-                }, {
-                    recursionLimit: 20
                 });
 
                 let finalAnswer: string | null = null;
@@ -150,9 +119,6 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
                 await updatesPromise;
-
-                //Save to db
-                /* await TelegramDatabaseService.saveText(chatIdBig, finalAnswer, "assistant"); */
 
                 await bot.editMessageText(finalAnswer, {
                     chat_id: chatid,
