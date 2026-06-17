@@ -4,6 +4,8 @@ class Telegramcommand {
         "/help",
         "/contributors",
         "/sourcecode",
+        "/sem2_a", //Sem2A
+        "/sem2_b", //Sem2B
         "/sem2_c", //Sem2C
         "/sem2_d", //Sem2D
         "/sem2_e", //Sem2E
@@ -14,6 +16,8 @@ class Telegramcommand {
         "/sem6_ct", //Sem6CT
         "/sem6_c_cs", //Sem6C CS
         "/sem6_d_cs", //Sem6D CS
+        "/sem6_a_cs", //Sem6A CS
+        "/sem6_b_cs", //Sem6B CS
         "/sem8_se", //Sem8 SE
         "/sem8_ke", //Sem8 KE
         "/sem8_hpc", //Sem8 HPC

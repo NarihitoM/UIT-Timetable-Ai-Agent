@@ -4,6 +4,8 @@ import { SystemMessage } from "@langchain/core/messages";
 import { getRoomAgentPrompt, getSubAgentPrompt, getSupervisorPrompt, getFormatterPrompt } from "../prompt/systemprompt.ts";
 import { mainmodel, submodel } from "./telegram.model.ts";
 import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
+import { readSem2ATool } from "../Tools/Sem2Atool.ts";
+import { readSem2BTool } from "../Tools/Sem2Btool.ts";
 import { readSem2CTool } from "../Tools/Sem2Ctool.ts";
 import { readSem2DTool } from "../Tools/Sem2Dtool.ts";
 import { readSem2ETool } from "../Tools/Sem2Etool.ts";
@@ -14,6 +16,8 @@ import { readSem4DTool } from "../Tools/Sem4Dtool.ts";
 import { readSem6CTTool } from "../Tools/Sem6CTtool.ts";
 import { readSem6C_CSTool } from "../Tools/Sem6C_CStool.ts";
 import { readSem6D_CSTool } from "../Tools/Sem6D_CStool.ts";
+import { readSem6A_CSTool } from "../Tools/Sem6A_CStool.ts";
+import { readSem6B_CSTool } from "../Tools/Sem6B_CStool.ts";
 import { readSem8SETool } from "../Tools/Sem8SEtool.ts";
 import { readSem8KETool } from "../Tools/Sem8KEtool.ts";
 import { readSem8HPCTool } from "../Tools/Sem8HPCtool.ts";
@@ -55,7 +59,11 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
     let targetAgent = "__end__";
 
-    if (/sem2_c|sem2c/i.test(userText)) {
+    if (/sem2_a|sem2a/i.test(userText)) {
+        targetAgent = "Sem2A";
+    } else if (/sem2_b|sem2b/i.test(userText)) {
+        targetAgent = "Sem2B";
+    } else if (/sem2_c|sem2c/i.test(userText)) {
         targetAgent = "Sem2C";
     } else if (/sem2_d|sem2d/i.test(userText)) {
         targetAgent = "Sem2D";
@@ -75,6 +83,10 @@ TelegramAgent.addNode("Main Agent", async (state) => {
         targetAgent = "Sem6C_CS";
     } else if (/sem6_d_cs|sem6d_cs|sem6dcs/i.test(userText)) {
         targetAgent = "Sem6D_CS";
+    } else if (/sem6_a_cs|sem6a_cs|sem6acs/i.test(userText)) {
+        targetAgent = "Sem6A_CS";
+    } else if (/sem6_b_cs|sem6b_cs|sem6bcs/i.test(userText)) {
+        targetAgent = "Sem6B_CS";
     } else if (/sem8_se|sem8se/i.test(userText)) {
         targetAgent = "Sem8SE";
     } else if (/sem8_ke|sem8ke/i.test(userText)) {
@@ -271,6 +283,30 @@ TelegramAgent.addNode("Sem2E", async (state) => {
 TelegramAgent.addConditionalEdges("Sem2E" as any, toolsCondition as any, { tools: "Sem2E Tools", __end__: "Main Agent" } as any);
 TelegramAgent.addNode("Sem2E Tools", new ToolNode([readSem2ETool]));
 
+//Sem2A Agent
+TelegramAgent.addNode("Sem2A", async (state) => {
+    const Sem2AAgent = submodel.bindTools([readSem2ATool]);
+    const response = await Sem2AAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem2A")} Use 'read_sem2_a_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem2A" as any, toolsCondition as any, { tools: "Sem2A Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem2A Tools", new ToolNode([readSem2ATool]));
+
+//Sem2B Agent
+TelegramAgent.addNode("Sem2B", async (state) => {
+    const Sem2BAgent = submodel.bindTools([readSem2BTool]);
+    const response = await Sem2BAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem2B")} Use 'read_sem2_b_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem2B" as any, toolsCondition as any, { tools: "Sem2B Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem2B Tools", new ToolNode([readSem2BTool]));
+
 //Sem6CT Agent
 TelegramAgent.addNode("Sem6CT", async (state) => {
     const Sem6CTAgent = submodel.bindTools([readSem6CTTool]);
@@ -306,6 +342,30 @@ TelegramAgent.addNode("Sem6D_CS", async (state) => {
 })
 TelegramAgent.addConditionalEdges("Sem6D_CS" as any, toolsCondition as any, { tools: "Sem6D_CS Tools", __end__: "Main Agent" } as any);
 TelegramAgent.addNode("Sem6D_CS Tools", new ToolNode([readSem6D_CSTool]));
+
+//Sem6A_CS Agent
+TelegramAgent.addNode("Sem6A_CS", async (state) => {
+    const Sem6A_CSAgent = submodel.bindTools([readSem6A_CSTool]);
+    const response = await Sem6A_CSAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem6A_CS")} Use 'read_sem6_a_cs_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem6A_CS" as any, toolsCondition as any, { tools: "Sem6A_CS Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem6A_CS Tools", new ToolNode([readSem6A_CSTool]));
+
+//Sem6B_CS Agent
+TelegramAgent.addNode("Sem6B_CS", async (state) => {
+    const Sem6B_CSAgent = submodel.bindTools([readSem6B_CSTool]);
+    const response = await Sem6B_CSAgent.invoke([
+        new SystemMessage(`${getSubAgentPrompt("Sem6B_CS")} Use 'read_sem6_b_cs_file' tool to read the file`),
+        ...state.messages]);
+    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+    return { messages: [response], data: isFinishedWithTools };
+})
+TelegramAgent.addConditionalEdges("Sem6B_CS" as any, toolsCondition as any, { tools: "Sem6B_CS Tools", __end__: "Main Agent" } as any);
+TelegramAgent.addNode("Sem6B_CS Tools", new ToolNode([readSem6B_CSTool]));
 
 //Sem8SE Agent
 TelegramAgent.addNode("Sem8SE", async (state) => {
@@ -386,6 +446,8 @@ TelegramAgent.addConditionalEdges(
     "Main Agent" as any,
     (state) => state.nextAgent,
     {
+        "Sem2A": "Sem2A",
+        "Sem2B": "Sem2B",
         "Sem2C": "Sem2C",
         "Sem2D": "Sem2D",
         "Sem2E": "Sem2E",
@@ -396,6 +458,8 @@ TelegramAgent.addConditionalEdges(
         "Sem6CT": "Sem6CT",
         "Sem6C_CS": "Sem6C_CS",
         "Sem6D_CS": "Sem6D_CS",
+        "Sem6A_CS": "Sem6A_CS",
+        "Sem6B_CS": "Sem6B_CS",
         "Sem8SE": "Sem8SE",
         "Sem8KE": "Sem8KE",
         "Sem8HPC": "Sem8HPC",
@@ -409,6 +473,8 @@ TelegramAgent.addConditionalEdges(
 
 TelegramAgent.addEdge("Sem2C Tools" as any, "Sem2C" as any);
 TelegramAgent.addEdge("Sem2D Tools" as any, "Sem2D" as any);
+TelegramAgent.addEdge("Sem2A Tools" as any, "Sem2A" as any);
+TelegramAgent.addEdge("Sem2B Tools" as any, "Sem2B" as any);
 TelegramAgent.addEdge("Sem2E Tools" as any, "Sem2E" as any);
 TelegramAgent.addEdge("Sem4A Tools" as any, "Sem4A" as any);
 TelegramAgent.addEdge("Sem4B Tools" as any, "Sem4B" as any);
@@ -417,6 +483,8 @@ TelegramAgent.addEdge("Sem4D Tools" as any, "Sem4D" as any);
 TelegramAgent.addEdge("Sem6CT Tools" as any, "Sem6CT" as any);
 TelegramAgent.addEdge("Sem6C_CS Tools" as any, "Sem6C_CS" as any);
 TelegramAgent.addEdge("Sem6D_CS Tools" as any, "Sem6D_CS" as any);
+TelegramAgent.addEdge("Sem6A_CS Tools" as any, "Sem6A_CS" as any);
+TelegramAgent.addEdge("Sem6B_CS Tools" as any, "Sem6B_CS" as any);
 TelegramAgent.addEdge("Sem8SE Tools" as any, "Sem8SE" as any);
 TelegramAgent.addEdge("Sem8KE Tools" as any, "Sem8KE" as any);
 TelegramAgent.addEdge("Sem8HPC Tools" as any, "Sem8HPC" as any);

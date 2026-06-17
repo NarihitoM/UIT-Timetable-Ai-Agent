@@ -42,27 +42,31 @@ CURRENT DATE AND TIME:
 
 ROUTING RULES:
 SEMESTER 2:
-1. /sem2_c or Sem2C (Semester 2 Section C) → ROUTE: sem2_c_agent
-2. /sem2_d or Sem2D (Semester 2 Section D) → ROUTE: sem2_d_agent
-3. /sem2_e or Sem2E (Semester 2 Section E) → ROUTE: sem2_e_agent
+1. /sem2_a or Sem2A (Semester 2 Section A) → ROUTE: sem2_a_agent
+2. /sem2_b or Sem2B (Semester 2 Section B) → ROUTE: sem2_b_agent
+3. /sem2_c or Sem2C (Semester 2 Section C) → ROUTE: sem2_c_agent
+4. /sem2_d or Sem2D (Semester 2 Section D) → ROUTE: sem2_d_agent
+5. /sem2_e or Sem2E (Semester 2 Section E) → ROUTE: sem2_e_agent
 SEMESTER 4:
-4. /sem4_a or Sem4A (Semester 4 Section A) → ROUTE: sem4_a_agent
-5. /sem4_b or Sem4B (Semester 4 Section B) → ROUTE: sem4_b_agent
-6. /sem4_c or Sem4C (Semester 4 Section C) → ROUTE: sem4_c_agent
-7. /sem4_d or Sem4D (Semester 4 Section D) → ROUTE: sem4_d_agent
+6. /sem4_a or Sem4A (Semester 4 Section A) → ROUTE: sem4_a_agent
+7. /sem4_b or Sem4B (Semester 4 Section B) → ROUTE: sem4_b_agent
+8. /sem4_c or Sem4C (Semester 4 Section C) → ROUTE: sem4_c_agent
+9. /sem4_d or Sem4D (Semester 4 Section D) → ROUTE: sem4_d_agent
 SEMESTER 6:
-8. /sem6_ct or Sem6 CT (Semester 6 CT) → ROUTE: sem6_ct_agent
-9. /sem6_c_cs or Sem6C CS (Semester 6 Section C CS) → ROUTE: sem6_c_cs_agent
-10. /sem6_d_cs or Sem6D CS (Semester 6 Section D CS) → ROUTE: sem6_d_cs_agent
+10. /sem6_ct or Sem6 CT (Semester 6 CT) → ROUTE: sem6_ct_agent
+11. /sem6_c_cs or Sem6C CS (Semester 6 Section C CS) → ROUTE: sem6_c_cs_agent
+12. /sem6_d_cs or Sem6D CS (Semester 6 Section D CS) → ROUTE: sem6_d_cs_agent
+13. /sem6_a_cs or Sem6A CS (Semester 6 Section A CS) → ROUTE: sem6_a_cs_agent
+14. /sem6_b_cs or Sem6B CS (Semester 6 Section B CS) → ROUTE: sem6_b_cs_agent
 SEMESTER 8:
-11. /sem8_se or Sem8 SE (Semester 8 Software Engineering) → ROUTE: sem8_se_agent
-12. /sem8_ke or Sem8 KE (Semester 8 Knowledge Engineering) → ROUTE: sem8_ke_agent
-13. /sem8_hpc or Sem8 HPC (Semester 8 High Performance Computing) → ROUTE: sem8_hpc_agent
-14. /sem8_es or Sem8 ES (Semester 8 Embedded Systems) → ROUTE: sem8_es_agent
-15. /sem8_ccn or Sem8 CCN (Semester 8 Computer Communication and Networking) → ROUTE: sem8_ccn_agent
-16. /sem8_bis or Sem8 BIS (Semester 8 Business Information Systems) → ROUTE: sem8_bis_agent
+15. /sem8_se or Sem8 SE (Semester 8 Software Engineering) → ROUTE: sem8_se_agent
+16. /sem8_ke or Sem8 KE (Semester 8 Knowledge Engineering) → ROUTE: sem8_ke_agent
+17. /sem8_hpc or Sem8 HPC (Semester 8 High Performance Computing) → ROUTE: sem8_hpc_agent
+18. /sem8_es or Sem8 ES (Semester 8 Embedded Systems) → ROUTE: sem8_es_agent
+19. /sem8_ccn or Sem8 CCN (Semester 8 Computer Communication and Networking) → ROUTE: sem8_ccn_agent
+20. /sem8_bis or Sem8 BIS (Semester 8 Business Information Systems) → ROUTE: sem8_bis_agent
 ROOMS:
-17. /room or available/free rooms → ROUTE: room_agent
+21. /room or available/free rooms → ROUTE: room_agent
 
 NEXT CLASS LOGIC:
 - Pass the CURRENT DATE, TIME, and Schedule State after the ROUTE instruction.

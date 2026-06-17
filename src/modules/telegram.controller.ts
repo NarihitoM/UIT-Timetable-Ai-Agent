@@ -58,10 +58,26 @@ class Telegramcontroller extends Telegramcommand {
                 (Telegramcontroller.commands[5] && text.includes(Telegramcontroller.commands[5])) ||
                 (Telegramcontroller.commands[6] && text.includes(Telegramcontroller.commands[6])) ||
                 (Telegramcontroller.commands[7] && text.includes(Telegramcontroller.commands[7])) ||
-                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8]))
+                (Telegramcontroller.commands[8] && text.includes(Telegramcontroller.commands[8])) ||
+                (Telegramcontroller.commands[9] && text.includes(Telegramcontroller.commands[9])) ||
+                (Telegramcontroller.commands[10] && text.includes(Telegramcontroller.commands[10])) ||
+                (Telegramcontroller.commands[11] && text.includes(Telegramcontroller.commands[11])) ||
+                (Telegramcontroller.commands[12] && text.includes(Telegramcontroller.commands[12])) ||
+                (Telegramcontroller.commands[13] && text.includes(Telegramcontroller.commands[13])) ||
+                (Telegramcontroller.commands[14] && text.includes(Telegramcontroller.commands[14])) ||
+                (Telegramcontroller.commands[15] && text.includes(Telegramcontroller.commands[15])) ||
+                (Telegramcontroller.commands[16] && text.includes(Telegramcontroller.commands[16])) ||
+                (Telegramcontroller.commands[17] && text.includes(Telegramcontroller.commands[17])) ||
+                (Telegramcontroller.commands[18] && text.includes(Telegramcontroller.commands[18])) ||
+                (Telegramcontroller.commands[19] && text.includes(Telegramcontroller.commands[19])) ||
+                (Telegramcontroller.commands[20] && text.includes(Telegramcontroller.commands[20])) ||
+                (Telegramcontroller.commands[21] && text.includes(Telegramcontroller.commands[21])) ||
+                (Telegramcontroller.commands[22] && text.includes(Telegramcontroller.commands[22])) ||
+                (Telegramcontroller.commands[23] && text.includes(Telegramcontroller.commands[23])) ||
+                (Telegramcontroller.commands[24] && text.includes(Telegramcontroller.commands[24]))
             ) {
 
-                const matchedCommands = Telegramcontroller.commands.slice(3, 7).filter(cmd =>
+                const matchedCommands = Telegramcontroller.commands.slice(4).filter(cmd =>
                     cmd && text.includes(cmd)
                 );
 
