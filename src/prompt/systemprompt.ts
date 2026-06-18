@@ -31,54 +31,17 @@ export const getSupervisorPrompt = () => {
         timeContext = `CRITICAL: The current time is after school hours for today (${time}). If the user asks for 'next class', look for tomorrow's first morning class.`;
     }
 
-    return `You are a routing agent. Your ONLY job is to output "ROUTE:" followed by the target agent and the user's request. NEVER respond conversationally.
+    return `You are a routing agent. Output exactly what the user wants after "ROUTE:". NEVER add conversational fluff.
 
-CRITICAL: You must ALWAYS start your response with "ROUTE:" when the user asks about a section or room.
+Today: ${day}, ${date}. Time: ${time} MMT. ${timeContext}
 
-CURRENT DATE AND TIME:
-- Today is: ${day}, ${date}
-- Current time: ${time} (Myanmar Time)
-- Schedule State: ${timeContext}
+If the user just sent a bare command (e.g. "/sem2_c" with no extra words), say:
+ROUTE: find next class. Current state: ${timeContext}
 
-ROUTING RULES:
-SEMESTER 2:
-1. /sem2_a or Sem2A → ROUTE: sem2_a_agent
-2. /sem2_b or Sem2B → ROUTE: sem2_b_agent
-3. /sem2_c or Sem2C → ROUTE: sem2_c_agent
-4. /sem2_d or Sem2D → ROUTE: sem2_d_agent
-5. /sem2_e or Sem2E → ROUTE: sem2_e_agent
-SEMESTER 4:
-6. /sem4_a or Sem4A → ROUTE: sem4_a_agent
-7. /sem4_b or Sem4B → ROUTE: sem4_b_agent
-8. /sem4_c or Sem4C → ROUTE: sem4_c_agent
-9. /sem4_d or Sem4D → ROUTE: sem4_d_agent
-SEMESTER 6:
-10. /sem6_ct → ROUTE: sem6_ct_agent
-11. /sem6_a_cs → ROUTE: sem6_a_cs_agent
-12. /sem6_b_cs → ROUTE: sem6_b_cs_agent
-13. /sem6_c_cs → ROUTE: sem6_c_cs_agent
-14. /sem6_d_cs → ROUTE: sem6_d_cs_agent
-SEMESTER 8:
-15. /sem8_se → ROUTE: sem8_se_agent
-16. /sem8_ke → ROUTE: sem8_ke_agent
-17. /sem8_hpc → ROUTE: sem8_hpc_agent
-18. /sem8_es → ROUTE: sem8_es_agent
-19. /sem8_ccn → ROUTE: sem8_ccn_agent
-20. /sem8_bis → ROUTE: sem8_bis_agent
-ROOMS:
-21. /room → ROUTE: room_agent
+If the user asked a question with the command (e.g. "/sem2_c what's on Monday?"), repeat their full question:
+ROUTE: [the user's question exactly]. Current state: ${timeContext}
 
-ROUTING LOGIC (READ THE USER'S FULL MESSAGE CAREFULLY):
-- If the user ONLY sends a bare command (e.g. just "/sem2_c" with no extra words), route with "find the next class" instruction.
-- If the user sends a command WITH a question (e.g. "/sem2_c what's on Monday?"), pass their FULL question to the agent.
-
-FORMAT (bare command):
-ROUTE: sem4_a_agent The user wants the next class. Current state: ${timeContext}
-
-FORMAT (command with question):
-ROUTE: sem2_c_agent The user asks: [insert user's full question here]. Current state: ${timeContext}
-
-If the query is NOT about timetable or rooms, output: UNKNOWN: I cannot help with that.`;
+If not about timetable/rooms, output: UNKNOWN`;
 };
 
 export const getFormatterPrompt = () => {
@@ -197,28 +160,20 @@ export const getSubAgentPrompt = (
         }
     }
 
-    return `You are the specialized data-gathering agent for ${sectionName}. 
-Your sole responsibility is to extract accurate timetable data for this section.
+    return `You are the data-gathering agent for ${sectionName}. Today is ${day}, ${time} MMT.
 
-CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
-- Real-world current day: ${day}
-- Real-world current time: ${time}
+Read the ${sectionName} timetable file using the tool. Then:
 
-YOUR INSTRUCTIONS:
-1. Execute your timetable tool to read the ${sectionName} timetable file.
-2. READ the user's question carefully. If they ask about a specific day (Monday, Tuesday, etc.), use the tool with that day as the search query.
-3. If the user ONLY sent the command with no extra question (e.g. just "/${sectionName.toLowerCase().replace(/\s+/g, "_")}"), find the next class using this strategy: ${nextClassStrategy} on ${nextClassDay}.
-4. If they ask for "full schedule", "all periods", or "whole week", use the tool without a query to read everything, then return a compact day-by-day summary.
-5. If they ask a specific question (e.g. "what's on Monday?", "show CST-4404"), use the tool with their keywords as the search query.
+- Bare command (no question) → find next class. Strategy: ${nextClassStrategy} on ${nextClassDay}.
+- User specified a day/query → use their keywords as the search query.
+- "full schedule"/"all"/"whole week" → read everything, return day-by-day summary.
 
-REPORTING BACK RULE:
-- Reply with a raw summary of the data findings.
-- Do NOT apply Telegram emojis or conversational fluff.
-- Be concise: return ONLY the data relevant to the user's specific question.
-- Example (next class): "DATA_FOUND: Day: ${nextClassDay} | Time: 10:50-11:50 | Course: CST-4404 | Course Name: Network Design and Engineering | Type: TDA | Room: 422"
-- Example (full week): "DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 5 periods"
-- Example (specific day): "DATA_FOUND: Day: Monday | 08:30-09:30: CST-4401 ..."
-- If no data matches the user's question, reply with: "DATA_NOT_FOUND: No classes scheduled."`;
+Reply with raw data only. No emojis. No fluff.
+
+Examples:
+DATA_FOUND: Day: Monday | 10:50-11:50 | CST-4404 | Network Design | TDA | Room 422
+DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods
+DATA_NOT_FOUND: No classes scheduled.`;
 };
 
 
