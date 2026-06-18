@@ -42,43 +42,41 @@ CURRENT DATE AND TIME:
 
 ROUTING RULES:
 SEMESTER 2:
-1. /sem2_a or Sem2A (Semester 2 Section A) → ROUTE: sem2_a_agent
-2. /sem2_b or Sem2B (Semester 2 Section B) → ROUTE: sem2_b_agent
-3. /sem2_c or Sem2C (Semester 2 Section C) → ROUTE: sem2_c_agent
-4. /sem2_d or Sem2D (Semester 2 Section D) → ROUTE: sem2_d_agent
-5. /sem2_e or Sem2E (Semester 2 Section E) → ROUTE: sem2_e_agent
+1. /sem2_a or Sem2A → ROUTE: sem2_a_agent
+2. /sem2_b or Sem2B → ROUTE: sem2_b_agent
+3. /sem2_c or Sem2C → ROUTE: sem2_c_agent
+4. /sem2_d or Sem2D → ROUTE: sem2_d_agent
+5. /sem2_e or Sem2E → ROUTE: sem2_e_agent
 SEMESTER 4:
-6. /sem4_a or Sem4A (Semester 4 Section A) → ROUTE: sem4_a_agent
-7. /sem4_b or Sem4B (Semester 4 Section B) → ROUTE: sem4_b_agent
-8. /sem4_c or Sem4C (Semester 4 Section C) → ROUTE: sem4_c_agent
-9. /sem4_d or Sem4D (Semester 4 Section D) → ROUTE: sem4_d_agent
+6. /sem4_a or Sem4A → ROUTE: sem4_a_agent
+7. /sem4_b or Sem4B → ROUTE: sem4_b_agent
+8. /sem4_c or Sem4C → ROUTE: sem4_c_agent
+9. /sem4_d or Sem4D → ROUTE: sem4_d_agent
 SEMESTER 6:
-10. /sem6_ct or Sem6 CT (Semester 6 CT) → ROUTE: sem6_ct_agent
-11. /sem6_c_cs or Sem6C CS (Semester 6 Section C CS) → ROUTE: sem6_c_cs_agent
-12. /sem6_d_cs or Sem6D CS (Semester 6 Section D CS) → ROUTE: sem6_d_cs_agent
-13. /sem6_a_cs or Sem6A CS (Semester 6 Section A CS) → ROUTE: sem6_a_cs_agent
-14. /sem6_b_cs or Sem6B CS (Semester 6 Section B CS) → ROUTE: sem6_b_cs_agent
+10. /sem6_ct → ROUTE: sem6_ct_agent
+11. /sem6_a_cs → ROUTE: sem6_a_cs_agent
+12. /sem6_b_cs → ROUTE: sem6_b_cs_agent
+13. /sem6_c_cs → ROUTE: sem6_c_cs_agent
+14. /sem6_d_cs → ROUTE: sem6_d_cs_agent
 SEMESTER 8:
-15. /sem8_se or Sem8 SE (Semester 8 Software Engineering) → ROUTE: sem8_se_agent
-16. /sem8_ke or Sem8 KE (Semester 8 Knowledge Engineering) → ROUTE: sem8_ke_agent
-17. /sem8_hpc or Sem8 HPC (Semester 8 High Performance Computing) → ROUTE: sem8_hpc_agent
-18. /sem8_es or Sem8 ES (Semester 8 Embedded Systems) → ROUTE: sem8_es_agent
-19. /sem8_ccn or Sem8 CCN (Semester 8 Computer Communication and Networking) → ROUTE: sem8_ccn_agent
-20. /sem8_bis or Sem8 BIS (Semester 8 Business Information Systems) → ROUTE: sem8_bis_agent
+15. /sem8_se → ROUTE: sem8_se_agent
+16. /sem8_ke → ROUTE: sem8_ke_agent
+17. /sem8_hpc → ROUTE: sem8_hpc_agent
+18. /sem8_es → ROUTE: sem8_es_agent
+19. /sem8_ccn → ROUTE: sem8_ccn_agent
+20. /sem8_bis → ROUTE: sem8_bis_agent
 ROOMS:
-21. /room or available/free rooms → ROUTE: room_agent
+21. /room → ROUTE: room_agent
 
-NEXT CLASS LOGIC:
-- Pass the CURRENT DATE, TIME, and Schedule State after the ROUTE instruction.
-- Rely entirely on the 'Schedule State' above.
+ROUTING LOGIC (READ THE USER'S FULL MESSAGE CAREFULLY):
+- If the user ONLY sends a bare command (e.g. just "/sem2_c" with no extra words), route with "find the next class" instruction.
+- If the user sends a command WITH a question (e.g. "/sem2_c what's on Monday?"), pass their FULL question to the agent.
 
-FORMAT:
-ROUTE: section_x_agent The user wants [specific request]. Current state: ${timeContext}
+FORMAT (bare command):
+ROUTE: sem4_a_agent The user wants the next class. Current state: ${timeContext}
 
-EXAMPLE:
-ROUTE: sem4_a_agent The user wants to know their next class for Sem4A (Semester 4 Section A). Current state: ${timeContext}
-
-For other semesters, replace "sem4_a_agent" with the appropriate agent name (e.g., sem2_c_agent, sem6_ct_agent, sem8_se_agent).
+FORMAT (command with question):
+ROUTE: sem2_c_agent The user asks: [insert user's full question here]. Current state: ${timeContext}
 
 If the query is NOT about timetable or rooms, output: UNKNOWN: I cannot help with that.`;
 };
@@ -181,21 +179,21 @@ export const getSubAgentPrompt = (
     const currentMinute = parseInt(time.split(":")[1], 10);
     const totalMinutesToday = currentHour * 60 + currentMinute;
 
-    let targetDay = day;
-    let timingStrategy = `Find the first class where the start time is greater than ${time}.`;
+    let nextClassDay = day;
+    let nextClassStrategy = `Find the first class where the start time is greater than ${time}.`;
 
     if (day === "Saturday" || day === "Sunday") {
-        targetDay = "Monday";
-        timingStrategy = "Find the very first class of the day on Monday.";
+        nextClassDay = "Monday";
+        nextClassStrategy = "Find the very first class of the day on Monday.";
     } else if (totalMinutesToday >= 960) { 
-        timingStrategy = "Find the very first class of the day tomorrow.";
+        nextClassStrategy = "Find the very first class of the day tomorrow.";
 
         if (day === "Friday") {
-            targetDay = "Monday";
+            nextClassDay = "Monday";
         } else {
             const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const nextDayIndex = (now.getDay() + 1) % 7;
-            targetDay = daysOfWeek[nextDayIndex];
+            nextClassDay = daysOfWeek[nextDayIndex];
         }
     }
 
@@ -205,22 +203,22 @@ Your sole responsibility is to extract accurate timetable data for this section.
 CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
 - Real-world current day: ${day}
 - Real-world current time: ${time}
-- Target Day to look up: ${targetDay}
-- Time matching strategy: ${timingStrategy}
 
 YOUR INSTRUCTIONS:
-1. Execute your timetable tool specifically for ${sectionName}.
-2. Filter the database fields strictly using the Target Day and Time matching strategy provided above.
-3. If the user asks for "next class", find the single closest upcoming match.
-4. If the user asks for full schedule or all periods, return ONLY a compact day-by-day summary with number of periods per day. DO NOT list every period - the formatter will handle details.
+1. Execute your timetable tool to read the ${sectionName} timetable file.
+2. READ the user's question carefully. If they ask about a specific day (Monday, Tuesday, etc.), use the tool with that day as the search query.
+3. If the user ONLY sent the command with no extra question (e.g. just "/${sectionName.toLowerCase().replace(/\s+/g, "_")}"), find the next class using this strategy: ${nextClassStrategy} on ${nextClassDay}.
+4. If they ask for "full schedule", "all periods", or "whole week", use the tool without a query to read everything, then return a compact day-by-day summary.
+5. If they ask a specific question (e.g. "what's on Monday?", "show CST-4404"), use the tool with their keywords as the search query.
 
 REPORTING BACK RULE:
 - Reply with a raw summary of the data findings.
-- Do not apply Telegram emojis or conversational fluff.
-- Be concise: return ONLY the data relevant to the user's specific question, not the entire file.
-- Example (single class): "DATA_FOUND: Day: ${targetDay} | Time: 10:50-11:50 | Course: CST-4404 | Course Name:(Network Design and Engineering) | Lecture or TDA | Room: 422"
-- Example (full schedule): "DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 5 periods | Thursday: 2 periods | Friday: 3 periods"
-- If no class matches the criteria, reply explicitly with: "DATA_NOT_FOUND: No classes scheduled."`;
+- Do NOT apply Telegram emojis or conversational fluff.
+- Be concise: return ONLY the data relevant to the user's specific question.
+- Example (next class): "DATA_FOUND: Day: ${nextClassDay} | Time: 10:50-11:50 | Course: CST-4404 | Course Name: Network Design and Engineering | Type: TDA | Room: 422"
+- Example (full week): "DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 5 periods"
+- Example (specific day): "DATA_FOUND: Day: Monday | 08:30-09:30: CST-4401 ..."
+- If no data matches the user's question, reply with: "DATA_NOT_FOUND: No classes scheduled."`;
 };
 
 
