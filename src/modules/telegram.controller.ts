@@ -115,10 +115,21 @@ class Telegramcontroller extends Telegramcommand {
 
                 await updatesPromise;
 
-                await bot.editMessageText(finalAnswer, {
-                    chat_id: chatid,
-                    message_id: waitMessage.message_id
-                });
+                const maxLen = 4000;
+                if (finalAnswer.length > maxLen) {
+                    await bot.editMessageText(finalAnswer.slice(0, maxLen), {
+                        chat_id: chatid,
+                        message_id: waitMessage.message_id
+                    });
+                    for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
+                        await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                    }
+                } else {
+                    await bot.editMessageText(finalAnswer, {
+                        chat_id: chatid,
+                        message_id: waitMessage.message_id
+                    });
+                }
 
                 return res.status(200).send("OK");
             }
