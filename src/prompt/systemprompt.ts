@@ -213,15 +213,26 @@ export const getRoomAgentPrompt = () => {
     const currentMinute = parseInt(time.split(":")[1], 10);
     const totalMinutesToday = currentHour * 60 + currentMinute;
 
+    const periods = [
+        { label: "Period 1", start: "08:30", end: "09:30", startMin: 510, endMin: 570 },
+        { label: "Period 2", start: "09:40", end: "10:40", startMin: 580, endMin: 640 },
+        { label: "Period 3", start: "10:50", end: "11:50", startMin: 650, endMin: 710 },
+        { label: "Period 4", start: "12:40", end: "13:40", startMin: 760, endMin: 820 },
+        { label: "Period 5", start: "13:50", end: "14:50", startMin: 830, endMin: 890 },
+        { label: "Period 6", start: "15:00", end: "16:00", startMin: 900, endMin: 960 },
+    ];
+
     let targetDay = day;
-    let timingStrategy = `Find all classes currently happening at ${time} or scheduled later today.`;
+    let targetTime = "08:30";
+    let currentPeriodLabel = "before first period";
 
     if (day === "Saturday" || day === "Sunday") {
         targetDay = "Monday";
-        timingStrategy = "Find all classes scheduled for Monday to determine room availability.";
+        targetTime = "08:30";
+        currentPeriodLabel = "Weekend — showing Monday's first period";
     } else if (totalMinutesToday >= 960) {
-        timingStrategy = "Find all classes scheduled for tomorrow to determine room availability.";
-
+        targetTime = "08:30";
+        currentPeriodLabel = "After school hours";
         if (day === "Friday") {
             targetDay = "Monday";
         } else {
@@ -229,16 +240,32 @@ export const getRoomAgentPrompt = () => {
             const nextDayIndex = (now.getDay() + 1) % 7;
             targetDay = daysOfWeek[nextDayIndex];
         }
+    } else {
+        for (const p of periods) {
+            if (totalMinutesToday >= p.startMin && totalMinutesToday <= p.endMin) {
+                targetTime = p.start;
+                currentPeriodLabel = `${p.label} (${p.start} – ${p.end}) — currently in session`;
+                break;
+            }
+        }
+        if (currentPeriodLabel === "before first period") {
+            targetTime = "08:30";
+            currentPeriodLabel = `Before Period 1 — showing Period 1 (08:30 – 09:30)`;
+        }
     }
 
-    return `You are the specialized Room Availability Agent. 
+    return `You are the specialized Room Availability Agent.
 Your sole responsibility is to check and extract timetable data across rooms to determine empty or occupied spaces.
 
 CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
 - Real-world current day: ${day}
-- Real-world current time: ${time}
+- Real-world current time: ${time} MMT
 - Target Day to look up: ${targetDay}
-- Time matching strategy: ${timingStrategy}
+- Current period: ${currentPeriodLabel}
+
+BARE /room COMMAND (no time or day specified):
+When the user just sends "/room" with no extra words, they want to know what's available RIGHT NOW.
+Use the current period info above to call the tool with day="${targetDay}" and time="${targetTime}".
 
 PERIOD-TO-TIME MAPPING (use this if the user mentions a period number instead of a time):
 - Period 1: 08:30 - 09:30
@@ -249,10 +276,12 @@ PERIOD-TO-TIME MAPPING (use this if the user mentions a period number instead of
 - Period 6: 15:00 - 16:00
 
 YOUR INSTRUCTIONS:
-1. If the user mentions a period number (e.g. "third period", "period 3"), convert it to the correct start time using the mapping above before calling the tool.
-2. Execute your room-lookup tool to scan the timetable database across all sections.
-3. Filter the schedules strictly using the Target Day and Time parameters provided above.
-4. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
+1. If the user just sent "/room" with no other text → call the tool with day="${targetDay}" and time="${targetTime}".
+2. If the user mentions a period number (e.g. "third period", "period 3"), convert it to the correct start time using the mapping above before calling the tool.
+3. If the user specifies a day and/or time (e.g. "Friday 9:40", "Monday period 4"), use their specified values.
+4. Execute your room-lookup tool to scan the timetable database across all sections.
+5. Filter the schedules strictly using the Target Day and Time parameters provided above.
+6. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
 
 REPORTING BACK RULE:
 - Reply with a raw summary of your data findings.
