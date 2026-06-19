@@ -52,6 +52,18 @@ export const findFreeRoomsTool = tool(
             const normalizeTime = (time: string) =>
                 time.trim().replace(/^(\d):/, "0$1:");
 
+            const PERIOD_MAP: Record<string, string> = {
+                "08:30": "Period 1 (08:30 – 09:30)",
+                "09:40": "Period 2 (09:40 – 10:40)",
+                "10:50": "Period 3 (10:50 – 11:50)",
+                "12:40": "Period 4 (12:40 – 13:40)",
+                "13:50": "Period 5 (13:50 – 14:50)",
+                "15:00": "Period 6 (15:00 – 16:00)",
+            };
+
+            const getPeriodLabel = (time: string) =>
+                PERIOD_MAP[normalizeTime(time)] ?? `🕒 ${time}`;
+
             const targetDay = input.day.toLowerCase().trim();
             const targetTime = normalizeTime(input.time.toLowerCase());
 
@@ -99,11 +111,16 @@ export const findFreeRoomsTool = tool(
             const freeRooms: string[] = [];
             const occupiedLabels = new Set<string>();
 
+            const isSpecialRoom = (label: string) =>
+                /\(e-lab\)|\(phy-lab\)|\(request\)/i.test(label);
+
             for (const [roomNumber, labels] of ROOM_MAP.entries()) {
 
                 if (!occupiedRoomNumbers.has(roomNumber)) {
                     for (const label of labels) {
-                        freeRooms.push(label);
+                        if (!isSpecialRoom(label)) {
+                            freeRooms.push(label);
+                        }
                     }
                 } else {
                     for (const label of labels) {
@@ -119,7 +136,7 @@ export const findFreeRoomsTool = tool(
                 `Successfully verified availability across ${scheduleFiles.length} schedule files.\n\n`;
 
             result += `📅 Day: ${input.day}\n`;
-            result += `🕒 Time: ${input.time}\n\n`;
+            result += `⏰ ${getPeriodLabel(input.time)}\n\n`;
 
             result += `✅ Available Free Rooms:\n`;
             result += freeRooms.map(r => `- ${r}`).join("\n");
