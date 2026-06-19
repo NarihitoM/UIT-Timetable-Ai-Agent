@@ -148,8 +148,7 @@ class Telegramcontroller extends Telegramcommand {
             if (chatid) {
                 try {
                     await redisclient.del(cachekey);
-                    const errorMsg = err instanceof Error ? err.message : String(err);
-                    await bot.sendMessage(chatid, `It seems something went wrong.\n\nError: ${errorMsg}`);
+                    await bot.sendMessage(chatid, "It seems something went wrong.");
                 } catch (err) {
                     console.log(err);
                 }
