@@ -118,7 +118,7 @@ TelegramAgent.addNode("Room Agent", async (state) => {
         return { messages: [lastMsg], data: true };
     }
 
-    const RoomAgent = submodel.bindTools([findFreeRoomsTool]);
+    const RoomAgent = mainmodel.bindTools([findFreeRoomsTool]);
     const response = await RoomAgent.invoke([
         new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
         ...state.messages]);

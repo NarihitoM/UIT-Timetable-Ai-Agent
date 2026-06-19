@@ -61,8 +61,10 @@ export const findFreeRoomsTool = tool(
                 "15:00": "Period 6 (15:00 – 16:00)",
             };
 
-            const getPeriodLabel = (time: string) =>
-                PERIOD_MAP[normalizeTime(time)] ?? `🕒 ${time}`;
+            const getPeriodLabel = (time: string) => {
+                const startTime = normalizeTime(time.split(/[–—\-]/)[0].trim());
+                return PERIOD_MAP[startTime] ?? `🕒 ${time}`;
+            };
 
             const targetDay = input.day.toLowerCase().trim();
             const targetTime = normalizeTime(input.time.toLowerCase());
