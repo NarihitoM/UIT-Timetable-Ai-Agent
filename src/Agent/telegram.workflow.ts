@@ -30,105 +30,122 @@ const TelegramAgent = new StateGraph(Telegramagentstate);
 
 //Supervisor
 TelegramAgent.addNode("Main Agent", async (state) => {
-    const history = state.messages || [];
-    const lastUserMessage = [...history].reverse().find(m => m._getType() === "human");
-    const userText = (lastUserMessage?.content as string) || "";
+    try {
+        const history = state.messages || [];
+        const lastUserMessage = [...history].reverse().find(m => m._getType() === "human");
+        const userText = (lastUserMessage?.content as string) || "";
 
-    if (state.data) {
+        console.log("Main Agent - userText:", userText);
+        console.log("Main Agent - data:", state.data);
+        console.log("Main Agent - nextAgent:", state.nextAgent);
+
+        if (state.data) {
+            console.log("Main Agent - formatting response");
+            const prompt = [
+                new SystemMessage(getFormatterPrompt()),
+                ...state.messages
+            ];
+
+            const response = await mainmodel.invoke(prompt);
+
+            return {
+                nextAgent: "__end__",
+                messages: [response],
+                data: false,
+            };
+        }
+
         const prompt = [
-            new SystemMessage(getFormatterPrompt()),
-            ...state.messages
+            new SystemMessage(getSupervisorPrompt()),
+            ...history
         ];
 
         const response = await mainmodel.invoke(prompt);
+        const aireply = response.content as string;
+
+        let targetAgent = "__end__";
+
+        if (/sem2_a|sem2a/i.test(userText)) {
+            targetAgent = "Sem2A";
+        } else if (/sem2_b|sem2b/i.test(userText)) {
+            targetAgent = "Sem2B";
+        } else if (/sem2_c|sem2c/i.test(userText)) {
+            targetAgent = "Sem2C";
+        } else if (/sem2_d|sem2d/i.test(userText)) {
+            targetAgent = "Sem2D";
+        } else if (/sem2_e|sem2e/i.test(userText)) {
+            targetAgent = "Sem2E";
+        } else if (/section_a|section a|sem4_a|sem4a/i.test(userText)) {
+            targetAgent = "Sem4A";
+        } else if (/section_b|section b|sem4_b|sem4b/i.test(userText)) {
+            targetAgent = "Sem4B";
+        } else if (/section_c|section c|sem4_c|sem4c/i.test(userText)) {
+            targetAgent = "Sem4C";
+        } else if (/section_d|section d|sem4_d|sem4d/i.test(userText)) {
+            targetAgent = "Sem4D";
+        } else if (/sem6_ct|sem6ct/i.test(userText)) {
+            targetAgent = "Sem6CT";
+        } else if (/sem6_c_cs|sem6c_cs|sem6ccs/i.test(userText)) {
+            targetAgent = "Sem6C_CS";
+        } else if (/sem6_d_cs|sem6d_cs|sem6dcs/i.test(userText)) {
+            targetAgent = "Sem6D_CS";
+        } else if (/sem6_a_cs|sem6a_cs|sem6acs/i.test(userText)) {
+            targetAgent = "Sem6A_CS";
+        } else if (/sem6_b_cs|sem6b_cs|sem6bcs/i.test(userText)) {
+            targetAgent = "Sem6B_CS";
+        } else if (/sem8_se|sem8se/i.test(userText)) {
+            targetAgent = "Sem8SE";
+        } else if (/sem8_ke|sem8ke/i.test(userText)) {
+            targetAgent = "Sem8KE";
+        } else if (/sem8_hpc|sem8hpc/i.test(userText)) {
+            targetAgent = "Sem8HPC";
+        } else if (/sem8_es|sem8es/i.test(userText)) {
+            targetAgent = "Sem8ES";
+        } else if (/sem8_ccn|sem8ccn/i.test(userText)) {
+            targetAgent = "Sem8CCN";
+        } else if (/sem8_bis|sem8bis/i.test(userText)) {
+            targetAgent = "Sem8BIS";
+        } else if (/\/room|available room|free room|empty room/i.test(userText)) {
+            targetAgent = "Room Agent";
+        }
+
+        console.log("Main Agent - routed to:", targetAgent);
 
         return {
-            nextAgent: "__end__",
-            messages: [response],
-            data: false,
+            nextAgent: targetAgent,
+            messages: [response]
         };
+    } catch (error) {
+        console.error("Main Agent error:", error);
+        throw error;
     }
-
-    const prompt = [
-        new SystemMessage(getSupervisorPrompt()),
-        ...history
-    ];
-
-    const response = await mainmodel.invoke(prompt);
-    const aireply = response.content as string;
-
-    let targetAgent = "__end__";
-
-    if (/sem2_a|sem2a/i.test(userText)) {
-        targetAgent = "Sem2A";
-    } else if (/sem2_b|sem2b/i.test(userText)) {
-        targetAgent = "Sem2B";
-    } else if (/sem2_c|sem2c/i.test(userText)) {
-        targetAgent = "Sem2C";
-    } else if (/sem2_d|sem2d/i.test(userText)) {
-        targetAgent = "Sem2D";
-    } else if (/sem2_e|sem2e/i.test(userText)) {
-        targetAgent = "Sem2E";
-    } else if (/section_a|section a|sem4_a|sem4a/i.test(userText)) {
-        targetAgent = "Sem4A";
-    } else if (/section_b|section b|sem4_b|sem4b/i.test(userText)) {
-        targetAgent = "Sem4B";
-    } else if (/section_c|section c|sem4_c|sem4c/i.test(userText)) {
-        targetAgent = "Sem4C";
-    } else if (/section_d|section d|sem4_d|sem4d/i.test(userText)) {
-        targetAgent = "Sem4D";
-    } else if (/sem6_ct|sem6ct/i.test(userText)) {
-        targetAgent = "Sem6CT";
-    } else if (/sem6_c_cs|sem6c_cs|sem6ccs/i.test(userText)) {
-        targetAgent = "Sem6C_CS";
-    } else if (/sem6_d_cs|sem6d_cs|sem6dcs/i.test(userText)) {
-        targetAgent = "Sem6D_CS";
-    } else if (/sem6_a_cs|sem6a_cs|sem6acs/i.test(userText)) {
-        targetAgent = "Sem6A_CS";
-    } else if (/sem6_b_cs|sem6b_cs|sem6bcs/i.test(userText)) {
-        targetAgent = "Sem6B_CS";
-    } else if (/sem8_se|sem8se/i.test(userText)) {
-        targetAgent = "Sem8SE";
-    } else if (/sem8_ke|sem8ke/i.test(userText)) {
-        targetAgent = "Sem8KE";
-    } else if (/sem8_hpc|sem8hpc/i.test(userText)) {
-        targetAgent = "Sem8HPC";
-    } else if (/sem8_es|sem8es/i.test(userText)) {
-        targetAgent = "Sem8ES";
-    } else if (/sem8_ccn|sem8ccn/i.test(userText)) {
-        targetAgent = "Sem8CCN";
-    } else if (/sem8_bis|sem8bis/i.test(userText)) {
-        targetAgent = "Sem8BIS";
-    } else if (/\/room|available room|free room|empty room/i.test(userText)) {
-        targetAgent = "Room Agent";
-    }
-
-    return {
-        nextAgent: targetAgent,
-        messages: [response]
-    };
 });
 
 //Freeroom Agent
 TelegramAgent.addNode("Room Agent", async (state) => {
-    const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
+    try {
+        const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
 
-    if (toolAlreadyCalled) {
-        const lastMsg = state.messages[state.messages.length - 1];
-        return { messages: [lastMsg], data: true };
+        if (toolAlreadyCalled) {
+            const lastMsg = state.messages[state.messages.length - 1];
+            return { messages: [lastMsg], data: true };
+        }
+
+        const RoomAgent = mainmodel.bindTools([findFreeRoomsTool]);
+        const response = await RoomAgent.invoke([
+            new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
+            ...state.messages]);
+
+        const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
+
+        return {
+            messages: [response],
+            data: isFinishedWithTools
+        };
+    } catch (error) {
+        console.error("Room Agent error:", error);
+        throw error;
     }
-
-    const RoomAgent = mainmodel.bindTools([findFreeRoomsTool]);
-    const response = await RoomAgent.invoke([
-        new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
 })
 
 TelegramAgent.addConditionalEdges(

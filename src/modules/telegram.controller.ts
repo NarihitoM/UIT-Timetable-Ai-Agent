@@ -139,11 +139,17 @@ class Telegramcontroller extends Telegramcommand {
 
         } catch (err: unknown) {
             //Error
-            console.log(err);
+            console.error("Agent execution error:", err);
+            if (err instanceof Error) {
+                console.error("Error name:", err.name);
+                console.error("Error message:", err.message);
+                console.error("Error stack:", err.stack);
+            }
             if (chatid) {
                 try {
                     await redisclient.del(cachekey);
-                    await bot.sendMessage(chatid, "It seems something went wrong.");
+                    const errorMsg = err instanceof Error ? err.message : String(err);
+                    await bot.sendMessage(chatid, `It seems something went wrong.\n\nError: ${errorMsg}`);
                 } catch (err) {
                     console.log(err);
                 }
