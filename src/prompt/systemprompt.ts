@@ -132,9 +132,6 @@ EXAMPLE for free rooms:
 ✅ Available Rooms (12):
 Room 215, Room 323, Room 325, Room 326, Room 331, Room 333, Room 336, Room 422, Room 424, Room 431, Room 432, Room 433
 
-🚫 Occupied Rooms (5):
-Room 214, Room 231, Room 233, Room 244, Room 321
-
 Always end with a friendly closing line like:
 💬 Let me know if you need another day or section!`;
 };

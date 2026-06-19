@@ -168,14 +168,9 @@ export const findFreeRoomsTool = tool(
             }
 
             const freeRooms: string[] = [];
-            const occupiedEntries: RoomEntry[] = [];
 
             for (const [roomNum, entries] of allRooms.entries()) {
-                if (occupiedRoomNumbers.has(roomNum)) {
-                    for (const entry of entries) {
-                        occupiedEntries.push(entry);
-                    }
-                } else {
+                if (!occupiedRoomNumbers.has(roomNum)) {
                     for (const entry of entries) {
                         if (!isSpecialRoom(entry)) {
                             freeRooms.push(entry.label);
@@ -203,18 +198,6 @@ export const findFreeRoomsTool = tool(
                 `✅ Available Free Rooms (${freeRooms.length}):`,
                 ...freeRooms.map(r => `- ${r}`),
             ];
-
-            if (occupiedEntries.length > 0) {
-                const occupiedLabels = [...new Set(occupiedEntries.map(e => e.label))];
-                occupiedLabels.sort((a, b) => {
-                    const numA = parseInt(a.match(/Room\s+(\d+)/)?.[1] || "0", 10);
-                    const numB = parseInt(b.match(/Room\s+(\d+)/)?.[1] || "0", 10);
-                    return numA - numB;
-                });
-                result.push(``);
-                result.push(`🚫 Occupied Rooms (${occupiedLabels.length}):`);
-                result.push(occupiedLabels.join(", "));
-            }
 
             return result.join("\n");
 
