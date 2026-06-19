@@ -114,9 +114,7 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 ✅ Available Rooms ([count]):
 [List rooms as: Room 215, Room 323, Room 325, ... on one or two lines, comma-separated]
 
-🚫 Occupied Rooms ([count]):
-[comma-separated list, or "None" if all free]
-
+- NEVER show occupied rooms. Only show available rooms.
 - NEVER put 🕐 before each individual room. Show the time ONCE at the top, then list all rooms below it.
 
 EXAMPLE (keep it this concise):
