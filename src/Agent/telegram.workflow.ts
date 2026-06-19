@@ -131,7 +131,7 @@ TelegramAgent.addNode("Room Agent", async (state) => {
             return { messages: [lastMsg], data: true };
         }
 
-        const RoomAgent = mainmodel.bindTools([findFreeRoomsTool]);
+        const RoomAgent = mainmodel.bindTools([findFreeRoomsTool], { tool_choice: "auto" });
         const response = await RoomAgent.invoke([
             new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
             ...state.messages]);
@@ -161,7 +161,7 @@ TelegramAgent.addNode("Room Agent tool", new ToolNode([findFreeRoomsTool]));
 
 //Sem4A Agent
 TelegramAgent.addNode("Sem4A", async (state) => {
-    const Sem4AAgent = submodel.bindTools([readSem4ATool]);
+    const Sem4AAgent = submodel.bindTools([readSem4ATool], { tool_choice: "auto" });
     const response = await Sem4AAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem4A")} Use 'read_sem4_a_file' tool to read the file`),
         ...state.messages]);
@@ -188,7 +188,7 @@ TelegramAgent.addNode("Sem4A Tools", new ToolNode([readSem4ATool]));
 
 //Sem4B Agent
 TelegramAgent.addNode("Sem4B", async (state) => {
-    const Sem4BAgent = submodel.bindTools([readSem4BTool]);
+    const Sem4BAgent = submodel.bindTools([readSem4BTool], { tool_choice: "auto" });
     const response = await Sem4BAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem4B")} Use 'read_sem4_b_file' tool to read the file`),
         ...state.messages]);
@@ -214,7 +214,7 @@ TelegramAgent.addNode("Sem4B Tools", new ToolNode([readSem4BTool]));
 
 //Sem4C Agent
 TelegramAgent.addNode("Sem4C", async (state) => {
-    const Sem4CAgent = submodel.bindTools([readSem4CTool]);
+    const Sem4CAgent = submodel.bindTools([readSem4CTool], { tool_choice: "auto" });
     const response = await Sem4CAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem4C")} Use 'read_sem4_c_file' tool to read the file`),
         ...state.messages]);
@@ -240,7 +240,7 @@ TelegramAgent.addNode("Sem4C Tools", new ToolNode([readSem4CTool]));
 
 //Sem4D Agent
 TelegramAgent.addNode("Sem4D", async (state) => {
-    const Sem4DAgent = submodel.bindTools([readSem4DTool]);
+    const Sem4DAgent = submodel.bindTools([readSem4DTool], { tool_choice: "auto" });
     const response = await Sem4DAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem4D")} Use 'read_sem4_d_file' tool to read the file`),
         ...state.messages]);
@@ -266,7 +266,7 @@ TelegramAgent.addNode("Sem4D Tools", new ToolNode([readSem4DTool]));
 
 //Sem2A Agent
 TelegramAgent.addNode("Sem2A", async (state) => {
-    const Sem2AAgent = submodel.bindTools([readSem2ATool]);
+    const Sem2AAgent = submodel.bindTools([readSem2ATool], { tool_choice: "auto" });
     const response = await Sem2AAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem2A")} Use 'read_sem2_a_file' tool to read the file`),
         ...state.messages]);
@@ -278,7 +278,7 @@ TelegramAgent.addNode("Sem2A Tools", new ToolNode([readSem2ATool]));
 
 //Sem2B Agent
 TelegramAgent.addNode("Sem2B", async (state) => {
-    const Sem2BAgent = submodel.bindTools([readSem2BTool]);
+    const Sem2BAgent = submodel.bindTools([readSem2BTool], { tool_choice: "auto" });
     const response = await Sem2BAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem2B")} Use 'read_sem2_b_file' tool to read the file`),
         ...state.messages]);
@@ -290,7 +290,7 @@ TelegramAgent.addNode("Sem2B Tools", new ToolNode([readSem2BTool]));
 
 //Sem2C Agent
 TelegramAgent.addNode("Sem2C", async (state) => {
-    const Sem2CAgent = submodel.bindTools([readSem2CTool]);
+    const Sem2CAgent = submodel.bindTools([readSem2CTool], { tool_choice: "auto" });
     const response = await Sem2CAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem2C")} Use 'read_sem2_c_file' tool to read the file`),
         ...state.messages]);
@@ -302,7 +302,7 @@ TelegramAgent.addNode("Sem2C Tools", new ToolNode([readSem2CTool]));
 
 //Sem2D Agent
 TelegramAgent.addNode("Sem2D", async (state) => {
-    const Sem2DAgent = submodel.bindTools([readSem2DTool]);
+    const Sem2DAgent = submodel.bindTools([readSem2DTool], { tool_choice: "auto" });
     const response = await Sem2DAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem2D")} Use 'read_sem2_d_file' tool to read the file`),
         ...state.messages]);
@@ -314,7 +314,7 @@ TelegramAgent.addNode("Sem2D Tools", new ToolNode([readSem2DTool]));
 
 //Sem2E Agent
 TelegramAgent.addNode("Sem2E", async (state) => {
-    const Sem2EAgent = submodel.bindTools([readSem2ETool]);
+    const Sem2EAgent = submodel.bindTools([readSem2ETool], { tool_choice: "auto" });
     const response = await Sem2EAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem2E")} Use 'read_sem2_e_file' tool to read the file`),
         ...state.messages]);
@@ -326,7 +326,7 @@ TelegramAgent.addNode("Sem2E Tools", new ToolNode([readSem2ETool]));
 
 //Sem6CT Agent
 TelegramAgent.addNode("Sem6CT", async (state) => {
-    const Sem6CTAgent = submodel.bindTools([readSem6CTTool]);
+    const Sem6CTAgent = submodel.bindTools([readSem6CTTool], { tool_choice: "auto" });
     const response = await Sem6CTAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem6CT")} Use 'read_sem6_ct_file' tool to read the file`),
         ...state.messages]);
@@ -338,7 +338,7 @@ TelegramAgent.addNode("Sem6CT Tools", new ToolNode([readSem6CTTool]));
 
 //Sem6C_CS Agent
 TelegramAgent.addNode("Sem6C_CS", async (state) => {
-    const Sem6C_CSAgent = submodel.bindTools([readSem6C_CSTool]);
+    const Sem6C_CSAgent = submodel.bindTools([readSem6C_CSTool], { tool_choice: "auto" });
     const response = await Sem6C_CSAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem6C_CS")} Use 'read_sem6_c_cs_file' tool to read the file`),
         ...state.messages]);
@@ -350,7 +350,7 @@ TelegramAgent.addNode("Sem6C_CS Tools", new ToolNode([readSem6C_CSTool]));
 
 //Sem6D_CS Agent
 TelegramAgent.addNode("Sem6D_CS", async (state) => {
-    const Sem6D_CSAgent = submodel.bindTools([readSem6D_CSTool]);
+    const Sem6D_CSAgent = submodel.bindTools([readSem6D_CSTool], { tool_choice: "auto" });
     const response = await Sem6D_CSAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem6D_CS")} Use 'read_sem6_d_cs_file' tool to read the file`),
         ...state.messages]);
@@ -362,7 +362,7 @@ TelegramAgent.addNode("Sem6D_CS Tools", new ToolNode([readSem6D_CSTool]));
 
 //Sem6A_CS Agent
 TelegramAgent.addNode("Sem6A_CS", async (state) => {
-    const Sem6A_CSAgent = submodel.bindTools([readSem6A_CSTool]);
+    const Sem6A_CSAgent = submodel.bindTools([readSem6A_CSTool], { tool_choice: "auto" });
     const response = await Sem6A_CSAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem6A_CS")} Use 'read_sem6_a_cs_file' tool to read the file`),
         ...state.messages]);
@@ -374,7 +374,7 @@ TelegramAgent.addNode("Sem6A_CS Tools", new ToolNode([readSem6A_CSTool]));
 
 //Sem6B_CS Agent
 TelegramAgent.addNode("Sem6B_CS", async (state) => {
-    const Sem6B_CSAgent = submodel.bindTools([readSem6B_CSTool]);
+    const Sem6B_CSAgent = submodel.bindTools([readSem6B_CSTool], { tool_choice: "auto" });
     const response = await Sem6B_CSAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem6B_CS")} Use 'read_sem6_b_cs_file' tool to read the file`),
         ...state.messages]);
@@ -386,7 +386,7 @@ TelegramAgent.addNode("Sem6B_CS Tools", new ToolNode([readSem6B_CSTool]));
 
 //Sem8SE Agent
 TelegramAgent.addNode("Sem8SE", async (state) => {
-    const Sem8SEAgent = submodel.bindTools([readSem8SETool]);
+    const Sem8SEAgent = submodel.bindTools([readSem8SETool], { tool_choice: "auto" });
     const response = await Sem8SEAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8SE")} Use 'read_sem8_se_file' tool to read the file`),
         ...state.messages]);
@@ -398,7 +398,7 @@ TelegramAgent.addNode("Sem8SE Tools", new ToolNode([readSem8SETool]));
 
 //Sem8KE Agent
 TelegramAgent.addNode("Sem8KE", async (state) => {
-    const Sem8KEAgent = submodel.bindTools([readSem8KETool]);
+    const Sem8KEAgent = submodel.bindTools([readSem8KETool], { tool_choice: "auto" });
     const response = await Sem8KEAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8KE")} Use 'read_sem8_ke_file' tool to read the file`),
         ...state.messages]);
@@ -410,7 +410,7 @@ TelegramAgent.addNode("Sem8KE Tools", new ToolNode([readSem8KETool]));
 
 //Sem8HPC Agent
 TelegramAgent.addNode("Sem8HPC", async (state) => {
-    const Sem8HPCAgent = submodel.bindTools([readSem8HPCTool]);
+    const Sem8HPCAgent = submodel.bindTools([readSem8HPCTool], { tool_choice: "auto" });
     const response = await Sem8HPCAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8HPC")} Use 'read_sem8_hpc_file' tool to read the file`),
         ...state.messages]);
@@ -422,7 +422,7 @@ TelegramAgent.addNode("Sem8HPC Tools", new ToolNode([readSem8HPCTool]));
 
 //Sem8ES Agent
 TelegramAgent.addNode("Sem8ES", async (state) => {
-    const Sem8ESAgent = submodel.bindTools([readSem8ESTool]);
+    const Sem8ESAgent = submodel.bindTools([readSem8ESTool], { tool_choice: "auto" });
     const response = await Sem8ESAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8ES")} Use 'read_sem8_es_file' tool to read the file`),
         ...state.messages]);
@@ -434,7 +434,7 @@ TelegramAgent.addNode("Sem8ES Tools", new ToolNode([readSem8ESTool]));
 
 //Sem8CCN Agent
 TelegramAgent.addNode("Sem8CCN", async (state) => {
-    const Sem8CCNAgent = submodel.bindTools([readSem8CCNTool]);
+    const Sem8CCNAgent = submodel.bindTools([readSem8CCNTool], { tool_choice: "auto" });
     const response = await Sem8CCNAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8CCN")} Use 'read_sem8_ccn_file' tool to read the file`),
         ...state.messages]);
@@ -446,7 +446,7 @@ TelegramAgent.addNode("Sem8CCN Tools", new ToolNode([readSem8CCNTool]));
 
 //Sem8BIS Agent
 TelegramAgent.addNode("Sem8BIS", async (state) => {
-    const Sem8BISAgent = submodel.bindTools([readSem8BISTool]);
+    const Sem8BISAgent = submodel.bindTools([readSem8BISTool], { tool_choice: "auto" });
     const response = await Sem8BISAgent.invoke([
         new SystemMessage(`${getSubAgentPrompt("Sem8BIS")} Use 'read_sem8_bis_file' tool to read the file`),
         ...state.messages]);
