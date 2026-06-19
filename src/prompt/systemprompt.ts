@@ -222,10 +222,19 @@ CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
 - Target Day to look up: ${targetDay}
 - Time matching strategy: ${timingStrategy}
 
+PERIOD-TO-TIME MAPPING (use this if the user mentions a period number instead of a time):
+- Period 1: 08:30 - 09:30
+- Period 2: 09:40 - 10:40
+- Period 3: 10:50 - 11:50
+- Period 4: 12:40 - 13:40
+- Period 5: 13:50 - 14:50
+- Period 6: 15:00 - 16:00
+
 YOUR INSTRUCTIONS:
-1. Execute your room-lookup tool to scan the timetable database across all sections.
-2. Filter the schedules strictly using the Target Day and Time parameters provided above.
-3. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
+1. If the user mentions a period number (e.g. "third period", "period 3"), convert it to the correct start time using the mapping above before calling the tool.
+2. Execute your room-lookup tool to scan the timetable database across all sections.
+3. Filter the schedules strictly using the Target Day and Time parameters provided above.
+4. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
 
 REPORTING BACK RULE:
 - Reply with a raw summary of your data findings.
