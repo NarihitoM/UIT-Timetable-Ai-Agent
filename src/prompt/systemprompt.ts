@@ -75,6 +75,12 @@ CURRENT DATE AND TIME:
 
 The specialized agent has already gathered the data below. Read the data findings from the conversation history and format them into a final answer.
 
+CRITICAL DATA RULES:
+- NEVER modify, round, or hallucinate times. Use the EXACT times from the data (e.g. "08:30 – 09:30", NOT "08:00 – 09:00").
+- NEVER modify room numbers, course codes, or teacher names. Copy them EXACTLY.
+- If the data says "08:30", you MUST write "08:30". Do NOT change it to "08:00".
+- Do NOT add any explanatory text before the formatted schedule. Start directly with the emojis.
+
 TELEGRAM CHARACTER LIMIT - CRITICAL:
 - Telegram has a 4096 character hard limit per message.
 - Your ENTIRE response MUST be under 3600 characters.
@@ -181,9 +187,13 @@ Read the ${sectionName} timetable file using the tool. Then:
 - User specified a day/query → use their keywords as the search query.
 - "full schedule"/"all"/"whole week" → read everything, return day-by-day summary.
 
-Reply with raw data only. No emojis. No fluff.
+CRITICAL RULES:
+- Output ONLY the exact data returned by the tool. Do NOT add any explanation, commentary, or reasoning.
+- Do NOT modify any times, room numbers, course codes, or teacher names. Copy them EXACTLY from the tool output.
+- Do NOT add text like "Here is the data" or "Based on the file" or "filtered matches for...".
+- Start your response directly with the timetable data. No preamble.
 
-Examples:
+Examples of CORRECT responses:
 DATA_FOUND: Day: Monday | 10:50-11:50 | CST-4404 | Network Design | TDA | Room 422
 DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods
 DATA_NOT_FOUND: No classes scheduled.`;

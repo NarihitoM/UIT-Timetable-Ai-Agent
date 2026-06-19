@@ -10,7 +10,7 @@ export const readSem4BTool = tool(
             const filePath = path.resolve(process.cwd(),"src" , "data", "Sem4B.txt");
 
             if (!fs.existsSync(filePath)) {
-                return `Error: The file "Sem4B.txt" could not be found in the data/ directory.`;
+                return `Error: Sem4B.txt not found.`;
             }
 
             const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -21,15 +21,15 @@ export const readSem4BTool = tool(
                 const matchedLines = lines.filter(line => line.toLowerCase().includes(lowerQuery));
 
                 if (matchedLines.length === 0) {
-                    return `File "Sem4B.txt" read successfully. No specific matching records found for search term: "${input.query}".`;
+                    return `No matches found for "${input.query}".`;
                 }
-                return `File "Sem4B.txt" read successfully. Filtered matches for "${input.query}":\n\n${matchedLines.join("\n")}`;
+                return matchedLines.join("\n");
             }
 
-            return `Successfully read Sem4B.txt data contents:\n\n${fileContent}`;
+            return fileContent;
 
         } catch (error) {
-            return `Failed to read Sem4B.txt. Error details: ${String(error)}`;
+            return `Error reading Sem4B.txt: ${String(error)}`;
         }
     },
     {

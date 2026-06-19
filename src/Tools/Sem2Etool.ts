@@ -9,7 +9,7 @@ export const readSem2ETool = tool(
             const filePath = path.resolve(process.cwd(), "src" ,"data", "Sem2E.txt");
 
             if (!fs.existsSync(filePath)) {
-                return `Error: The file "Sem2E.txt" could not be found in the data/ directory.`;
+                return `Error: Sem2E.txt not found.`;
             }
 
             const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -20,15 +20,15 @@ export const readSem2ETool = tool(
                 const matchedLines = lines.filter(line => line.toLowerCase().includes(lowerQuery));
 
                 if (matchedLines.length === 0) {
-                    return `File "Sem2E.txt" read successfully. No specific matching records found for search term: "${input.query}".`;
+                    return `No matches found for "${input.query}".`;
                 }
-                return `File "Sem2E.txt" read successfully. Filtered matches for "${input.query}":\n\n${matchedLines.join("\n")}`;
+                return matchedLines.join("\n");
             }
 
-            return `Successfully read Sem2E.txt data contents:\n\n${fileContent}`;
+            return fileContent;
 
         } catch (error) {
-            return `Failed to read Sem2E.txt. Error details: ${String(error)}`;
+            return `Error reading Sem2E.txt: ${String(error)}`;
         }
     },
     {

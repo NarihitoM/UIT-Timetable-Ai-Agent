@@ -9,7 +9,7 @@ export const readSem8HPCTool = tool(
             const filePath = path.resolve(process.cwd(), "src" ,"data", "Sem8_HPC.txt");
 
             if (!fs.existsSync(filePath)) {
-                return `Error: The file "Sem8_HPC.txt" could not be found in the data/ directory.`;
+                return `Error: Sem8_HPC.txt not found.`;
             }
 
             const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -20,15 +20,15 @@ export const readSem8HPCTool = tool(
                 const matchedLines = lines.filter(line => line.toLowerCase().includes(lowerQuery));
 
                 if (matchedLines.length === 0) {
-                    return `File "Sem8_HPC.txt" read successfully. No specific matching records found for search term: "${input.query}".`;
+                    return `No matches found for "${input.query}".`;
                 }
-                return `File "Sem8_HPC.txt" read successfully. Filtered matches for "${input.query}":\n\n${matchedLines.join("\n")}`;
+                return matchedLines.join("\n");
             }
 
-            return `Successfully read Sem8_HPC.txt data contents:\n\n${fileContent}`;
+            return fileContent;
 
         } catch (error) {
-            return `Failed to read Sem8_HPC.txt. Error details: ${String(error)}`;
+            return `Error reading Sem8_HPC.txt: ${String(error)}`;
         }
     },
     {
