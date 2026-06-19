@@ -69,6 +69,14 @@ function normalizeDay(input: string): string {
 
 function normalizeTimeInput(time: string): string {
     const trimmed = time.trim();
+
+    const rangeMatch = trimmed.match(/^(\d{1,2}:\d{2})\s*[\-–—]\s*\d{1,2}:\d{2}$/);
+    if (rangeMatch) {
+        const h = rangeMatch[1].split(":")[0];
+        const m = rangeMatch[1].split(":")[1];
+        return `${h.padStart(2, "0")}:${m}`;
+    }
+
     const match = trimmed.match(/^(\d{1,2}):(\d{2})$/);
     if (!match) return trimmed;
     return `${match[1].padStart(2, "0")}:${match[2]}`;
