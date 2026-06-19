@@ -106,16 +106,34 @@ TELEGRAM FORMAT RULES (ALWAYS FOLLOW FOR FINAL ANSWER):
 🚪 Room [YYY] | 👩🏻‍🏫 [teacher]
 💡 [brief 1-line description]
 
-- Use this format for available room:
+- Use this format for available room listing (DO NOT repeat the time for each room):
 
-🕐 [start] – [end]
-🚪  Room [YYY]
+📅 Day: [day]
+⏰ Time: [start] – [end]
+
+✅ Available Rooms ([count]):
+[List rooms as: Room 215, Room 323, Room 325, ... on one or two lines, comma-separated]
+
+🚫 Occupied Rooms ([count]):
+[comma-separated list, or "None" if all free]
+
+- NEVER put 🕐 before each individual room. Show the time ONCE at the top, then list all rooms below it.
 
 EXAMPLE (keep it this concise):
 🕐 10:50 – 11:50
 📚 CST-4404 – Network Design and Engineering
 📝 TDA | 🚪 Room 422
 👩🏻‍🏫 Dr. Ei Thin Su
+
+EXAMPLE for free rooms:
+📅 Day: Friday
+⏰ Time: 09:40 – 10:40
+
+✅ Available Rooms (12):
+Room 215, Room 323, Room 325, Room 326, Room 331, Room 333, Room 336, Room 422, Room 424, Room 431, Room 432, Room 433
+
+🚫 Occupied Rooms (5):
+Room 214, Room 231, Room 233, Room 244, Room 321
 
 Always end with a friendly closing line like:
 💬 Let me know if you need another day or section!`;
