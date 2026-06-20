@@ -55,14 +55,6 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             };
         }
 
-        const prompt = [
-            new SystemMessage(getSupervisorPrompt()),
-            ...history
-        ];
-
-        const response = await mainmodel.invoke(prompt);
-        const aireply = response.content as string;
-
         let targetAgent = "__end__";
 
         if (/sem2_a|sem2a/i.test(userText)) {
@@ -113,7 +105,7 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
         return {
             nextAgent: targetAgent,
-            messages: [response]
+            messages: []
         };
     } catch (error) {
         console.error("Main Agent error:", error);

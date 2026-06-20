@@ -50,7 +50,9 @@ class Telegramcontroller extends Telegramcommand {
 
             //Agent Message route
             const sectionCmds = Telegramcontroller.commands.slice(4);
-            if (sectionCmds.some(cmd => cmd && text.includes(cmd))) {
+            const isAgentCommand = sectionCmds.some(cmd => cmd && text.includes(cmd)) || /\/room|available room|free room|empty room/i.test(text);
+
+            if (isAgentCommand) {
 
                 const matchedCommands = sectionCmds.filter(cmd =>
                     cmd && text.includes(cmd)
@@ -83,54 +85,66 @@ class Telegramcontroller extends Telegramcommand {
                     "🚀 Almost ready!"
                 ];
 
+                let cancelled = false;
+
                 const agentPromise = TelegramTimetableagent.invoke({
                     messages: [new HumanMessage(text)]
                 });
+
+                const timeoutPromise = new Promise<never>((_, reject) =>
+                    setTimeout(() => reject(new Error("Agent timeout after 60s")), 60000)
+                );
 
                 let finalAnswer: string | null = null;
 
                 const runStatusUpdates = async () => {
                     for (const updateText of updates) {
-                        if (finalAnswer) break;
-
+                        if (cancelled) break;
                         await new Promise(resolve => setTimeout(resolve, 2000));
-
-                        if (finalAnswer) break;
-
-                        await bot.editMessageText(updateText, {
-                            chat_id: chatid,
-                            message_id: waitMessage.message_id
-                        });
+                        if (cancelled) break;
+                        try {
+                            await bot.editMessageText(updateText, {
+                                chat_id: chatid,
+                                message_id: waitMessage.message_id
+                            });
+                        } catch { /* message may already be edited */ }
                     }
                 };
 
                 const updatesPromise = runStatusUpdates();
 
                 try {
-                    const result = await agentPromise;
+                    const result = await Promise.race([agentPromise, timeoutPromise]);
                     finalAnswer = result.messages[result.messages.length - 1].content as string;
+                } catch (err) {
+                    console.error("Agent execution error:", err);
+                    finalAnswer = "It seems something went wrong.";
                 } finally {
-                    finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
+                    cancelled = true;
+                    finalAnswer = finalAnswer || "It seems something went wrong.";
                 }
 
                 await updatesPromise;
 
-                const maxLen = 4000;
-                if (finalAnswer.length > maxLen) {
-                    await bot.editMessageText(finalAnswer.slice(0, maxLen), {
-                        chat_id: chatid,
-                        message_id: waitMessage.message_id
-                    });
-                    for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
-                        await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                try {
+                    const maxLen = 4000;
+                    if (finalAnswer.length > maxLen) {
+                        await bot.editMessageText(finalAnswer.slice(0, maxLen), {
+                            chat_id: chatid,
+                            message_id: waitMessage.message_id
+                        });
+                        for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
+                            await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                        }
+                    } else {
+                        await bot.editMessageText(finalAnswer, {
+                            chat_id: chatid,
+                            message_id: waitMessage.message_id
+                        });
                     }
-                } else {
-                    await bot.editMessageText(finalAnswer, {
-                        chat_id: chatid,
-                        message_id: waitMessage.message_id
-                    });
-                }
+                } catch { /* fallback: send as new message */ }
 
+                await redisclient.del(cachekey);
                 return res.status(200).send("OK");
             }
 
