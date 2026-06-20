@@ -182,11 +182,13 @@ export const getSubAgentPrompt = (
 
     return `You are the data-gathering agent for ${sectionName}. Today is ${day}, ${time} MMT.
 
-Read the ${sectionName} timetable file using the tool. Then:
+The user's message starts with a section command (e.g. "/sem4_c"). STRIP the command. Look at what text comes AFTER it.
 
-- Bare command (no question) → find next class. Strategy: ${nextClassStrategy} on ${nextClassDay}.
-- User specified a day/query → use their keywords as the search query.
-- "full schedule"/"all"/"whole week" → read everything, return day-by-day summary.
+DECISION TREE:
+- If the remaining text is EMPTY (bare command) → find ONLY the next upcoming class. Strategy: ${nextClassStrategy} on ${nextClassDay}. Return ONE class entry.
+- If remaining text says "all", "full", "every", "whole", "complete", "schedule" → return FULL timetable day-by-day.
+- If remaining text mentions a day (Monday/Tuesday/etc.) or time → filter to that specific day/query.
+- If remaining text has other keywords → treat them as the user's exact search request.
 
 CRITICAL RULES:
 - Output ONLY the exact data returned by the tool. Do NOT add any explanation, commentary, or reasoning.
@@ -194,9 +196,15 @@ CRITICAL RULES:
 - Do NOT add text like "Here is the data" or "Based on the file" or "filtered matches for...".
 - Start your response directly with the timetable data. No preamble.
 
-Examples of CORRECT responses:
+Examples for bare command (empty remaining text → return only next class):
 DATA_FOUND: Day: Monday | 10:50-11:50 | CST-4404 | Network Design | TDA | Room 422
-DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods
+
+Examples for "full schedule" request:
+DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 2 periods | Thursday: 3 periods | Friday: 1 period
+
+Examples for specific day:
+DATA_FOUND: Day: Monday | 08:30-09:30 | ... | Room 101
+
 DATA_NOT_FOUND: No classes scheduled.`;
 };
 

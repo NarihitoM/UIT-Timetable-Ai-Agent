@@ -1,0 +1,60 @@
+{
+  "version": "7.8",
+  "steps": [
+    {
+      "tag": "CreateSchema",
+      "schemaName": "public"
+    },
+    {
+      "tag": "CreateTable",
+      "table": {
+        "name": "Chat",
+        "columns": [
+          {
+            "name": "id",
+            "type": "SERIAL",
+            "isGenerated": true,
+            "isNullable": false,
+            "default": "autoincrement"
+          },
+          {
+            "name": "chatid",
+            "type": "BIGINT",
+            "isGenerated": false,
+            "isNullable": true
+          },
+          {
+            "name": "role",
+            "type": "TEXT",
+            "isGenerated": false,
+            "isNullable": false,
+            "default": "'user'"
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "isGenerated": false,
+            "isNullable": false
+          },
+          {
+            "name": "createdAt",
+            "type": "TIMESTAMP(3)",
+            "isGenerated": false,
+            "isNullable": false,
+            "default": "CURRENT_TIMESTAMP"
+          },
+          {
+            "name": "updatedAt",
+            "type": "TIMESTAMP(3)",
+            "isGenerated": false,
+            "isNullable": false
+          }
+        ],
+        "primaryKey": {
+          "columns": ["id"],
+          "name": "Chat_pkey"
+        }
+      }
+    }
+  ]
+}

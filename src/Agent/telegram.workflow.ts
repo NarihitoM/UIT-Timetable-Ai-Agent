@@ -121,340 +121,67 @@ TelegramAgent.addNode("Main Agent", async (state) => {
     }
 });
 
-//Freeroom Agent
-TelegramAgent.addNode("Room Agent", async (state) => {
-    try {
-        const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
-
-        if (toolAlreadyCalled) {
-            const lastMsg = state.messages[state.messages.length - 1];
-            return { messages: [lastMsg], data: true };
+//Helper: wraps a sub-agent with error handling + tool-loop guard
+const makeSubAgentNode = (model: any, tool: any, toolName: string, prompt: string, getPrompt: (s: string) => string) =>
+    async (state: typeof Telegramagentstate.State) => {
+        try {
+            const toolAlreadyCalled = state.messages.some(m => (m as any)?.tool_calls?.length > 0);
+            if (toolAlreadyCalled) {
+                return { messages: [state.messages[state.messages.length - 1]], data: true };
+            }
+            const agent = model.bindTools([tool], { tool_choice: "auto" });
+            const response = await agent.invoke([
+                new SystemMessage(`${getPrompt(prompt)} Use '${toolName}' tool to read the file`),
+                ...state.messages
+            ]);
+            return { messages: [response], data: !response.tool_calls || response.tool_calls.length === 0 };
+        } catch (error) {
+            console.error(`${prompt} Agent error:`, error);
+            return {
+                messages: [{ role: "assistant", content: `DATA_ERROR: ${prompt} agent encountered an error. Please try again.` }],
+                data: true
+            };
         }
+    };
 
-        const RoomAgent = mainmodel.bindTools([findFreeRoomsTool], { tool_choice: "auto" });
-        const response = await RoomAgent.invoke([
-            new SystemMessage(`${getRoomAgentPrompt()} Use 'find_free_rooms' tool to read the file`),
-            ...state.messages]);
-
-        const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-        return {
-            messages: [response],
-            data: isFinishedWithTools
-        };
-    } catch (error) {
-        console.error("Room Agent error:", error);
-        throw error;
-    }
-})
-
-TelegramAgent.addConditionalEdges(
-    "Room Agent" as any,
-    toolsCondition as any,
-    {
-        tools: "Room Agent tool",
-        __end__: "Main Agent"
-    } as any
-);
-
+//Freeroom Agent
+TelegramAgent.addNode("Room Agent", makeSubAgentNode(mainmodel, findFreeRoomsTool, "find_free_rooms", "Room", getRoomAgentPrompt));
+TelegramAgent.addConditionalEdges("Room Agent" as any, toolsCondition as any, { tools: "Room Agent tool", __end__: "Main Agent" } as any);
 TelegramAgent.addNode("Room Agent tool", new ToolNode([findFreeRoomsTool]));
 
-//Sem4A Agent
-TelegramAgent.addNode("Sem4A", async (state) => {
-    const Sem4AAgent = submodel.bindTools([readSem4ATool], { tool_choice: "auto" });
-    const response = await Sem4AAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem4A")} Use 'read_sem4_a_file' tool to read the file`),
-        ...state.messages]);
+//Section Agents
+interface SectionDef { node: string; file: string; tool: any; }
+const sections: SectionDef[] = [
+    { node: "Sem4A", file: "read_sem4_a_file", tool: readSem4ATool },
+    { node: "Sem4B", file: "read_sem4_b_file", tool: readSem4BTool },
+    { node: "Sem4C", file: "read_sem4_c_file", tool: readSem4CTool },
+    { node: "Sem4D", file: "read_sem4_d_file", tool: readSem4DTool },
+    { node: "Sem2A", file: "read_sem2_a_file", tool: readSem2ATool },
+    { node: "Sem2B", file: "read_sem2_b_file", tool: readSem2BTool },
+    { node: "Sem2C", file: "read_sem2_c_file", tool: readSem2CTool },
+    { node: "Sem2D", file: "read_sem2_d_file", tool: readSem2DTool },
+    { node: "Sem2E", file: "read_sem2_e_file", tool: readSem2ETool },
+    { node: "Sem6CT", file: "read_sem6_ct_file", tool: readSem6CTTool },
+    { node: "Sem6C_CS", file: "read_sem6_c_cs_file", tool: readSem6C_CSTool },
+    { node: "Sem6D_CS", file: "read_sem6_d_cs_file", tool: readSem6D_CSTool },
+    { node: "Sem6A_CS", file: "read_sem6_a_cs_file", tool: readSem6A_CSTool },
+    { node: "Sem6B_CS", file: "read_sem6_b_cs_file", tool: readSem6B_CSTool },
+    { node: "Sem8SE", file: "read_sem8_se_file", tool: readSem8SETool },
+    { node: "Sem8KE", file: "read_sem8_ke_file", tool: readSem8KETool },
+    { node: "Sem8HPC", file: "read_sem8_hpc_file", tool: readSem8HPCTool },
+    { node: "Sem8ES", file: "read_sem8_es_file", tool: readSem8ESTool },
+    { node: "Sem8CCN", file: "read_sem8_ccn_file", tool: readSem8CCNTool },
+    { node: "Sem8BIS", file: "read_sem8_bis_file", tool: readSem8BISTool },
+];
 
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-})
-
-TelegramAgent.addConditionalEdges(
-    "Sem4A" as any,
-    toolsCondition as any,
-    {
-        tools: "Sem4A Tools",
+for (const s of sections) {
+    TelegramAgent.addNode(s.node, makeSubAgentNode(submodel, s.tool, s.file, s.node, getSubAgentPrompt));
+    TelegramAgent.addConditionalEdges(s.node as any, toolsCondition as any, {
+        tools: `${s.node} Tools`,
         __end__: "Main Agent"
-    } as any
-);
-
-TelegramAgent.addNode("Sem4A Tools", new ToolNode([readSem4ATool]));
-
-
-//Sem4B Agent
-TelegramAgent.addNode("Sem4B", async (state) => {
-    const Sem4BAgent = submodel.bindTools([readSem4BTool], { tool_choice: "auto" });
-    const response = await Sem4BAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem4B")} Use 'read_sem4_b_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-})
-
-TelegramAgent.addConditionalEdges(
-    "Sem4B" as any,
-    toolsCondition as any,
-    {
-        tools: "Sem4B Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
-TelegramAgent.addNode("Sem4B Tools", new ToolNode([readSem4BTool]));
-
-//Sem4C Agent
-TelegramAgent.addNode("Sem4C", async (state) => {
-    const Sem4CAgent = submodel.bindTools([readSem4CTool], { tool_choice: "auto" });
-    const response = await Sem4CAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem4C")} Use 'read_sem4_c_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-});
-
-TelegramAgent.addConditionalEdges(
-    "Sem4C" as any,
-    toolsCondition as any,
-    {
-        tools: "Sem4C Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
-TelegramAgent.addNode("Sem4C Tools", new ToolNode([readSem4CTool]));
-
-//Sem4D Agent
-TelegramAgent.addNode("Sem4D", async (state) => {
-    const Sem4DAgent = submodel.bindTools([readSem4DTool], { tool_choice: "auto" });
-    const response = await Sem4DAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem4D")} Use 'read_sem4_d_file' tool to read the file`),
-        ...state.messages]);
-
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-
-    return {
-        messages: [response],
-        data: isFinishedWithTools
-    };
-});
-
-TelegramAgent.addConditionalEdges(
-    "Sem4D" as any,
-    toolsCondition as any,
-    {
-        tools: "Sem4D Tools",
-        __end__: "Main Agent"
-    } as any
-);
-
-TelegramAgent.addNode("Sem4D Tools", new ToolNode([readSem4DTool]));
-
-//Sem2A Agent
-TelegramAgent.addNode("Sem2A", async (state) => {
-    const Sem2AAgent = submodel.bindTools([readSem2ATool], { tool_choice: "auto" });
-    const response = await Sem2AAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem2A")} Use 'read_sem2_a_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem2A" as any, toolsCondition as any, { tools: "Sem2A Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem2A Tools", new ToolNode([readSem2ATool]));
-
-//Sem2B Agent
-TelegramAgent.addNode("Sem2B", async (state) => {
-    const Sem2BAgent = submodel.bindTools([readSem2BTool], { tool_choice: "auto" });
-    const response = await Sem2BAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem2B")} Use 'read_sem2_b_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem2B" as any, toolsCondition as any, { tools: "Sem2B Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem2B Tools", new ToolNode([readSem2BTool]));
-
-//Sem2C Agent
-TelegramAgent.addNode("Sem2C", async (state) => {
-    const Sem2CAgent = submodel.bindTools([readSem2CTool], { tool_choice: "auto" });
-    const response = await Sem2CAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem2C")} Use 'read_sem2_c_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem2C" as any, toolsCondition as any, { tools: "Sem2C Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem2C Tools", new ToolNode([readSem2CTool]));
-
-//Sem2D Agent
-TelegramAgent.addNode("Sem2D", async (state) => {
-    const Sem2DAgent = submodel.bindTools([readSem2DTool], { tool_choice: "auto" });
-    const response = await Sem2DAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem2D")} Use 'read_sem2_d_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem2D" as any, toolsCondition as any, { tools: "Sem2D Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem2D Tools", new ToolNode([readSem2DTool]));
-
-//Sem2E Agent
-TelegramAgent.addNode("Sem2E", async (state) => {
-    const Sem2EAgent = submodel.bindTools([readSem2ETool], { tool_choice: "auto" });
-    const response = await Sem2EAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem2E")} Use 'read_sem2_e_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem2E" as any, toolsCondition as any, { tools: "Sem2E Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem2E Tools", new ToolNode([readSem2ETool]));
-
-//Sem6CT Agent
-TelegramAgent.addNode("Sem6CT", async (state) => {
-    const Sem6CTAgent = submodel.bindTools([readSem6CTTool], { tool_choice: "auto" });
-    const response = await Sem6CTAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem6CT")} Use 'read_sem6_ct_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem6CT" as any, toolsCondition as any, { tools: "Sem6CT Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem6CT Tools", new ToolNode([readSem6CTTool]));
-
-//Sem6C_CS Agent
-TelegramAgent.addNode("Sem6C_CS", async (state) => {
-    const Sem6C_CSAgent = submodel.bindTools([readSem6C_CSTool], { tool_choice: "auto" });
-    const response = await Sem6C_CSAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem6C_CS")} Use 'read_sem6_c_cs_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem6C_CS" as any, toolsCondition as any, { tools: "Sem6C_CS Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem6C_CS Tools", new ToolNode([readSem6C_CSTool]));
-
-//Sem6D_CS Agent
-TelegramAgent.addNode("Sem6D_CS", async (state) => {
-    const Sem6D_CSAgent = submodel.bindTools([readSem6D_CSTool], { tool_choice: "auto" });
-    const response = await Sem6D_CSAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem6D_CS")} Use 'read_sem6_d_cs_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem6D_CS" as any, toolsCondition as any, { tools: "Sem6D_CS Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem6D_CS Tools", new ToolNode([readSem6D_CSTool]));
-
-//Sem6A_CS Agent
-TelegramAgent.addNode("Sem6A_CS", async (state) => {
-    const Sem6A_CSAgent = submodel.bindTools([readSem6A_CSTool], { tool_choice: "auto" });
-    const response = await Sem6A_CSAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem6A_CS")} Use 'read_sem6_a_cs_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem6A_CS" as any, toolsCondition as any, { tools: "Sem6A_CS Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem6A_CS Tools", new ToolNode([readSem6A_CSTool]));
-
-//Sem6B_CS Agent
-TelegramAgent.addNode("Sem6B_CS", async (state) => {
-    const Sem6B_CSAgent = submodel.bindTools([readSem6B_CSTool], { tool_choice: "auto" });
-    const response = await Sem6B_CSAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem6B_CS")} Use 'read_sem6_b_cs_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem6B_CS" as any, toolsCondition as any, { tools: "Sem6B_CS Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem6B_CS Tools", new ToolNode([readSem6B_CSTool]));
-
-//Sem8SE Agent
-TelegramAgent.addNode("Sem8SE", async (state) => {
-    const Sem8SEAgent = submodel.bindTools([readSem8SETool], { tool_choice: "auto" });
-    const response = await Sem8SEAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8SE")} Use 'read_sem8_se_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8SE" as any, toolsCondition as any, { tools: "Sem8SE Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8SE Tools", new ToolNode([readSem8SETool]));
-
-//Sem8KE Agent
-TelegramAgent.addNode("Sem8KE", async (state) => {
-    const Sem8KEAgent = submodel.bindTools([readSem8KETool], { tool_choice: "auto" });
-    const response = await Sem8KEAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8KE")} Use 'read_sem8_ke_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8KE" as any, toolsCondition as any, { tools: "Sem8KE Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8KE Tools", new ToolNode([readSem8KETool]));
-
-//Sem8HPC Agent
-TelegramAgent.addNode("Sem8HPC", async (state) => {
-    const Sem8HPCAgent = submodel.bindTools([readSem8HPCTool], { tool_choice: "auto" });
-    const response = await Sem8HPCAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8HPC")} Use 'read_sem8_hpc_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8HPC" as any, toolsCondition as any, { tools: "Sem8HPC Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8HPC Tools", new ToolNode([readSem8HPCTool]));
-
-//Sem8ES Agent
-TelegramAgent.addNode("Sem8ES", async (state) => {
-    const Sem8ESAgent = submodel.bindTools([readSem8ESTool], { tool_choice: "auto" });
-    const response = await Sem8ESAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8ES")} Use 'read_sem8_es_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8ES" as any, toolsCondition as any, { tools: "Sem8ES Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8ES Tools", new ToolNode([readSem8ESTool]));
-
-//Sem8CCN Agent
-TelegramAgent.addNode("Sem8CCN", async (state) => {
-    const Sem8CCNAgent = submodel.bindTools([readSem8CCNTool], { tool_choice: "auto" });
-    const response = await Sem8CCNAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8CCN")} Use 'read_sem8_ccn_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8CCN" as any, toolsCondition as any, { tools: "Sem8CCN Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8CCN Tools", new ToolNode([readSem8CCNTool]));
-
-//Sem8BIS Agent
-TelegramAgent.addNode("Sem8BIS", async (state) => {
-    const Sem8BISAgent = submodel.bindTools([readSem8BISTool], { tool_choice: "auto" });
-    const response = await Sem8BISAgent.invoke([
-        new SystemMessage(`${getSubAgentPrompt("Sem8BIS")} Use 'read_sem8_bis_file' tool to read the file`),
-        ...state.messages]);
-    const isFinishedWithTools = !response.tool_calls || response.tool_calls.length === 0;
-    return { messages: [response], data: isFinishedWithTools };
-})
-TelegramAgent.addConditionalEdges("Sem8BIS" as any, toolsCondition as any, { tools: "Sem8BIS Tools", __end__: "Main Agent" } as any);
-TelegramAgent.addNode("Sem8BIS Tools", new ToolNode([readSem8BISTool]));
+    } as any);
+    TelegramAgent.addNode(`${s.node} Tools`, new ToolNode([s.tool]));
+}
 
 //Main Entry Point
 TelegramAgent.addEdge(START, "Main Agent" as any);
