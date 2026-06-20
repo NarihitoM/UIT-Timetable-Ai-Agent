@@ -1,11 +1,11 @@
-import { processSectionQuery, processRoomQuery, processFormatter, getSectionName } from "../Agent/telegram.workflow.ts";
+import { HumanMessage } from "@langchain/core/messages";
+import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
 
 const inMemoryLocks = new Map<string, number>();
-const AGENT_TIMEOUT = 20_000;
 
 class Telegramcontroller extends Telegramcommand {
 
@@ -85,33 +85,19 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                const matchedCmd = matchedCommands[0];
-                const isRoom = matchedCmd === "/room";
-                const sectionName = isRoom ? null : getSectionName(matchedCmd);
-                const userQuery = text.replace(matchedCmd, "").trim();
-
-                const agentPromise = isRoom
-                    ? processRoomQuery(userQuery)
-                    : processSectionQuery(sectionName!, userQuery);
-
-                const timeoutPromise = new Promise<{ timedOut: true }>((resolve) =>
-                    setTimeout(() => resolve({ timedOut: true }), AGENT_TIMEOUT)
-                );
-
                 let finalAnswer: string | null = null;
 
                 try {
-                    const result = await Promise.race([agentPromise, timeoutPromise]);
-                    if (result && (result as any)?.timedOut) {
-                        finalAnswer = "Agent timed out. Please try again.";
-                    } else if (result) {
-                        let raw = result as string;
-                        if (raw.startsWith("DATA_ERROR:")) {
-                            finalAnswer = raw.replace("DATA_ERROR:", "");
-                        } else {
-                            const formatted = await processFormatter(raw);
-                            finalAnswer = formatted || raw;
-                        }
+                    const result = await TelegramTimetableagent.invoke({
+                        messages: [new HumanMessage(text)]
+                    });
+                    const msgs = (result as any)?.messages || [];
+                    const last = msgs[msgs.length - 1];
+                    let raw = last?.content as string || "";
+                    if (raw.startsWith("DATA_ERROR:")) {
+                        finalAnswer = raw.replace("DATA_ERROR:", "");
+                    } else {
+                        finalAnswer = raw;
                     }
                 } catch (e) {
                     console.error("Agent error:", e);
