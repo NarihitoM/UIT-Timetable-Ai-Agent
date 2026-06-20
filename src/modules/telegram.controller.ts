@@ -87,59 +87,20 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                const updates = [
-                    "⏳ Starting the work search...",
-                    "🔍 Analyzing Section Timetable...",
-                    "📂 Sorting through data...",
-                    "🚀 Almost ready!"
-                ];
-
-                let cancelled = false;
-
-                const agentPromise = TelegramTimetableagent.invoke({
-                    messages: [new HumanMessage(text)]
-                }, { recursionLimit: 10 });
-
-                const timeoutPromise = new Promise<never>((_, reject) =>
-                    setTimeout(() => reject(new Error("Agent timeout after 60s")), 60000)
-                );
-
                 let finalAnswer: string | null = null;
 
-                const runStatusUpdates = async () => {
-                    for (const updateText of updates) {
-                        if (cancelled) break;
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                        if (cancelled) break;
-                        try {
-                            await bot.editMessageText(updateText, {
-                                chat_id: chatid,
-                                message_id: waitMessage.message_id
-                            });
-                        } catch { /* message may already be edited */ }
-                    }
-                };
-
-                const updatesPromise = runStatusUpdates();
-
                 try {
-                    const result = await Promise.race([agentPromise, timeoutPromise]);
-                    finalAnswer = result.messages[result.messages.length - 1].content as string;
+                    const result = await TelegramTimetableagent.invoke({
+                        messages: [new HumanMessage(text)]
+                    }, { recursionLimit: 10 });
+                    const msgs = result?.messages || [];
+                    const last = msgs[msgs.length - 1];
+                    finalAnswer = last?.content as string || null;
                 } catch (err) {
-                    console.error("Agent execution error:", err);
-                    if (err instanceof Error) {
-                        console.error("Error name:", err.name);
-                        console.error("Error message:", err.message);
-                    }
-                    finalAnswer = "It seems something went wrong.";
+                    console.error("Agent error:", err);
                 } finally {
-                    cancelled = true;
-                    if (!finalAnswer || finalAnswer.trim() === "") {
-                        finalAnswer = "It seems something went wrong.";
-                    }
+                    finalAnswer = finalAnswer || "It seems something went wrong.";
                 }
-
-                await Promise.race([updatesPromise, new Promise(resolve => setTimeout(resolve, 5000))]);
 
                 try {
                     const maxLen = 4000;
@@ -157,13 +118,13 @@ class Telegramcontroller extends Telegramcommand {
                             message_id: waitMessage.message_id
                         });
                     }
-                } catch (editErr) {
-                    console.error("Failed to edit message, sending as new:", editErr);
-                    try { await bot.sendMessage(chatid, finalAnswer); } catch { /* give up */ }
-                }
+                } catch { /* skip */ }
 
-                await redisclient.del(cachekey);
-                return res.status(200).send("OK");
+                try {
+                    await redisclient.del(cachekey);
+                } catch { /* skip */ }
+
+                return;
             }
 
             await bot.sendMessage(chatid, "There is no command with that function.");
