@@ -1,12 +1,12 @@
 import { ChatGroq } from "@langchain/groq";
 
 const mainmodel =  new ChatGroq({
-    model : "llama-3.3-70b-versatile",
+    model : "openai/gpt-oss-120b",
     apiKey : process.env.APIKEY,
 });
 
 const submodel = new ChatGroq({
-    model : "llama-3.3-70b-versatile",
+    model : "openai/gpt-oss-120b",
     apiKey : process.env.SUBAPIKEY,
 })
 
