@@ -55,14 +55,6 @@ TelegramAgent.addNode("Main Agent", async (state) => {
             };
         }
 
-        const prompt = [
-            new SystemMessage(getSupervisorPrompt()),
-            ...history
-        ];
-
-        const response = await mainmodel.invoke(prompt);
-        const aireply = response.content as string;
-
         let targetAgent = "__end__";
 
         if (/sem2_a|sem2a/i.test(userText)) {
@@ -111,13 +103,29 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
         console.log("Main Agent - routed to:", targetAgent);
 
+        // Try LLM for supervisor context, but routing is already decided by regex
+        let response;
+        try {
+            const prompt = [
+                new SystemMessage(getSupervisorPrompt()),
+                ...history
+            ];
+            response = await mainmodel.invoke(prompt);
+        } catch {
+            response = { content: `ROUTE: ${targetAgent}` };
+        }
+
         return {
             nextAgent: targetAgent,
             messages: [response]
         };
     } catch (error) {
         console.error("Main Agent error:", error);
-        throw error;
+        // Don't throw — route to END gracefully
+        return {
+            nextAgent: "__end__",
+            messages: [{ role: "assistant", content: "Supervisor error occurred." }]
+        };
     }
 });
 
