@@ -87,10 +87,13 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                //Save user message + fetch last 10 messages for context
+                //Save user message + fetch last 10 messages for context (non-blocking — DB may be unreachable)
                 const chatIdBigInt = BigInt(chatid);
-                await TelegramDatabaseService.saveText(chatIdBigInt, text, "user").catch(() => {});
-                const history = await TelegramDatabaseService.getChatHistory(chatIdBigInt, 10).catch(() => []);
+                TelegramDatabaseService.saveText(chatIdBigInt, text, "user").catch(() => {});
+                const history = await Promise.race([
+                    TelegramDatabaseService.getChatHistory(chatIdBigInt, 10),
+                    new Promise<[]>(resolve => setTimeout(resolve, 3000, []))
+                ]).catch(() => []);
                 const historyMessages = history.reverse().map(h =>
                     h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
                 );
@@ -142,8 +145,8 @@ class Telegramcontroller extends Telegramcommand {
                     await redisclient.del(cachekey);
                 } catch { /* skip */ }
 
-                //Save assistant reply
-                await TelegramDatabaseService.saveText(chatIdBigInt, finalAnswer, "assistant").catch(() => {});
+                //Save assistant reply (non-blocking)
+                TelegramDatabaseService.saveText(chatIdBigInt, finalAnswer, "assistant").catch(() => {});
 
                 const maxLen = 4000;
                 if (finalAnswer.length > maxLen) {
