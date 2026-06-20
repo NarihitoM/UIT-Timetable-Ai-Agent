@@ -1,12 +1,11 @@
-import { HumanMessage } from "@langchain/core/messages";
-import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
+import { processSectionQuery, processRoomQuery, processFormatter, getSectionName } from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
 
 const inMemoryLocks = new Map<string, number>();
-const AGENT_TIMEOUT = 60_000;
+const AGENT_TIMEOUT = 20_000;
 
 class Telegramcontroller extends Telegramcommand {
 
@@ -86,9 +85,14 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                const agentPromise = TelegramTimetableagent.invoke({
-                    messages: [new HumanMessage(text)]
-                }, { recursionLimit: 10 });
+                const matchedCmd = matchedCommands[0];
+                const isRoom = matchedCmd === "/room";
+                const sectionName = isRoom ? null : getSectionName(matchedCmd);
+                const userQuery = text.replace(matchedCmd, "").trim();
+
+                const agentPromise = isRoom
+                    ? processRoomQuery(userQuery)
+                    : processSectionQuery(sectionName!, userQuery);
 
                 const timeoutPromise = new Promise<{ timedOut: true }>((resolve) =>
                     setTimeout(() => resolve({ timedOut: true }), AGENT_TIMEOUT)
@@ -120,13 +124,19 @@ class Telegramcontroller extends Telegramcommand {
 
                 try {
                     const result = await Promise.race([agentPromise, timeoutPromise]);
-                    if ((result as any)?.timedOut) {
+                    if (result && (result as any)?.timedOut) {
                         finalAnswer = "Agent timed out. Please try again.";
                     } else if (result) {
-                        finalAnswer = (result as any).messages?.slice(-1)?.[0]?.content as string || null;
+                        let raw = result as string;
+                        if (raw.startsWith("DATA_ERROR:")) {
+                            finalAnswer = raw.replace("DATA_ERROR:", "");
+                        } else {
+                            const formatted = await processFormatter(raw);
+                            finalAnswer = formatted || raw;
+                        }
                     }
                 } catch (e) {
-                    console.error("Agent invoke error:", e);
+                    console.error("Agent error:", e);
                 } finally {
                     finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
                 }
