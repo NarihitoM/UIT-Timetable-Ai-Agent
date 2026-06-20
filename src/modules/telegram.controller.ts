@@ -118,13 +118,19 @@ class Telegramcontroller extends Telegramcommand {
                     finalAnswer = result.messages[result.messages.length - 1].content as string;
                 } catch (err) {
                     console.error("Agent execution error:", err);
+                    if (err instanceof Error) {
+                        console.error("Error name:", err.name);
+                        console.error("Error message:", err.message);
+                    }
                     finalAnswer = "It seems something went wrong.";
                 } finally {
                     cancelled = true;
-                    finalAnswer = finalAnswer || "It seems something went wrong.";
+                    if (!finalAnswer || finalAnswer.trim() === "") {
+                        finalAnswer = "It seems something went wrong.";
+                    }
                 }
 
-                await updatesPromise;
+                await Promise.race([updatesPromise, new Promise(resolve => setTimeout(resolve, 5000))]);
 
                 try {
                     const maxLen = 4000;
@@ -132,7 +138,7 @@ class Telegramcontroller extends Telegramcommand {
                         await bot.editMessageText(finalAnswer.slice(0, maxLen), {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
-                        }).catch(() => bot.sendMessage(chatid, finalAnswer.slice(0, maxLen)));
+                        });
                         for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
                             await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
                         }
@@ -140,10 +146,10 @@ class Telegramcontroller extends Telegramcommand {
                         await bot.editMessageText(finalAnswer, {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
-                        }).catch(() => bot.sendMessage(chatid, finalAnswer));
+                        });
                     }
-                } catch (err) {
-                    console.error("Failed to send final answer:", err);
+                } catch (editErr) {
+                    console.error("Failed to edit message, sending as new:", editErr);
                     try { await bot.sendMessage(chatid, finalAnswer); } catch { /* give up */ }
                 }
 
