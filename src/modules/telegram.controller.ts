@@ -132,7 +132,7 @@ class Telegramcontroller extends Telegramcommand {
                         await bot.editMessageText(finalAnswer.slice(0, maxLen), {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
-                        });
+                        }).catch(() => bot.sendMessage(chatid, finalAnswer.slice(0, maxLen)));
                         for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
                             await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
                         }
@@ -140,9 +140,12 @@ class Telegramcontroller extends Telegramcommand {
                         await bot.editMessageText(finalAnswer, {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
-                        });
+                        }).catch(() => bot.sendMessage(chatid, finalAnswer));
                     }
-                } catch { /* fallback: send as new message */ }
+                } catch (err) {
+                    console.error("Failed to send final answer:", err);
+                    try { await bot.sendMessage(chatid, finalAnswer); } catch { /* give up */ }
+                }
 
                 await redisclient.del(cachekey);
                 return res.status(200).send("OK");
