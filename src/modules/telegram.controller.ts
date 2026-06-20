@@ -45,7 +45,9 @@ class Telegramcontroller extends Telegramcommand {
 
             //Agent Message route
             const sectionCmds = Telegramcontroller.commands.slice(4);
-            if (sectionCmds.some(cmd => cmd && text.includes(cmd))) {
+            const isAgentCommand = sectionCmds.some(cmd => cmd && text.includes(cmd)) || /\/room|available room|free room|empty room/i.test(text);
+
+            if (isAgentCommand) {
 
                 const matchedCommands = sectionCmds.filter(cmd =>
                     cmd && text.includes(cmd)
@@ -85,51 +87,83 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
+                const updates = [
+                    "⏳ Starting the work search...",
+                    "🔍 Analyzing Section Timetable...",
+                    "📂 Sorting through data...",
+                    "🚀 Almost ready!"
+                ];
+
+                let cancelled = false;
+
+                const agentPromise = TelegramTimetableagent.invoke({
+                    messages: [new HumanMessage(text)]
+                }, { recursionLimit: 10 });
+
+                const timeoutPromise = new Promise<never>((_, reject) =>
+                    setTimeout(() => reject(new Error("Agent timeout after 60s")), 60000)
+                );
+
                 let finalAnswer: string | null = null;
 
-                try {
-                    const result = await TelegramTimetableagent.invoke({
-                        messages: [new HumanMessage(text)]
-                    });
-                    const msgs = (result as any)?.messages || [];
-                    const last = msgs[msgs.length - 1];
-                    let raw = last?.content as string || "";
-                    if (raw.startsWith("DATA_ERROR:")) {
-                        finalAnswer = raw.replace("DATA_ERROR:", "");
-                    } else {
-                        finalAnswer = raw;
+                const runStatusUpdates = async () => {
+                    for (const updateText of updates) {
+                        if (cancelled) break;
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        if (cancelled) break;
+                        try {
+                            await bot.editMessageText(updateText, {
+                                chat_id: chatid,
+                                message_id: waitMessage.message_id
+                            });
+                        } catch { /* message may already be edited */ }
                     }
-                } catch (e) {
-                    console.error("Agent error:", e);
+                };
+
+                const updatesPromise = runStatusUpdates();
+
+                try {
+                    const result = await Promise.race([agentPromise, timeoutPromise]);
+                    finalAnswer = result.messages[result.messages.length - 1].content as string;
+                } catch (err) {
+                    console.error("Agent execution error:", err);
+                    if (err instanceof Error) {
+                        console.error("Error name:", err.name);
+                        console.error("Error message:", err.message);
+                    }
+                    finalAnswer = "It seems something went wrong.";
                 } finally {
-                    finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
+                    cancelled = true;
+                    if (!finalAnswer || finalAnswer.trim() === "") {
+                        finalAnswer = "It seems something went wrong.";
+                    }
                 }
 
-                try {
-                    await redisclient.del(cachekey);
-                } catch { /* skip */ }
+                await Promise.race([updatesPromise, new Promise(resolve => setTimeout(resolve, 5000))]);
 
-                const maxLen = 4000;
-                if (finalAnswer.length > maxLen) {
-                    try {
+                try {
+                    const maxLen = 4000;
+                    if (finalAnswer.length > maxLen) {
                         await bot.editMessageText(finalAnswer.slice(0, maxLen), {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
                         });
-                    } catch { /* skip */ }
-                    for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
-                        try { await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen)); } catch { /* skip */ }
-                    }
-                } else {
-                    try {
+                        for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
+                            await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                        }
+                    } else {
                         await bot.editMessageText(finalAnswer, {
                             chat_id: chatid,
                             message_id: waitMessage.message_id
                         });
-                    } catch { /* skip */ }
+                    }
+                } catch (editErr) {
+                    console.error("Failed to edit message, sending as new:", editErr);
+                    try { await bot.sendMessage(chatid, finalAnswer); } catch { /* give up */ }
                 }
 
-                return;
+                await redisclient.del(cachekey);
+                return res.status(200).send("OK");
             }
 
             await bot.sendMessage(chatid, "There is no command with that function.");

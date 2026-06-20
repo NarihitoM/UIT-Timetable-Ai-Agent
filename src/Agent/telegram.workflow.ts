@@ -27,19 +27,11 @@ function readFile(sectionName: string): string | null {
     }
 }
 
-const routerMap: Record<string, string> = {
-    "Sem2A": "sectionAgent", "Sem2B": "sectionAgent", "Sem2C": "sectionAgent",
-    "Sem2D": "sectionAgent", "Sem2E": "sectionAgent",
-    "Sem4A": "sectionAgent", "Sem4B": "sectionAgent", "Sem4C": "sectionAgent", "Sem4D": "sectionAgent",
-    "Sem6CT": "sectionAgent", "Sem6A_CS": "sectionAgent", "Sem6B_CS": "sectionAgent",
-    "Sem6C_CS": "sectionAgent", "Sem6D_CS": "sectionAgent",
-    "Sem8SE": "sectionAgent", "Sem8KE": "sectionAgent", "Sem8HPC": "sectionAgent",
-    "Sem8ES": "sectionAgent", "Sem8CCN": "sectionAgent", "Sem8BIS": "sectionAgent",
-    "roomAgent": "roomAgent",
-};
+const sectionRoute = (next: string) => "sectionAgent";
 
 const AgentGraph = new StateGraph(Telegramagentstate);
 
+// ── Router node ──────────────────────────────────────────────
 AgentGraph.addNode("router", async (state) => {
     const lastMsg = state.messages[state.messages.length - 1];
     const text = (lastMsg?.content as string) || "";
@@ -57,10 +49,10 @@ AgentGraph.addNode("router", async (state) => {
     else if (/sem4_c|sem4c/i.test(text)) { target = "Sem4C"; }
     else if (/sem4_d|sem4d/i.test(text)) { target = "Sem4D"; }
     else if (/sem6_ct|sem6ct/i.test(text)) { target = "Sem6CT"; }
-    else if (/sem6_a_cs|sem6acs|sem6ac cs/i.test(text)) { target = "Sem6A_CS"; }
-    else if (/sem6_b_cs|sem6bcs|sem6bc cs/i.test(text)) { target = "Sem6B_CS"; }
-    else if (/sem6_c_cs|sem6ccs|sem6cc cs/i.test(text)) { target = "Sem6C_CS"; }
-    else if (/sem6_d_cs|sem6dcs|sem6dc cs/i.test(text)) { target = "Sem6D_CS"; }
+    else if (/sem6_a_cs|sem6acs/i.test(text)) { target = "Sem6A_CS"; }
+    else if (/sem6_b_cs|sem6bcs/i.test(text)) { target = "Sem6B_CS"; }
+    else if (/sem6_c_cs|sem6ccs/i.test(text)) { target = "Sem6C_CS"; }
+    else if (/sem6_d_cs|sem6dcs/i.test(text)) { target = "Sem6D_CS"; }
     else if (/sem8_se|sem8se/i.test(text)) { target = "Sem8SE"; }
     else if (/sem8_ke|sem8ke/i.test(text)) { target = "Sem8KE"; }
     else if (/sem8_hpc|sem8hpc/i.test(text)) { target = "Sem8HPC"; }
@@ -72,6 +64,7 @@ AgentGraph.addNode("router", async (state) => {
     return { nextAgent: target };
 });
 
+// ── Section agent node ───────────────────────────────────────
 AgentGraph.addNode("sectionAgent", async (state) => {
     const sectionName = state.nextAgent;
     const lastMsg = state.messages[state.messages.length - 1];
@@ -88,16 +81,22 @@ AgentGraph.addNode("sectionAgent", async (state) => {
     const prompt = `${getSubAgentPrompt(sectionName)}\n\nTimetable data:\n${fileContent}`;
 
     try {
-        const response = await submodel.invoke([
+        const llmPromise = submodel.invoke([
             new SystemMessage(prompt),
             new HumanMessage(userQuery || "Show my next class")
         ]);
+        const timeoutPromise = new Promise<{ content: string }>((_, reject) =>
+            setTimeout(() => reject(new Error("LLM timeout")), 25000)
+        );
+        const response = await Promise.race([llmPromise, timeoutPromise]) as any;
         return { messages: [response] };
-    } catch {
+    } catch (e) {
+        console.error(`${sectionName} agent error:`, e);
         return { messages: [new HumanMessage(`DATA_ERROR: Failed to process query for ${sectionName}.`)] };
     }
 });
 
+// ── Room agent node ──────────────────────────────────────────
 AgentGraph.addNode("roomAgent", async (state) => {
     let allData = "";
     for (const [name, file] of Object.entries(FILE_NAMES)) {
@@ -109,20 +108,39 @@ AgentGraph.addNode("roomAgent", async (state) => {
 
     try {
         const prompt = `${getRoomAgentPrompt()}\n\nAll timetable data:\n${allData}`;
-        const response = await submodel.invoke([
+        const llmPromise = submodel.invoke([
             new SystemMessage(prompt),
             new HumanMessage("")
         ]);
+        const timeoutPromise = new Promise<{ content: string }>((_, reject) =>
+            setTimeout(() => reject(new Error("LLM timeout")), 25000)
+        );
+        const response = await Promise.race([llmPromise, timeoutPromise]) as any;
         return { messages: [response] };
-    } catch {
+    } catch (e) {
+        console.error("Room agent error:", e);
         return { messages: [new HumanMessage("DATA_ERROR: Failed to process room query.")] };
     }
 });
 
+// ── Edges ────────────────────────────────────────────────────
 AgentGraph.addEdge(START, "router" as any);
 
-const routeEnd: Record<string, string> = { ...routerMap, "__end__": END };
-AgentGraph.addConditionalEdges("router" as any, (state) => state.nextAgent, routeEnd as any);
+AgentGraph.addConditionalEdges(
+    "router" as any,
+    (state) => state.nextAgent,
+    {
+        "Sem2A": "sectionAgent", "Sem2B": "sectionAgent", "Sem2C": "sectionAgent",
+        "Sem2D": "sectionAgent", "Sem2E": "sectionAgent",
+        "Sem4A": "sectionAgent", "Sem4B": "sectionAgent", "Sem4C": "sectionAgent", "Sem4D": "sectionAgent",
+        "Sem6CT": "sectionAgent", "Sem6A_CS": "sectionAgent", "Sem6B_CS": "sectionAgent",
+        "Sem6C_CS": "sectionAgent", "Sem6D_CS": "sectionAgent",
+        "Sem8SE": "sectionAgent", "Sem8KE": "sectionAgent", "Sem8HPC": "sectionAgent",
+        "Sem8ES": "sectionAgent", "Sem8CCN": "sectionAgent", "Sem8BIS": "sectionAgent",
+        "roomAgent": "roomAgent",
+        "__end__": END
+    } as any
+);
 
 AgentGraph.addEdge("sectionAgent" as any, END);
 AgentGraph.addEdge("roomAgent" as any, END);
