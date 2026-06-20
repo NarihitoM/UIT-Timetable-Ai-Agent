@@ -41,12 +41,17 @@ TelegramAgent.addNode("Main Agent", async (state) => {
 
         if (state.data) {
             console.log("Main Agent - formatting response");
-            const prompt = [
-                new SystemMessage(getFormatterPrompt()),
-                ...state.messages
-            ];
-
-            const response = await mainmodel.invoke(prompt);
+            let response;
+            try {
+                const prompt = [
+                    new SystemMessage(getFormatterPrompt()),
+                    ...state.messages
+                ];
+                response = await mainmodel.invoke(prompt);
+            } catch (e) {
+                console.error("Formatter error:", e);
+                response = { role: "assistant", content: "Failed to format timetable data." };
+            }
 
             return {
                 nextAgent: "__end__",
