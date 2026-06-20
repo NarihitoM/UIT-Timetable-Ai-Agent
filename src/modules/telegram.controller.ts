@@ -4,7 +4,6 @@ import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
-import { TelegramDatabaseService } from "./telegram.service.ts";
 
 const inMemoryLocks = new Map<string, number>();
 const AGENT_TIMEOUT = 60_000;
@@ -87,16 +86,12 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                //Save user message (non-blocking — DB may be unreachable)
-                const chatIdBigInt = BigInt(chatid);
-                TelegramDatabaseService.saveText(chatIdBigInt, text, "user").catch(() => {});
-
                 const agentPromise = TelegramTimetableagent.invoke({
                     messages: [new HumanMessage(text)]
                 }, { recursionLimit: 10 });
 
-                const timeoutPromise = new Promise<null>((_, reject) =>
-                    setTimeout(() => reject(new Error("Agent timeout")), AGENT_TIMEOUT)
+                const timeoutPromise = new Promise<{ timedOut: true }>((resolve) =>
+                    setTimeout(() => resolve({ timedOut: true }), AGENT_TIMEOUT)
                 );
 
                 let finalAnswer: string | null = null;
@@ -125,9 +120,13 @@ class Telegramcontroller extends Telegramcommand {
 
                 try {
                     const result = await Promise.race([agentPromise, timeoutPromise]);
-                    if (result) {
-                        finalAnswer = result.messages[result.messages.length - 1].content as string;
+                    if ((result as any)?.timedOut) {
+                        finalAnswer = "Agent timed out. Please try again.";
+                    } else if (result) {
+                        finalAnswer = (result as any).messages?.slice(-1)?.[0]?.content as string || null;
                     }
+                } catch (e) {
+                    console.error("Agent invoke error:", e);
                 } finally {
                     finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
                 }
@@ -137,9 +136,6 @@ class Telegramcontroller extends Telegramcommand {
                 try {
                     await redisclient.del(cachekey);
                 } catch { /* skip */ }
-
-                //Save assistant reply (non-blocking)
-                TelegramDatabaseService.saveText(chatIdBigInt, finalAnswer, "assistant").catch(() => {});
 
                 const maxLen = 4000;
                 if (finalAnswer.length > maxLen) {
