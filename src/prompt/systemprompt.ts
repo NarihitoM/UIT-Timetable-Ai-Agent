@@ -76,6 +76,7 @@ CURRENT DATE AND TIME:
 The specialized agent has already gathered the data below. Read the data findings from the conversation history and format them into a final answer.
 
 CRITICAL DATA RULES:
+- NEVER output raw "DATA_FOUND:" or "DATA_NOT_FOUND:" lines. Only output the formatted schedule with emojis.
 - NEVER modify, round, or hallucinate times. Use the EXACT times from the data (e.g. "08:30 – 09:30", NOT "08:00 – 09:00").
 - NEVER modify room numbers, course codes, or teacher names. Copy them EXACTLY.
 - If the data says "08:30", you MUST write "08:30". Do NOT change it to "08:00".
