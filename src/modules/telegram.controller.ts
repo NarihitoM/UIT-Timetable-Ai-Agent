@@ -1,4 +1,4 @@
-import { HumanMessage, AIMessage } from "@langchain/core/messages";
+import { HumanMessage } from "@langchain/core/messages";
 import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
@@ -87,19 +87,12 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                //Save user message + fetch last 10 messages for context (non-blocking — DB may be unreachable)
+                //Save user message (non-blocking — DB may be unreachable)
                 const chatIdBigInt = BigInt(chatid);
                 TelegramDatabaseService.saveText(chatIdBigInt, text, "user").catch(() => {});
-                const history = await Promise.race([
-                    TelegramDatabaseService.getChatHistory(chatIdBigInt, 10),
-                    new Promise<[]>(resolve => setTimeout(resolve, 3000, []))
-                ]).catch(() => []);
-                const historyMessages = history.reverse().map(h =>
-                    h.role === "assistant" ? new AIMessage(h.message) : new HumanMessage(h.message)
-                );
 
                 const agentPromise = TelegramTimetableagent.invoke({
-                    messages: [...historyMessages, new HumanMessage(text)]
+                    messages: [new HumanMessage(text)]
                 }, { recursionLimit: 10 });
 
                 const timeoutPromise = new Promise<null>((_, reject) =>
