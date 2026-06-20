@@ -100,28 +100,6 @@ class Telegramcontroller extends Telegramcommand {
 
                 let finalAnswer: string | null = null;
 
-                const runStatusUpdates = async () => {
-                    const updates = [
-                        "⏳ Starting the work search...",
-                        "🔍 Analyzing Section Timetable...",
-                        "📂 Sorting through data...",
-                        "🚀 Almost ready!"
-                    ];
-                    for (const updateText of updates) {
-                        if (finalAnswer) break;
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                        if (finalAnswer) break;
-                        try {
-                            await bot.editMessageText(updateText, {
-                                chat_id: chatid,
-                                message_id: waitMessage.message_id
-                            });
-                        } catch { /* message may have been deleted */ }
-                    }
-                };
-
-                const updatesPromise = runStatusUpdates();
-
                 try {
                     const result = await Promise.race([agentPromise, timeoutPromise]);
                     if (result && (result as any)?.timedOut) {
@@ -140,8 +118,6 @@ class Telegramcontroller extends Telegramcommand {
                 } finally {
                     finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
                 }
-
-                await updatesPromise;
 
                 try {
                     await redisclient.del(cachekey);
