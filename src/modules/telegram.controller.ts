@@ -7,7 +7,7 @@ import { redisclient } from "../lib/redis.ts";
 import { TelegramDatabaseService } from "./telegram.service.ts";
 
 const inMemoryLocks = new Map<string, number>();
-const AGENT_TIMEOUT = 120_000;
+const AGENT_TIMEOUT = 60_000;
 
 class Telegramcontroller extends Telegramcommand {
 
