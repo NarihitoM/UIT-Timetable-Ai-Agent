@@ -1,4 +1,4 @@
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { HumanMessage } from "@langchain/core/messages";
 import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
@@ -20,11 +20,9 @@ class Telegramcontroller extends Telegramcommand {
         if (!chatid || !text) {
             return res.status(200).send("OK");
         }
-
         const cachekey = `telegram:cache:${chatid}`;
 
         try {
-            // ─── Static commands ──────────────────────────────────────────────
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions.\n\nHappy Asking ^_^.");
                 return res.status(200).send("OK");
@@ -45,26 +43,24 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            // ─── Agent commands ───────────────────────────────────────────────
+            //Agent Message route
             const sectionCmds = Telegramcontroller.commands.slice(4);
-            const isAgentCommand =
-                sectionCmds.some(cmd => cmd && text.includes(cmd)) ||
-                /\/room|available room|free room|empty room/i.test(text);
+            if (sectionCmds.some(cmd => cmd && text.includes(cmd))) {
 
-            if (isAgentCommand) {
-                const matchedCommands = sectionCmds.filter(cmd => cmd && text.includes(cmd));
+                const matchedCommands = sectionCmds.filter(cmd =>
+                    cmd && text.includes(cmd)
+                );
 
                 if (matchedCommands.length > 1) {
                     await bot.sendMessage(chatid, "Please request only one section timetable at a time.");
                     return res.status(200).send("OK");
                 }
 
-                // ─── Rate limiting ────────────────────────────────────────────
+                //Rate limit: Redis first, in-memory fallback
                 let acquiredLock = false;
                 try {
                     acquiredLock = !!(await redisclient.set(cachekey, "true", { NX: true, EX: 15 }));
-                } catch (redisErr) {
-                    console.warn("Redis unavailable, falling back to in-memory lock:", redisErr);
+                } catch {
                     const now = Date.now();
                     const lastReq = inMemoryLocks.get(cachekey) || 0;
                     if (now - lastReq < 15000) {
@@ -78,121 +74,48 @@ class Telegramcontroller extends Telegramcommand {
 
                 if (!acquiredLock) {
                     let displayTime = 15;
-                    try {
-                        displayTime = Math.max(0, await redisclient.ttl(cachekey));
-                    } catch {
-                        // ignore, use default
-                    }
+                    try { displayTime = Math.max(0, await redisclient.ttl(cachekey)); } catch { /* skip */ }
                     await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
                     return res.status(200).send("OK");
                 }
 
-                // ─── Fire-and-forget agent invocation ────────────────────────
-                (async () => {
-                    const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
-                    let finalAnswer: string | null = null;
 
-                    try {
-                        const now = new Date();
-                        const day = now.toLocaleDateString("en-GB", { timeZone: "Asia/Yangon", weekday: "long" });
-                        const time = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Yangon", hour: "2-digit", minute: "2-digit" });
+                //Background processing
+                const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                        console.log(`[Agent] Invoking for chatid=${chatid}, text="${text}", time=${day} ${time}`);
-                        console.log(`[Agent] Agent instance:`, TelegramTimetableagent);
+                let finalAnswer;
 
-                        const result = await TelegramTimetableagent.invoke(
-                            {
-                                messages: [
-                                    new SystemMessage(`Current date and time: ${day}, ${time} MMT`),
-                                    new HumanMessage(text)
-                                ]
-                            },
-                            { recursionLimit: 25 }  // raised from 10 — low limits cause silent failures
-                        );
+                try {
+                    const result = await TelegramTimetableagent.invoke({
+                        messages: [new HumanMessage(text)]
+                    });
+                    finalAnswer = result.messages[0].content;
+                } catch (e) {
+                    console.error("Agent error:", e);
+                } finally {
+                    finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
+                }
 
-                        console.log(`[Agent] Raw result:`, JSON.stringify(result, null, 2));
+                try {
+                    await redisclient.del(cachekey);
+                } catch { /* skip */ }
 
-                        const msgs = result?.messages || [];
-                        const last = msgs[msgs.length - 1];
-                        finalAnswer = (last?.content as string) || null;
+                await bot.editMessageText(finalAnswer as any, {
+                    chat_id: chatid,
+                    message_id: waitMessage.message_id
+                });
 
-                        console.log(`[Agent] Final answer:`, finalAnswer);
-
-                    } catch (agentErr) {
-                        console.error("[Agent] Invocation error:", agentErr);
-                        finalAnswer = null;
-                    } finally {
-                        if (!finalAnswer) {
-                            finalAnswer = "It seems something went wrong. Please try again.";
-                        }
-                    }
-
-                    // ─── Send the reply ───────────────────────────────────────
-                    const maxLen = 4000;
-
-                    try {
-                        if (finalAnswer.length > maxLen) {
-                            // First chunk: edit the wait message
-                            await bot.editMessageText(finalAnswer.slice(0, maxLen), {
-                                chat_id: chatid,
-                                message_id: waitMessage.message_id
-                            });
-                            // Remaining chunks: send as new messages
-                            for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
-                                await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
-                            }
-                        } else {
-                            await bot.editMessageText(finalAnswer, {
-                                chat_id: chatid,
-                                message_id: waitMessage.message_id
-                            });
-                        }
-                        console.log("[Bot] Message sent successfully");
-                    } catch (editErr: any) {
-                        console.error("[Bot] editMessageText failed:", editErr?.message || editErr);
-
-                        // Fallback: delete the wait message and send fresh
-                        try {
-                            await bot.deleteMessage(chatid, waitMessage.message_id);
-                        } catch (delErr: any) {
-                            console.warn("[Bot] Could not delete wait message:", delErr?.message);
-                        }
-
-                        try {
-                            if (finalAnswer.length > maxLen) {
-                                for (let i = 0; i < finalAnswer.length; i += maxLen) {
-                                    await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
-                                }
-                            } else {
-                                await bot.sendMessage(chatid, finalAnswer);
-                            }
-                            console.log("[Bot] Fallback sendMessage succeeded");
-                        } catch (sendErr: any) {
-                            console.error("[Bot] sendMessage also failed:", sendErr?.message || sendErr);
-                        }
-                    }
-                    // ─── Release the lock ─────────────────────────────────────
-                    try {
-                        await redisclient.del(cachekey);
-                    } catch (delErr) {
-                        console.warn("[Redis] Failed to release lock:", delErr);
-                        // Clean up in-memory lock as a fallback
-                        inMemoryLocks.delete(cachekey);
-                    }
-                })();
-
-                return res.status(200).send("OK");
+                return;
             }
 
-            // ─── Unknown command ──────────────────────────────────────────────
             await bot.sendMessage(chatid, "There is no command with that function.");
             return res.status(200).send("OK");
 
         } catch (err: unknown) {
-            console.error("[Controller] Unhandled error:", err);
+            console.error("Agent execution error:", err);
             if (chatid) {
-                try { await redisclient.del(cachekey); } catch { }
-                try { await bot.sendMessage(chatid, "It seems something went wrong."); } catch { }
+                try { await redisclient.del(cachekey); } catch { /* skip */ }
+                try { await bot.sendMessage(chatid, "It seems something went wrong."); } catch { /* skip */ }
             }
             return res.status(200).send("OK");
         }
