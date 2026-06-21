@@ -81,8 +81,7 @@ class Telegramcontroller extends Telegramcommand {
                     return res.status(200).send("OK");
                 }
 
-                //Respond 200 immediately — Telegram won't retry
-                res.status(200).send("OK");
+              
 
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
