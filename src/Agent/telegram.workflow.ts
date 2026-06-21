@@ -2,6 +2,7 @@ import { START, END, StateGraph } from "@langchain/langgraph";
 import Telegramagentstate from "./telegram.state.ts";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { submodel } from "./telegram.model.ts";
+import { getSectionAgentPrompt, getRoomAgentPrompt } from "../prompt/systemprompt.ts";
 import * as fs from "fs";
 import * as path from "path";
 import { FILE_NAMES, DATA_DIR } from "../constants.ts";
@@ -88,17 +89,7 @@ function makeSectionAgent(section: string) {
         try {
             const response = await submodel.invoke([
                 ...(timeMsg ? [timeMsg] : []),
-                new SystemMessage(`You are the timetable assistant for ${section}.
-
-Timetable data for ${section}:
-${data}
-
-If the user just sent a bare command, find their NEXT class based on the current time.
-If they asked for "all" or "schedule", show everything.
-If they specified a day, show only that day.
-Otherwise answer their question directly.
-
-Keep it short. No emojis.`),
+                new SystemMessage(getSectionAgentPrompt(section, data)),
                 new HumanMessage(query || "Show my next class")
             ]);
             return { messages: [response] };
@@ -120,13 +111,7 @@ graph.addNode("roomAgent", async (state) => {
     try {
         const response = await submodel.invoke([
             ...(timeMsg ? [timeMsg] : []),
-            new SystemMessage(`You are the room assistant.
-
-Available rooms:
-${data || "No room data."}
-
-List the rooms. If the user searches for a specific room, filter for it.
-Keep it short. No emojis.`),
+            new SystemMessage(getRoomAgentPrompt(data)),
             new HumanMessage("Show available rooms")
         ]);
         return { messages: [response] };

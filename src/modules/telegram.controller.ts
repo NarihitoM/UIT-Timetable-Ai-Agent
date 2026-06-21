@@ -82,7 +82,6 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
               
-
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
