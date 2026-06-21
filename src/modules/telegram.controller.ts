@@ -124,7 +124,7 @@ class Telegramcontroller extends Telegramcommand {
                     } catch { }
                 })();
 
-                return;
+                return res.status(200).send("Ok");
             }
 
             await bot.sendMessage(chatid, "There is no command with that function.");
