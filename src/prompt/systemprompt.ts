@@ -27,6 +27,6 @@ List the rooms.
 
 FORMAT RULES (Telegram):
 - Use emojis: ✅ for available, 🚪 for room
-- Use *bold* for room numbers (single asterisk only)
+- Use for room numbers
 - Keep it concise
 - Under 4000 characters`;
