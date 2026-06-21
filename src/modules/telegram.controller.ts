@@ -1,4 +1,4 @@
-import { HumanMessage } from "@langchain/core/messages";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
@@ -90,8 +90,15 @@ class Telegramcontroller extends Telegramcommand {
                 let finalAnswer: string | null = null;
 
                 try {
+                    const now = new Date();
+                    const day = now.toLocaleDateString("en-GB", { timeZone: "Asia/Yangon", weekday: "long" });
+                    const time = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Yangon", hour: "2-digit", minute: "2-digit" });
+
                     const result = await TelegramTimetableagent.invoke({
-                        messages: [new HumanMessage(text)]
+                        messages: [
+                            new SystemMessage(`Current date and time: ${day}, ${time} MMT`),
+                            new HumanMessage(text)
+                        ]
                     }, { recursionLimit: 10 });
                     const msgs = result?.messages || [];
                     const last = msgs[msgs.length - 1];
