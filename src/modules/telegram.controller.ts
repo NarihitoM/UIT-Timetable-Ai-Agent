@@ -43,22 +43,17 @@ class Telegramcontroller extends Telegramcommand {
                 return res.status(200).send("OK");
             }
 
-            //Agent Message route
             const sectionCmds = Telegramcontroller.commands.slice(4);
             const isAgentCommand = sectionCmds.some(cmd => cmd && text.includes(cmd)) || /\/room|available room|free room|empty room/i.test(text);
 
             if (isAgentCommand) {
-
-                const matchedCommands = sectionCmds.filter(cmd =>
-                    cmd && text.includes(cmd)
-                );
+                const matchedCommands = sectionCmds.filter(cmd => cmd && text.includes(cmd));
 
                 if (matchedCommands.length > 1) {
                     await bot.sendMessage(chatid, "Please request only one section timetable at a time.");
                     return res.status(200).send("OK");
                 }
 
-                //Rate limit: Redis first, in-memory fallback
                 let acquiredLock = false;
                 try {
                     acquiredLock = !!(await redisclient.set(cachekey, "true", { NX: true, EX: 15 }));
@@ -76,58 +71,59 @@ class Telegramcontroller extends Telegramcommand {
 
                 if (!acquiredLock) {
                     let displayTime = 15;
-                    try { displayTime = Math.max(0, await redisclient.ttl(cachekey)); } catch { /* skip */ }
+                    try { displayTime = Math.max(0, await redisclient.ttl(cachekey)); } catch { }
                     await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
                     return res.status(200).send("OK");
                 }
 
-              
-                //Background processing
-                const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
+                res.status(200).send("OK");
 
-                let finalAnswer: string | null = null;
+                (async () => {
+                    const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
+                    let finalAnswer: string | null = null;
 
-                try {
-                    const now = new Date();
-                    const day = now.toLocaleDateString("en-GB", { timeZone: "Asia/Yangon", weekday: "long" });
-                    const time = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Yangon", hour: "2-digit", minute: "2-digit" });
+                    try {
+                        const now = new Date();
+                        const day = now.toLocaleDateString("en-GB", { timeZone: "Asia/Yangon", weekday: "long" });
+                        const time = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Yangon", hour: "2-digit", minute: "2-digit" });
 
-                    const result = await TelegramTimetableagent.invoke({
-                        messages: [
-                            new SystemMessage(`Current date and time: ${day}, ${time} MMT`),
-                            new HumanMessage(text)
-                        ]
-                    }, { recursionLimit: 10 });
-                    const msgs = result?.messages || [];
-                    const last = msgs[msgs.length - 1];
-                    finalAnswer = last?.content as string || null;
-                } catch (err) {
-                    console.error("Agent error:", err);
-                } finally {
-                    finalAnswer = finalAnswer || "It seems something went wrong.";
-                }
-
-                try {
-                    const maxLen = 4000;
-                    if (finalAnswer.length > maxLen) {
-                        await bot.editMessageText(finalAnswer.slice(0, maxLen), {
-                            chat_id: chatid,
-                            message_id: waitMessage.message_id
-                        });
-                        for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
-                            await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
-                        }
-                    } else {
-                        await bot.editMessageText(finalAnswer, {
-                            chat_id: chatid,
-                            message_id: waitMessage.message_id
-                        });
+                        const result = await TelegramTimetableagent.invoke({
+                            messages: [
+                                new SystemMessage(`Current date and time: ${day}, ${time} MMT`),
+                                new HumanMessage(text)
+                            ]
+                        }, { recursionLimit: 10 });
+                        const msgs = result?.messages || [];
+                        const last = msgs[msgs.length - 1];
+                        finalAnswer = last?.content as string || null;
+                    } catch (err) {
+                        console.error("Agent error:", err);
+                    } finally {
+                        finalAnswer = finalAnswer || "It seems something went wrong.";
                     }
-                } catch { /* skip */ }
 
-                try {
-                    await redisclient.del(cachekey);
-                } catch { /* skip */ }
+                    try {
+                        const maxLen = 4000;
+                        if (finalAnswer.length > maxLen) {
+                            await bot.editMessageText(finalAnswer.slice(0, maxLen), {
+                                chat_id: chatid,
+                                message_id: waitMessage.message_id
+                            });
+                            for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
+                                await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                            }
+                        } else {
+                            await bot.editMessageText(finalAnswer, {
+                                chat_id: chatid,
+                                message_id: waitMessage.message_id
+                            });
+                        }
+                    } catch { }
+
+                    try {
+                        await redisclient.del(cachekey);
+                    } catch { }
+                })();
 
                 return;
             }
@@ -138,8 +134,8 @@ class Telegramcontroller extends Telegramcommand {
         } catch (err: unknown) {
             console.error("Agent execution error:", err);
             if (chatid) {
-                try { await redisclient.del(cachekey); } catch { /* skip */ }
-                try { await bot.sendMessage(chatid, "It seems something went wrong."); } catch { /* skip */ }
+                try { await redisclient.del(cachekey); } catch { }
+                try { await bot.sendMessage(chatid, "It seems something went wrong."); } catch { }
             }
             return res.status(200).send("OK");
         }
