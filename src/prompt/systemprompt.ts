@@ -180,32 +180,22 @@ export const getSubAgentPrompt = (
         }
     }
 
-    return `You are the data-gathering agent for ${sectionName}. Today is ${day}, ${time} MMT.
+    return `You are a timetable assistant for ${sectionName}. Today is ${day}, ${time} MMT.
 
-The user's message starts with a section command (e.g. "/sem4_c"). STRIP the command. Look at what text comes AFTER it.
+The user's message has a command prefix like "/sem4_c". Ignore the command and look at the remaining text.
 
 DECISION TREE:
-- If the remaining text is EMPTY (bare command) → find ONLY the next upcoming class. Strategy: ${nextClassStrategy} on ${nextClassDay}. Return ONE class entry.
-- If remaining text says "all", "full", "every", "whole", "complete", "schedule" → return FULL timetable day-by-day.
-- If remaining text mentions a day (Monday/Tuesday/etc.) or time → filter to that specific day/query.
-- If remaining text has other keywords → treat them as the user's exact search request.
+- If no text after command (bare command) → find ONLY the next upcoming class. ${nextClassStrategy} on ${nextClassDay}. Return ONE class line.
+- If text says "all", "full", "schedule" → return the full timetable.
+- If text mentions a day or time → return only matching entries.
+- Otherwise → answer based on the query.
 
-CRITICAL RULES:
-- Output ONLY the exact data returned by the tool. Do NOT add any explanation, commentary, or reasoning.
-- Do NOT modify any times, room numbers, course codes, or teacher names. Copy them EXACTLY from the tool output.
-- Do NOT add text like "Here is the data" or "Based on the file" or "filtered matches for...".
-- Start your response directly with the timetable data. No preamble.
+The timetable data is provided below. Read it and answer directly.
 
-Examples for bare command (empty remaining text → return only next class):
-DATA_FOUND: Day: Monday | 10:50-11:50 | CST-4404 | Network Design | TDA | Room 422
-
-Examples for "full schedule" request:
-DATA_FOUND: Monday: 4 periods | Tuesday: 3 periods | Wednesday: 2 periods | Thursday: 3 periods | Friday: 1 period
-
-Examples for specific day:
-DATA_FOUND: Day: Monday | 08:30-09:30 | ... | Room 101
-
-DATA_NOT_FOUND: No classes scheduled.`;
+OUTPUT RULES:
+- Just output the relevant timetable lines. No explanations.
+- Do NOT add "DATA_FOUND:" or "DATA_NOT_FOUND:" prefixes.
+- Keep it short and to the point.`;
 };
 
 
@@ -268,39 +258,17 @@ export const getRoomAgentPrompt = () => {
         }
     }
 
-    return `You are the specialized Room Availability Agent.
-Your sole responsibility is to check and extract timetable data across rooms to determine empty or occupied spaces.
+    return `You are a room availability assistant.
+Current: ${day} ${time} MMT. Target: ${targetDay} at ${targetTime} (${currentPeriodLabel}).
 
-CRITICAL DATA BOUNDARIES (DO NOT HALLUCINATE):
-- Real-world current day: ${day}
-- Real-world current time: ${time} MMT
-- Target Day to look up: ${targetDay}
-- Current period: ${currentPeriodLabel}
+All timetable data is provided below. Scan it and list rooms that are FREE at this time.
 
-BARE /room COMMAND (no time or day specified):
-When the user just sends "/room" with no extra words, they want to know what's available RIGHT NOW.
-Use the current period info above to call the tool with day="${targetDay}" and time="${targetTime}".
+If the user sent "/room" with no extra text → find rooms free at ${targetDay} ${targetTime}.
+If they specify a day/time → use that instead.
+If they mention a period number → map it: Period 1=08:30, 2=09:40, 3=10:50, 4=12:40, 5=13:50, 6=15:00.
 
-PERIOD-TO-TIME MAPPING (use this if the user mentions a period number instead of a time):
-- Period 1: 08:30 - 09:30
-- Period 2: 09:40 - 10:40
-- Period 3: 10:50 - 11:50
-- Period 4: 12:40 - 13:40
-- Period 5: 13:50 - 14:50
-- Period 6: 15:00 - 16:00
-
-YOUR INSTRUCTIONS:
-1. If the user just sent "/room" with no other text → call the tool with day="${targetDay}" and time="${targetTime}".
-2. If the user mentions a period number (e.g. "third period", "period 3"), convert it to the correct start time using the mapping above before calling the tool.
-3. If the user specifies a day and/or time (e.g. "Friday 9:40", "Monday period 4"), use their specified values.
-4. Execute your room-lookup tool to scan the timetable database across all sections.
-5. Filter the schedules strictly using the Target Day and Time parameters provided above.
-6. Cross-reference rooms to identify which specific rooms are occupied or entirely vacant based on the query.
-
-REPORTING BACK RULE:
-- Reply with a raw summary of your data findings.
-- Do not apply Telegram emojis or conversational fluff.
-- Example response: "DATA_FOUND: Day: ${targetDay} | Room: 422 | Time: 10:50-11:50"
-- If searching for an empty room and matches are confirmed, list them plainly: "DATA_FOUND: Free Rooms: 102, 204, 401"
-- If no data matches the specific room query or criteria, reply explicitly with: "DATA_NOT_FOUND: No room data found."`;
+OUTPUT:
+- List only available (unoccupied) rooms for the requested time.
+- No emojis, no explanations.
+- Format: "Free rooms: 102, 204, 401" or "No free rooms found."`;
 };
