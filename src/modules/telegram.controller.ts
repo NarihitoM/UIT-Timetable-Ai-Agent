@@ -128,15 +128,16 @@ class Telegramcontroller extends Telegramcommand {
                     }
 
                     // ─── Send the reply ───────────────────────────────────────
+                    const maxLen = 4000;
+
                     try {
-                        const maxLen = 4000;
                         if (finalAnswer.length > maxLen) {
-                            // Edit the "please wait" message with the first chunk
+                            // First chunk: edit the wait message
                             await bot.editMessageText(finalAnswer.slice(0, maxLen), {
                                 chat_id: chatid,
                                 message_id: waitMessage.message_id
                             });
-                            // Send remaining chunks as new messages
+                            // Remaining chunks: send as new messages
                             for (let i = maxLen; i < finalAnswer.length; i += maxLen) {
                                 await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
                             }
@@ -146,16 +147,30 @@ class Telegramcontroller extends Telegramcommand {
                                 message_id: waitMessage.message_id
                             });
                         }
-                    } catch (editErr) {
-                        console.error("[Bot] editMessageText failed:", editErr);
-                        // Fallback: send as a fresh message instead
+                        console.log("[Bot] Message sent successfully");
+                    } catch (editErr: any) {
+                        console.error("[Bot] editMessageText failed:", editErr?.message || editErr);
+
+                        // Fallback: delete the wait message and send fresh
                         try {
-                            await bot.sendMessage(chatid, finalAnswer);
-                        } catch (sendErr) {
-                            console.error("[Bot] sendMessage fallback also failed:", sendErr);
+                            await bot.deleteMessage(chatid, waitMessage.message_id);
+                        } catch (delErr: any) {
+                            console.warn("[Bot] Could not delete wait message:", delErr?.message);
+                        }
+
+                        try {
+                            if (finalAnswer.length > maxLen) {
+                                for (let i = 0; i < finalAnswer.length; i += maxLen) {
+                                    await bot.sendMessage(chatid, finalAnswer.slice(i, i + maxLen));
+                                }
+                            } else {
+                                await bot.sendMessage(chatid, finalAnswer);
+                            }
+                            console.log("[Bot] Fallback sendMessage succeeded");
+                        } catch (sendErr: any) {
+                            console.error("[Bot] sendMessage also failed:", sendErr?.message || sendErr);
                         }
                     }
-
                     // ─── Release the lock ─────────────────────────────────────
                     try {
                         await redisclient.del(cachekey);
