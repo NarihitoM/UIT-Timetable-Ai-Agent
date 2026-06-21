@@ -76,7 +76,6 @@ class Telegramcontroller extends Telegramcommand {
                     return res.status(200).send("OK");
                 }
 
-                res.status(200).send("OK");
 
                 (async () => {
                     const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
