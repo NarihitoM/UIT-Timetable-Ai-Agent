@@ -137,7 +137,7 @@ Keep it short. No emojis.`),
 
 // ── Edges ───────────────────────────────────────────
 graph.addEdge(START, "supervisor" as any);
-graph.addConditionalEdges("supervisor" as any, (s) => routeToNode[s.nextAgent] || END, routeToNode as any);
+graph.addConditionalEdges("supervisor" as any, (s) => s.nextAgent, routeToNode as any);
 
 for (const name of sectionNames) {
     graph.addEdge(`${name}_agent` as any, END);
