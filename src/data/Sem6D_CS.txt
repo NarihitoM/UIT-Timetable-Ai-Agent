@@ -83,24 +83,29 @@ Source: photo_2026-06-16_21-30-46_2.jpg
 📚 CST-6308 – Management Principles and Engineering Economics
 👩🏻‍🏫 Daw San San Nwe
 📝 L | 🚪 Room 215
+
 🕐 09:40 – 10:40
 📚 Elective Tracks (L):
 • CST-6108 | 🚪 Room 233
 • CS-6310 | 🚪 Room 324
 • CST-6410 | 🚪 Room 214
+
 🕐 10:50 – 11:50
 📚 CST-6107 – Computer Organization
 👩🏻‍🏫 Dr. Thet Thet Aung
 📝 L | 🚪 Room 332
 🍽 11:50 – 12:40 Lunch Break
+
 🕐 12:40 – 13:40
 📚 CST-6107 – Computer Organization
 👩🏻‍🏫 Dr. Thet Thet Aung
 📝 TDA | 🚪 Room 233
+
 🕐 13:50 – 14:50
 📚 CST-6106 – Social Issues and Ethics
 👩🏻‍🏫 Daw Htar Htar Aung
 📝 TDA | 🚪 Room 423
+
 🕐 15:00 – 16:00
 📚 Elective Tracks (TDA):
 • CST-6108 | 🚪 Room 235
