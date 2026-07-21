@@ -1,9 +1,10 @@
 import { HumanMessage } from "@langchain/core/messages";
-import TelegramTimetableagent from "../Agent/telegram.workflow.ts";
+import TelegramTimetableagent, { extractFinalAnswer } from "../Agent/telegram.workflow.ts";
 import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
+import { RATE_LIMIT_SECONDS } from "../constants.ts";
 
 const inMemoryLocks = new Map<string, number>();
 
@@ -29,6 +30,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[1] && text.includes(Telegramcontroller.commands[1])) {
+                // Keep this list in sync with SECTIONS in src/constants.ts
                 await bot.sendMessage(chatid, "You can use these commands for each timetable:\n\nSemester 2:\n- /sem2_a, /sem2_b, /sem2_c, /sem2_d, /sem2_e\n\nSemester 4:\n- /sem4_a, /sem4_b, /sem4_c, /sem4_d\n\nSemester 6:\n- /sem6_ct, /sem6_a_cs, /sem6_b_cs, /sem6_c_cs, /sem6_d_cs\n\nSemester 8:\n- /sem8_se, /sem8_ke, /sem8_hpc, /sem8_es, /sem8_ccn, /sem8_bis\n\n- /room to find available rooms. \n\nAlso if you want to add to groups or channels, don't forget to give the bot admin permissions.");
                 return res.status(200).send("OK");
             }
@@ -59,12 +61,13 @@ class Telegramcontroller extends Telegramcommand {
                 //Rate limit: Redis first, in-memory fallback
                 let acquiredLock = false;
                 try {
-                    acquiredLock = !!(await redisclient.set(cachekey, "true", { NX: true, EX: 15 }));
+                    acquiredLock = !!(await redisclient.set(cachekey, "true", { NX: true, EX: RATE_LIMIT_SECONDS }));
                 } catch {
                     const now = Date.now();
                     const lastReq = inMemoryLocks.get(cachekey) || 0;
-                    if (now - lastReq < 15000) {
-                        const remaining = Math.ceil((15000 - (now - lastReq)) / 1000);
+                    const windowMs = RATE_LIMIT_SECONDS * 1000;
+                    if (now - lastReq < windowMs) {
+                        const remaining = Math.ceil((windowMs - (now - lastReq)) / 1000);
                         await bot.sendMessage(chatid, `Do Not Spam! Please wait ${remaining}s Before Sending Again.`);
                         return res.status(200).send("OK");
                     }
@@ -73,7 +76,7 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
                 if (!acquiredLock) {
-                    let displayTime = 15;
+                    let displayTime = RATE_LIMIT_SECONDS;
                     try { displayTime = Math.max(0, await redisclient.ttl(cachekey)); } catch { /* skip */ }
                     await bot.sendMessage(chatid, `Do Not Spam! Please wait ${displayTime}s Before Sending Again.`);
                     return res.status(200).send("OK");
@@ -83,27 +86,29 @@ class Telegramcontroller extends Telegramcommand {
                 //Background processing
                 const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
 
-                let finalAnswer;
-
                 try {
-                    const result = await TelegramTimetableagent.invoke({
-                        messages: [new HumanMessage(text)]
+                    let finalAnswer: string | undefined;
+
+                    try {
+                        const result = await TelegramTimetableagent.invoke({
+                            messages: [new HumanMessage(text)]
+                        });
+                        finalAnswer = extractFinalAnswer(result);
+                    } catch (e) {
+                        console.error("Agent error:", e);
+                    } finally {
+                        finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
+                    }
+
+                    await bot.editMessageText(finalAnswer, {
+                        chat_id: chatid,
+                        message_id: waitMessage.message_id
                     });
-                    finalAnswer = result.messages[0].content;
-                } catch (e) {
-                    console.error("Agent error:", e);
                 } finally {
-                    finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
+                    // Hold the lock for the whole request (including delivery), not just the LLM call,
+                    // so a slow editMessageText can't leave a window for an overlapping request.
+                    try { await redisclient.del(cachekey); } catch { /* skip */ }
                 }
-
-                try {
-                    await redisclient.del(cachekey);
-                } catch { /* skip */ }
-
-                await bot.editMessageText(finalAnswer as any, {
-                    chat_id: chatid,
-                    message_id: waitMessage.message_id
-                });
 
                 return;
             }

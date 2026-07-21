@@ -10,10 +10,6 @@ const Telegramagentstate = Annotation.Root({
         reducer: (x, y) => y ?? x,
         default: () => "__end__",
     }),
-    data: Annotation<boolean>({
-        reducer: (x, y) => y ?? x,
-        default: () => false,
-    })
 })
 
 export default Telegramagentstate;

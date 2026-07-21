@@ -1,11 +1,11 @@
 import { START, END, StateGraph } from "@langchain/langgraph";
 import Telegramagentstate from "./telegram.state.ts";
-import { HumanMessage, SystemMessage, BaseMessage } from "@langchain/core/messages";
+import { HumanMessage, SystemMessage, BaseMessage, AIMessage } from "@langchain/core/messages";
 import { submodel } from "./telegram.model.ts";
 import { getSectionAgentPrompt, getRoomAgentPrompt } from "../prompt/systemprompt.ts";
 import * as fs from "fs";
 import * as path from "path";
-import { FILE_NAMES, DATA_DIR } from "../constants.ts";
+import { FILE_NAMES, DATA_DIR, SECTIONS, sectionMatchPattern } from "../constants.ts";
 
 const ROOM_FILE = "AvailableRooms.txt";
 
@@ -56,26 +56,10 @@ graph.addNode("supervisor", async (state) => {
     let target = "__end__";
     if (/\/room|available room|free room|empty room/i.test(text)) {
         target = "room";
-    } else if (/sem2_a|sem2a/i.test(text))        { target = "Sem2A"; }
-    else if (/sem2_b|sem2b/i.test(text))           { target = "Sem2B"; }
-    else if (/sem2_c|sem2c/i.test(text))           { target = "Sem2C"; }
-    else if (/sem2_d|sem2d/i.test(text))           { target = "Sem2D"; }
-    else if (/sem2_e|sem2e/i.test(text))           { target = "Sem2E"; }
-    else if (/sem4_a|sem4a/i.test(text))           { target = "Sem4A"; }
-    else if (/sem4_b|sem4b/i.test(text))           { target = "Sem4B"; }
-    else if (/sem4_c|sem4c/i.test(text))           { target = "Sem4C"; }
-    else if (/sem4_d|sem4d/i.test(text))           { target = "Sem4D"; }
-    else if (/sem6_ct|sem6ct/i.test(text))         { target = "Sem6CT"; }
-    else if (/sem6_a_cs|sem6acs/i.test(text))      { target = "Sem6A_CS"; }
-    else if (/sem6_b_cs|sem6bcs/i.test(text))      { target = "Sem6B_CS"; }
-    else if (/sem6_c_cs|sem6ccs/i.test(text))      { target = "Sem6C_CS"; }
-    else if (/sem6_d_cs|sem6dcs/i.test(text))      { target = "Sem6D_CS"; }
-    else if (/sem8_se|sem8se/i.test(text))         { target = "Sem8SE"; }
-    else if (/sem8_ke|sem8ke/i.test(text))         { target = "Sem8KE"; }
-    else if (/sem8_hpc|sem8hpc/i.test(text))       { target = "Sem8HPC"; }
-    else if (/sem8_es|sem8es/i.test(text))         { target = "Sem8ES"; }
-    else if (/sem8_ccn|sem8ccn/i.test(text))       { target = "Sem8CCN"; }
-    else if (/sem8_bis|sem8bis/i.test(text))       { target = "Sem8BIS"; }
+    } else {
+        const hit = SECTIONS.find(s => sectionMatchPattern(s).test(text));
+        if (hit) target = hit.key;
+    }
 
     console.log("[Supervisor] Routing to:", target);
     return { nextAgent: target };
@@ -89,7 +73,7 @@ function makeSectionAgent(section: string) {
         const data = readSection(section);
         if (!data) {
             console.error(`[${section}_agent] No data file found`);
-            return { messages: [new HumanMessage(`No timetable data found for ${section}.`)] };
+            return { messages: [new AIMessage(`No timetable data found for ${section}.`)] };
         }
 
         // Get the last HumanMessage for the user's query
@@ -118,7 +102,7 @@ function makeSectionAgent(section: string) {
             return { messages: [response] };
         } catch (err) {
             console.error(`[${section}_agent] submodel.invoke failed:`, err);
-            return { messages: [new HumanMessage(`Failed to query timetable for ${section}. Please try again.`)] };
+            return { messages: [new AIMessage(`Failed to query timetable for ${section}. Please try again.`)] };
         }
     };
 }
@@ -134,7 +118,7 @@ graph.addNode("roomAgent", async (state) => {
     const data = readRooms();
     if (!data) {
         console.error("[roomAgent] No room data file found");
-        return { messages: [new HumanMessage("No room data available.")] };
+        return { messages: [new AIMessage("No room data available.")] };
     }
 
     const timeMsg = findSystemMessage(state.messages);
@@ -152,7 +136,7 @@ graph.addNode("roomAgent", async (state) => {
         return { messages: [response] };
     } catch (err) {
         console.error("[roomAgent] submodel.invoke failed:", err);
-        return { messages: [new HumanMessage("Failed to query available rooms. Please try again.")] };
+        return { messages: [new AIMessage("Failed to query available rooms. Please try again.")] };
     }
 });
 
@@ -167,3 +151,13 @@ graph.addEdge("roomAgent" as any, END);
 
 const TelegramTimetableagent = graph.compile();
 export default TelegramTimetableagent;
+
+export function extractFinalAnswer(result: { messages: BaseMessage[] }): string {
+    const last = result.messages.at(-1);
+    // If nothing ever ran (e.g. routing fell through to "__end__"), the only
+    // message left is the original HumanMessage — don't echo it back as an answer.
+    if (!last || last instanceof HumanMessage) {
+        return "Sorry, I couldn't process that request.";
+    }
+    return typeof last.content === "string" ? last.content : JSON.stringify(last.content);
+}
