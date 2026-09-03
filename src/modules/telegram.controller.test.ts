@@ -70,30 +70,21 @@ beforeEach(() => {
 });
 
 describe("Telegramcontroller.telegram", () => {
-    it("releases the rate-limit lock only after delivering the answer (Bug 2 regression guard)", async () => {
-        const order: string[] = [];
+    it("delivers the answer and leaves the cooldown key to expire on its own", async () => {
         invokeMock.mockImplementation(async () => {
             await new Promise((r) => setTimeout(r, 5));
             return { answer: "mocked answer" };
         });
-        sendMessageMock.mockImplementation(async () => {
-            order.push("sendMessage");
-            return { message_id: 42 };
-        });
-        redisMock.del.mockImplementation(async (key: string) => {
-            order.push("del");
-            redisState.delete(key);
-            return 1;
-        });
 
         await Telegramcontroller.telegram(makeReq(111, "/sem2_a"), makeRes());
 
-        expect(order).toEqual(["sendMessage", "del"]);
         expect(sendMessageMock).toHaveBeenCalledWith(
             111,
             expect.stringContaining("mocked answer"),
             expect.objectContaining({ parse_mode: "MarkdownV2" })
         );
+        // Deleting it here would end the cooldown the moment the answer landed.
+        expect(redisMock.del).not.toHaveBeenCalledWith("telegram:cache:111");
     });
 
     it("rejects a second request for the same chat while the first is still holding the lock", async () => {
@@ -121,21 +112,32 @@ describe("Telegramcontroller.telegram", () => {
         expect(sendMessageMock).not.toHaveBeenCalledWith(444, expect.stringContaining("Please wait while"));
     });
 
-    it("still releases the lock when the typing indicator blows up", async () => {
+    it("still answers when the typing indicator blows up", async () => {
         sendChatActionMock.mockImplementation(() => { throw new Error("sendChatAction exploded"); });
 
         await Telegramcontroller.telegram(makeReq(555, "/sem2_a"), makeRes());
-        await Telegramcontroller.telegram(makeReq(555, "/sem2_a"), makeRes());
 
-        expect(sendMessageMock).not.toHaveBeenCalledWith(555, expect.stringContaining("Do Not Spam"));
-        expect(invokeMock).toHaveBeenCalledTimes(2);
+        expect(invokeMock).toHaveBeenCalledTimes(1);
+        expect(sendMessageMock).toHaveBeenCalledWith(555, expect.stringContaining("mocked answer"), expect.anything());
     });
 
-    it("lets a second request through once the first has fully completed", async () => {
+    it("keeps the cooldown after the first request finishes, so commands cannot be spammed", async () => {
         await Telegramcontroller.telegram(makeReq(333, "/sem2_a"), makeRes());
         await Telegramcontroller.telegram(makeReq(333, "/sem2_a"), makeRes());
 
-        expect(sendMessageMock).not.toHaveBeenCalledWith(333, expect.stringContaining("Do Not Spam"));
+        expect(sendMessageMock).toHaveBeenCalledWith(333, expect.stringContaining("Do Not Spam"));
+        expect(invokeMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("applies the cooldown per chat, so a group shares one and other chats are unaffected", async () => {
+        await Telegramcontroller.telegram(makeReq(-100777, "/sem2_a"), makeRes());
+        // A different member of the same group, still the same chat id.
+        await Telegramcontroller.telegram(makeReq(-100777, "/sem4_a"), makeRes());
+        // An unrelated private chat must not be blocked by the group's cooldown.
+        await Telegramcontroller.telegram(makeReq(888, "/sem2_a"), makeRes());
+
+        expect(sendMessageMock).toHaveBeenCalledWith(-100777, expect.stringContaining("Do Not Spam"));
+        expect(sendMessageMock).not.toHaveBeenCalledWith(888, expect.stringContaining("Do Not Spam"));
         expect(invokeMock).toHaveBeenCalledTimes(2);
     });
 });

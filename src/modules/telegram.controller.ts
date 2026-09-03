@@ -157,10 +157,9 @@ class Telegramcontroller extends Telegramcommand {
                         await bot.sendMessage(chatid, finalAnswer);
                     }
                 } finally {
+                    // The key is never deleted on purpose. Letting it expire turns it from an
+                    // in-flight guard into a real cooldown, and it covers the whole request either way.
                     keepTyping();
-                    // Hold the lock for the whole request (including delivery), not just the LLM call,
-                    // so a slow editMessageText can't leave a window for an overlapping request.
-                    try { await redisclient.del(cachekey); } catch { /* skip */ }
                 }
 
                 return res.status(200).send("OK");
