@@ -17,5 +17,12 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # The Prisma client is generated, not committed, so typecheck cannot see its
+      # types until this runs. The url is never connected to, only parsed.
+      - run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+
       - run: npm run typecheck
       - run: npm test

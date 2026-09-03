@@ -112,7 +112,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
-                await Telegramcontroller.reply(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions.\n\nHappy Asking ^_^.");
+                await Telegramcontroller.reply(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) and Velluz(Hein Thu Aung) From Section C and D.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions.\n\nHappy Asking ^_^.");
                 return res.status(200).send("OK");
             }
 
@@ -123,7 +123,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
-                await Telegramcontroller.reply(chatid, "Contributors: Team SE Group Members:\nHein Htet Aung\nHein Thu Aung\nAung Thanlwin Oo\nHtoo Myat Min Eain\nAung Htoo Pyae\nThaw Thaw Tun\nBhone Wint Kyaw.\n\n\n\nSpecial Thanks:\nOkkar Min Htin\nThant Zabu Htun\nfor suggestions and improvements.");
+                await Telegramcontroller.reply(chatid, "Contributors: \nHein Htet Aung & Hein Thu Aung\n");
                 return res.status(200).send("OK");
             }
 
