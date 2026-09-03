@@ -32,6 +32,11 @@ function findSystemMessage(messages: BaseMessage[]): SystemMessage | undefined {
     return messages.find((m): m is SystemMessage => m instanceof SystemMessage);
 }
 
+// Earlier turns loaded from the database, without the message being answered right now
+function priorTurns(messages: BaseMessage[]): BaseMessage[] {
+    return messages.filter(m => !(m instanceof SystemMessage)).slice(0, -1);
+}
+
 const sectionNames = Object.keys(FILE_NAMES);
 
 // Build route map: "Sem2A" → "Sem2A_agent" etc.
@@ -95,6 +100,7 @@ function makeSectionAgent(section: string) {
             const response = await submodel.invoke([
                 ...(timeMsg ? [timeMsg] : []),
                 new SystemMessage(getSectionAgentPrompt(section, data)),
+                ...priorTurns(state.messages),
                 new HumanMessage(query || "Show my next class")
             ]);
 
@@ -129,6 +135,7 @@ graph.addNode("roomAgent", async (state) => {
         const response = await submodel.invoke([
             ...(timeMsg ? [timeMsg] : []),
             new SystemMessage(getRoomAgentPrompt(data)),
+            ...priorTurns(state.messages),
             new HumanMessage("Show available rooms")
         ]);
 

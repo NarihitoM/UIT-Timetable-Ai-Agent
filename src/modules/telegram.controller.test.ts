@@ -18,6 +18,11 @@ vi.mock("../lib/telegram.ts", () => ({
 
 vi.mock("../lib/redis.ts", () => ({ redisclient: redisMock }));
 
+vi.mock("../lib/memory.ts", () => ({
+    loadHistory: vi.fn(async () => []),
+    saveTurn: vi.fn(async () => undefined),
+}));
+
 vi.mock("../Agent/telegram.workflow.ts", () => ({
     default: { invoke: invokeMock },
     extractFinalAnswer: (result: any) => result?.answer ?? "mocked answer",

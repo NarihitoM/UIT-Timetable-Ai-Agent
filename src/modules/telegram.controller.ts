@@ -5,10 +5,29 @@ import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
 import { RATE_LIMIT_SECONDS } from "../constants.ts";
+import { loadHistory, saveTurn } from "../lib/memory.ts";
 
 const inMemoryLocks = new Map<string, number>();
 
 class Telegramcontroller extends Telegramcommand {
+
+    private static isFirstDelivery = async (key: string): Promise<boolean> => {
+        try {
+            return !!(await redisclient.set(key, "1", { NX: true, EX: 300 }));
+        } catch {
+            const now = Date.now();
+            if (inMemoryLocks.has(key)) {
+                return false;
+            }
+            for (const [k, t] of inMemoryLocks) {
+                if (now - t > 300000) {
+                    inMemoryLocks.delete(k);
+                }
+            }
+            inMemoryLocks.set(key, now);
+            return true;
+        }
+    };
 
     public static telegram = async (
         req: Request,
@@ -17,13 +36,24 @@ class Telegramcontroller extends Telegramcommand {
         const currentMessage = req.body?.message || req.body?.channel_post || {};
         const chatid = currentMessage?.chat?.id;
         const text: string | undefined = currentMessage?.text;
+        const updateid = req.body?.update_id;
 
         if (!chatid || !text) {
+            return res.status(200).send("OK");
+        }
+
+        //Posts the bot makes in a channel come straight back as channel_post, never answer those
+        if (currentMessage?.from?.is_bot || !text.trim().startsWith("/")) {
             return res.status(200).send("OK");
         }
         const cachekey = `telegram:cache:${chatid}`;
 
         try {
+            //Telegram redelivers the same update when the webhook is slow, ignore the repeats
+            if (updateid !== undefined && !(await Telegramcontroller.isFirstDelivery(`telegram:update:${updateid}`))) {
+                return res.status(200).send("OK");
+            }
+
             if (Telegramcontroller.commands[0] && text.includes(Telegramcontroller.commands[0])) {
                 await bot.sendMessage(chatid, "You can now get started. Developed by Narihito(Hein Htet Aung) From Section C.\n\n\nImportant Notice: Ai can make mistakes. Use With Cautions.\n\nHappy Asking ^_^.");
                 return res.status(200).send("OK");
@@ -84,14 +114,15 @@ class Telegramcontroller extends Telegramcommand {
 
 
                 //Background processing
-                const waitMessage = await bot.sendMessage(chatid, "🤖 Please wait while agent is finding the work for you. 🤖");
+                const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is finding the work for you. 🤖");
 
                 try {
                     let finalAnswer: string | undefined;
 
                     try {
+                        const history = await loadHistory(chatid);
                         const result = await TelegramTimetableagent.invoke({
-                            messages: [new HumanMessage(text)]
+                            messages: [...history, new HumanMessage(text)]
                         });
                         finalAnswer = extractFinalAnswer(result);
                     } catch (e) {
@@ -99,6 +130,8 @@ class Telegramcontroller extends Telegramcommand {
                     } finally {
                         finalAnswer = finalAnswer || "Failed to retrieve timetable data.";
                     }
+
+                    await saveTurn(chatid, text, finalAnswer);
 
                     await bot.editMessageText(finalAnswer, {
                         chat_id: chatid,
@@ -110,7 +143,7 @@ class Telegramcontroller extends Telegramcommand {
                     try { await redisclient.del(cachekey); } catch { /* skip */ }
                 }
 
-                return;
+                return res.status(200).send("OK");
             }
 
             await bot.sendMessage(chatid, "There is no command with that function.");
@@ -119,7 +152,6 @@ class Telegramcontroller extends Telegramcommand {
         } catch (err: unknown) {
             console.error("Agent execution error:", err);
             if (chatid) {
-                try { await redisclient.del(cachekey); } catch { /* skip */ }
                 try { await bot.sendMessage(chatid, "It seems something went wrong."); } catch { /* skip */ }
             }
             return res.status(200).send("OK");
