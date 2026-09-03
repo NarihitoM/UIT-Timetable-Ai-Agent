@@ -9,7 +9,7 @@ const { sendMessageMock, sendChatActionMock, editMessageTextMock, invokeMock, re
         editMessageTextMock: vi.fn(),
         invokeMock: vi.fn(),
         redisState: store,
-        redisMock: { set: vi.fn(), del: vi.fn(), ttl: vi.fn() },
+        redisMock: { set: vi.fn(), get: vi.fn(), del: vi.fn(), ttl: vi.fn() },
     };
 });
 
@@ -38,8 +38,15 @@ function makeRes(): Response {
     return res as Response;
 }
 
-function makeReq(chatId: number, text: string): Request {
-    return { body: { message: { chat: { id: chatId }, text } } } as unknown as Request;
+function makeReq(chatId: number, text: string, messageId?: number): Request {
+    return { body: { message: { chat: { id: chatId }, text, message_id: messageId } } } as unknown as Request;
+}
+
+// A channel post the bot itself made: no `from` field, so only the message_id gives it away.
+function makeOwnChannelPost(chatId: number, text: string, messageId: number): Request {
+    return {
+        body: { channel_post: { chat: { id: chatId }, text, message_id: messageId } }
+    } as unknown as Request;
 }
 
 beforeEach(() => {
@@ -61,6 +68,10 @@ beforeEach(() => {
     redisMock.del.mockImplementation(async (key: string) => {
         redisState.delete(key);
         return 1;
+    });
+    redisMock.get.mockImplementation(async (key: string) => {
+        const existing = redisState.get(key);
+        return existing && existing.expiresAt > Date.now() ? "1" : null;
     });
     redisMock.ttl.mockImplementation(async (key: string) => {
         const existing = redisState.get(key);
@@ -127,6 +138,25 @@ describe("Telegramcontroller.telegram", () => {
 
         expect(sendMessageMock).toHaveBeenCalledWith(333, expect.stringContaining("Do Not Spam"));
         expect(invokeMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("ignores its own post coming back as a channel_post, even when it looks like a command", async () => {
+        // The bot answers in a channel; Telegram hands that same post back to the webhook.
+        sendMessageMock.mockResolvedValue({ message_id: 900 });
+        await Telegramcontroller.telegram(makeReq(-100999, "/sem2_a", 1), makeRes());
+
+        const sendsAfterAnswering = sendMessageMock.mock.calls.length;
+        invokeMock.mockClear();
+
+        // Worst case: the model's answer began with a slash and named a section command,
+        // so the text heuristic would let it straight back into the agent branch.
+        await Telegramcontroller.telegram(
+            makeOwnChannelPost(-100999, "/sem2_a here is your timetable", 900),
+            makeRes()
+        );
+
+        expect(invokeMock).not.toHaveBeenCalled();
+        expect(sendMessageMock.mock.calls.length).toBe(sendsAfterAnswering);
     });
 
     it("applies the cooldown per chat, so a group shares one and other chats are unaffected", async () => {
