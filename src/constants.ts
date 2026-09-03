@@ -43,3 +43,4 @@ export const DATA_DIR = "src/data";
 export const RATE_LIMIT_SECONDS = 15;
 export const MODEL_RETRY_ATTEMPTS = 3;
 export const MODEL_RETRY_BASE_MS = 300;
+export const TYPING_REFRESH_MS = 4000;

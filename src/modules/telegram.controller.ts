@@ -4,7 +4,7 @@ import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
-import { RATE_LIMIT_SECONDS } from "../constants.ts";
+import { RATE_LIMIT_SECONDS, TYPING_REFRESH_MS } from "../constants.ts";
 import { loadHistory, saveTurn } from "../lib/memory.ts";
 import { toTelegramMarkdown } from "../lib/format.ts";
 
@@ -28,6 +28,19 @@ class Telegramcontroller extends Telegramcommand {
             inMemoryLocks.set(key, now);
             return true;
         }
+    };
+
+    private static startTyping = (chatid: number): (() => void) => {
+        //Purely cosmetic, so it must never throw into the request and leak the rate-limit lock
+        const send = async () => {
+            try {
+                await bot.sendChatAction(chatid, "typing");
+            } catch { /* skip */ }
+        };
+
+        void send();
+        const timer = setInterval(send, TYPING_REFRESH_MS);
+        return () => clearInterval(timer);
     };
 
     public static telegram = async (
@@ -114,8 +127,8 @@ class Telegramcontroller extends Telegramcommand {
                 }
 
 
-                //Background processing
-                const waitMessage = await bot.sendMessage(chatid, "Please wait while agent is finding the work for you. 🤖");
+                //Telegram clears the typing indicator after ~5s, so keep refreshing it while the agent works
+                const keepTyping = Telegramcontroller.startTyping(chatid);
 
                 try {
                     let finalAnswer: string | undefined;
@@ -134,18 +147,17 @@ class Telegramcontroller extends Telegramcommand {
 
                     await saveTurn(chatid, text, finalAnswer);
 
-                    const target = { chat_id: chatid, message_id: waitMessage.message_id };
                     try {
-                        await bot.editMessageText(toTelegramMarkdown(finalAnswer), {
-                            ...target,
+                        await bot.sendMessage(chatid, toTelegramMarkdown(finalAnswer), {
                             parse_mode: "MarkdownV2"
                         });
                     } catch (e) {
                         //Telegram rejects the whole message on one bad entity, so deliver it unformatted
                         console.error("Formatted send failed, falling back to plain text:", e);
-                        await bot.editMessageText(finalAnswer, target);
+                        await bot.sendMessage(chatid, finalAnswer);
                     }
                 } finally {
+                    keepTyping();
                     // Hold the lock for the whole request (including delivery), not just the LLM call,
                     // so a slow editMessageText can't leave a window for an overlapping request.
                     try { await redisclient.del(cachekey); } catch { /* skip */ }

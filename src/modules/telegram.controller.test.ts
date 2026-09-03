@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { Request, Response } from "express";
 
-const { sendMessageMock, editMessageTextMock, invokeMock, redisMock, redisState } = vi.hoisted(() => {
+const { sendMessageMock, sendChatActionMock, editMessageTextMock, invokeMock, redisMock, redisState } = vi.hoisted(() => {
     const store = new Map<string, { expiresAt: number }>();
     return {
         sendMessageMock: vi.fn(),
+        sendChatActionMock: vi.fn(),
         editMessageTextMock: vi.fn(),
         invokeMock: vi.fn(),
         redisState: store,
@@ -13,7 +14,7 @@ const { sendMessageMock, editMessageTextMock, invokeMock, redisMock, redisState 
 });
 
 vi.mock("../lib/telegram.ts", () => ({
-    default: { sendMessage: sendMessageMock, editMessageText: editMessageTextMock },
+    default: { sendMessage: sendMessageMock, editMessageText: editMessageTextMock, sendChatAction: sendChatActionMock },
 }));
 
 vi.mock("../lib/redis.ts", () => ({ redisclient: redisMock }));
@@ -47,6 +48,7 @@ beforeEach(() => {
 
     sendMessageMock.mockResolvedValue({ message_id: 42 });
     editMessageTextMock.mockResolvedValue(true);
+    sendChatActionMock.mockResolvedValue(true);
     invokeMock.mockResolvedValue({ answer: "mocked answer" });
 
     redisMock.set.mockImplementation(async (key: string, _value: string, opts?: { NX?: boolean; EX?: number }) => {
@@ -74,9 +76,9 @@ describe("Telegramcontroller.telegram", () => {
             await new Promise((r) => setTimeout(r, 5));
             return { answer: "mocked answer" };
         });
-        editMessageTextMock.mockImplementation(async () => {
-            order.push("editMessageText");
-            return true;
+        sendMessageMock.mockImplementation(async () => {
+            order.push("sendMessage");
+            return { message_id: 42 };
         });
         redisMock.del.mockImplementation(async (key: string) => {
             order.push("del");
@@ -86,10 +88,11 @@ describe("Telegramcontroller.telegram", () => {
 
         await Telegramcontroller.telegram(makeReq(111, "/sem2_a"), makeRes());
 
-        expect(order).toEqual(["editMessageText", "del"]);
-        expect(editMessageTextMock).toHaveBeenCalledWith(
+        expect(order).toEqual(["sendMessage", "del"]);
+        expect(sendMessageMock).toHaveBeenCalledWith(
+            111,
             expect.stringContaining("mocked answer"),
-            expect.objectContaining({ chat_id: 111, parse_mode: "MarkdownV2" })
+            expect.objectContaining({ parse_mode: "MarkdownV2" })
         );
     });
 
@@ -109,6 +112,23 @@ describe("Telegramcontroller.telegram", () => {
 
         resolveInvoke({ answer: "mocked answer" });
         await firstCall;
+    });
+
+    it("shows a typing indicator instead of a wait message", async () => {
+        await Telegramcontroller.telegram(makeReq(444, "/sem2_a"), makeRes());
+
+        expect(sendChatActionMock).toHaveBeenCalledWith(444, "typing");
+        expect(sendMessageMock).not.toHaveBeenCalledWith(444, expect.stringContaining("Please wait while"));
+    });
+
+    it("still releases the lock when the typing indicator blows up", async () => {
+        sendChatActionMock.mockImplementation(() => { throw new Error("sendChatAction exploded"); });
+
+        await Telegramcontroller.telegram(makeReq(555, "/sem2_a"), makeRes());
+        await Telegramcontroller.telegram(makeReq(555, "/sem2_a"), makeRes());
+
+        expect(sendMessageMock).not.toHaveBeenCalledWith(555, expect.stringContaining("Do Not Spam"));
+        expect(invokeMock).toHaveBeenCalledTimes(2);
     });
 
     it("lets a second request through once the first has fully completed", async () => {
