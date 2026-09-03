@@ -1,80 +1,108 @@
 # Telegram UIT Timetable Bot
-This is an telegram bot that can automatic detect the current time and respond which session is going to be next.
-Built Type: MultiAgent System Mode.
- 
+
+A Telegram bot that answers timetable questions for UIT students. Send it your section
+command and it reads the current date and time, looks at that section's timetable, and
+tells you which class is next instead of making you decode a grid.
+
+Built as a multi agent system: a supervisor routes the message to one of 21 agents,
+one per section plus a room agent, and only that agent sees its own timetable.
+
 # Stacks
-- Telegram
+- Telegram Bot API (webhook, no polling)
 - Groq
-- Langgraph
-- redis
+- LangGraph
+- Redis
 - Postgres (Neon) via Prisma
+- Express on Vercel serverless
 
-# Webhook Setup
+# Scope
 
-The bot runs on webhooks, not polling. Every route is served by `dist/index.js`, and the
-handler is mounted at `/webhook`, so the URL you register is:
+What it does:
+- Answers "what is my next class" for 20 sections across semesters 2, 4, 6 and 8
+- Finds currently available rooms with `/room`
+- Remembers the last few turns per chat, so follow up questions work
+- Works in private chats, groups and channels
+- Rate limits each chat to one agent request every 15 seconds
+
+What it does not do:
+- Edit or upload timetables. The data is plain text in `src/data/`, changed by commit
+- Notify or remind you. It only answers when asked
+- Handle photos, voice or documents. Text commands only
+
+# Architecture
 
 ```
-https://<your-deployment>.vercel.app/webhook
+Telegram → /webhook → controller → supervisor → section agent → answer
+                          │            │
+                          │            └─ picks one route from the message text
+                          │
+                          ├─ redis: dedupes updates, rate limits per chat
+                          └─ postgres: last 6 turns of chat memory
 ```
 
-## 1. Deploy first
+The supervisor does not call a model. It matches the command with a regex and returns a
+route, so a wrong section is a routing bug rather than a hallucination. Each section
+agent gets only its own timetable file in the system prompt.
 
-Set these in Vercel before registering the webhook, otherwise the first update fails:
+# Folder Structure
 
-| Variable | Purpose |
-|----------|---------|
-| `BOT` | Telegram bot token from @BotFather |
-| `APIKEY` / `SUBAPIKEY` | Groq keys for the supervisor and section agents |
-| `REDIS_URL` | Rate limit and update dedupe |
-| `DATABASE_URL` | Neon Postgres, stores chat memory |
-| `CHANNEL` | Channel id, only used by the paid-mode check |
+```
+.
+├── prisma/
+│   ├── migrations/                     # Generated migration history
+│   └── schema/
+│       ├── chat.prisma                 # Chat model, one row per message
+│       └── main.prisma                 # Generator and datasource
+├── src/
+│   ├── Agent/
+│   │   ├── telegram.model.ts           # Groq model instances
+│   │   ├── telegram.state.ts           # LangGraph state annotation
+│   │   └── telegram.workflow.ts        # Supervisor, section agents, room agent, edges
+│   ├── config/
+│   │   └── env.ts                      # Loads .env
+│   ├── data/                           # Timetable text files, one per section
+│   ├── lib/
+│   │   ├── memory.ts                   # Loads and saves chat history
+│   │   ├── prisma.ts                   # Prisma client
+│   │   ├── redis.ts                    # Redis client
+│   │   └── telegram.ts                 # Bot instance
+│   ├── modules/
+│   │   ├── telegram.command.ts         # Command list
+│   │   ├── telegram.controller.ts      # Webhook handler, dedupe, rate limit
+│   │   └── telegram.route.ts           # Route definition
+│   ├── prompt/
+│   │   └── systemprompt.ts             # Section and room agent prompts
+│   ├── shared/middlewares/
+│   │   └── telegramchannel.middleware.ts
+│   ├── constants.ts                    # Section registry, single source of truth
+│   ├── dev-server.ts                   # Local listener
+│   └── index.ts                        # Express app, exported for serverless
+└── vercel.json
+```
 
-Run `npx prisma db push` once against `DATABASE_URL` so the `Chat` table exists.
+Adding a section means adding one entry to `SECTIONS` in `src/constants.ts` and dropping
+the matching file in `src/data/`. The command, the route and the agent node are all
+derived from that entry.
 
-## 2. Register the webhook
+# Commands
+
+| Command | What it does |
+|---------|--------------|
+| `/start` | Intro message |
+| `/help` | Lists every section command |
+| `/contributors` | Credits |
+| `/sourcecode` | Link to this repo |
+| `/sem2_a` … `/sem8_bis` | Timetable for that section |
+| `/room` | Currently available rooms |
+
+# Development
 
 ```bash
-curl "https://api.telegram.org/bot<BOT_TOKEN>/setWebhook" \
-  -d "url=https://<your-deployment>.vercel.app/webhook" \
-  -d "allowed_updates=[\"message\",\"channel_post\"]" \
-  -d "drop_pending_updates=true"
+npm install
+npx prisma generate
+npm run dev          # local server on :3000
+npm test             # vitest
+npm run typecheck
 ```
 
-`allowed_updates` keeps Telegram from sending edits and reactions the handler ignores anyway.
-`drop_pending_updates` clears anything queued from a previous deployment.
-
-Expected reply:
-
-```json
-{"ok":true,"result":true,"description":"Webhook was set"}
-```
-
-## 3. Verify
-
-```bash
-curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
-```
-
-`pending_update_count` should be 0 and `last_error_message` absent. If it shows
-`Wrong response from the webhook: 500`, check the Vercel function logs, not Telegram.
-
-## 4. Local development
-
-Telegram only calls public HTTPS URLs, so tunnel the dev server:
-
-```bash
-npm run dev
-npx untun@latest tunnel http://localhost:3000
-```
-
-Point `setWebhook` at the tunnel URL plus `/webhook`. Only one webhook can be registered
-per bot, so use a second bot from @BotFather for local work instead of stealing the
-production one.
-
-## Removing the webhook
-
-```bash
-curl "https://api.telegram.org/bot<BOT_TOKEN>/deleteWebhook"
-```
-
+Copy `.env.example` to `.env` and fill it in. See `.env.example` for the full list.
