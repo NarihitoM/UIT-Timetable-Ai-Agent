@@ -1,4 +1,8 @@
-# Telegram UIT Timetable Bot
+<p align="center">
+  <img src="src/assets/img/UIT.jpg" alt="University of Information Technology logo" width="140">
+</p>
+
+<h1 align="center">Telegram UIT Timetable Bot</h1>
 
 A Telegram bot that answers timetable questions for UIT students. Send it your section
 command and it reads the current date and time, looks at that section's timetable, and
