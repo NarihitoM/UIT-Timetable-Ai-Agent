@@ -7,7 +7,7 @@ vi.mock("./telegram.model.ts", () => ({
     submodel: { invoke: invokeMock },
 }));
 
-import TelegramTimetableagent, { extractFinalAnswer } from "./telegram.workflow.ts";
+import TelegramTimetableagent, { extractFinalAnswer, invokeWithRetry, isConnectionError } from "./telegram.workflow.ts";
 
 beforeEach(() => {
     invokeMock.mockReset();
@@ -59,5 +59,39 @@ describe("extractFinalAnswer", () => {
 
         expect(last).toBeInstanceOf(AIMessage);
         expect(extractFinalAnswer(result)).not.toBe("/sem2_a");
+    });
+});
+
+describe("invokeWithRetry", () => {
+    it("retries a failing call and returns the eventual success", async () => {
+        invokeMock
+            .mockRejectedValueOnce(new Error("503 service unavailable"))
+            .mockRejectedValueOnce(new Error("429 rate limited"))
+            .mockResolvedValueOnce(new AIMessage("third time lucky"));
+
+        const result = await invokeWithRetry([new HumanMessage("hi")], 3);
+
+        expect(result.content).toBe("third time lucky");
+        expect(invokeMock).toHaveBeenCalledTimes(3);
+    });
+
+    it("gives up after the configured number of attempts", async () => {
+        invokeMock.mockRejectedValue(new Error("500 boom"));
+
+        await expect(invokeWithRetry([new HumanMessage("hi")], 3)).rejects.toThrow("500 boom");
+        expect(invokeMock).toHaveBeenCalledTimes(3);
+    });
+
+    it("does not retry a connection error", async () => {
+        const err = Object.assign(new Error("connect ECONNREFUSED"), { code: "ECONNREFUSED" });
+        invokeMock.mockRejectedValue(err);
+
+        await expect(invokeWithRetry([new HumanMessage("hi")], 3)).rejects.toThrow("ECONNREFUSED");
+        expect(invokeMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("treats a fetch failure as a connection error", () => {
+        expect(isConnectionError(new Error("fetch failed"))).toBe(true);
+        expect(isConnectionError(new Error("429 rate limited"))).toBe(false);
     });
 });

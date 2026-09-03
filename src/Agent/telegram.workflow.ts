@@ -2,10 +2,10 @@ import { START, END, StateGraph } from "@langchain/langgraph";
 import Telegramagentstate from "./telegram.state.ts";
 import { HumanMessage, SystemMessage, BaseMessage, AIMessage } from "@langchain/core/messages";
 import { submodel } from "./telegram.model.ts";
-import { getSectionAgentPrompt, getRoomAgentPrompt } from "../prompt/systemprompt.ts";
+import { getSectionAgentPrompt, getRoomAgentPrompt, getTimeContextPrompt } from "../prompt/systemprompt.ts";
 import * as fs from "fs";
 import * as path from "path";
-import { FILE_NAMES, DATA_DIR, SECTIONS, sectionMatchPattern } from "../constants.ts";
+import { FILE_NAMES, DATA_DIR, SECTIONS, sectionMatchPattern, MODEL_RETRY_ATTEMPTS, MODEL_RETRY_BASE_MS } from "../constants.ts";
 
 const ROOM_FILE = "AvailableRooms.txt";
 
@@ -35,6 +35,46 @@ function findSystemMessage(messages: BaseMessage[]): SystemMessage | undefined {
 // Earlier turns loaded from the database, without the message being answered right now
 function priorTurns(messages: BaseMessage[]): BaseMessage[] {
     return messages.filter(m => !(m instanceof SystemMessage)).slice(0, -1);
+}
+
+const CONNECTION_ERROR_CODES = ["ECONNREFUSED", "ENOTFOUND", "EAI_AGAIN", "ECONNRESET", "ETIMEDOUT", "EPIPE"];
+
+// A dead socket or unresolvable host will not heal within a webhook's lifetime, so
+// retrying it only burns the time we have left. Rate limits and 5xx are worth another go.
+export function isConnectionError(err: unknown): boolean {
+    const code = (err as { code?: string })?.code;
+    if (code && CONNECTION_ERROR_CODES.includes(code)) return true;
+
+    const message = (err as { message?: string })?.message?.toLowerCase() ?? "";
+    return message.includes("fetch failed") || message.includes("network");
+}
+
+export async function invokeWithRetry(
+    messages: BaseMessage[],
+    attempts = MODEL_RETRY_ATTEMPTS
+): Promise<AIMessage> {
+    let lastError: unknown;
+
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+            return await submodel.invoke(messages) as AIMessage;
+        } catch (err) {
+            lastError = err;
+
+            if (isConnectionError(err)) {
+                console.error("[retry] connection error, not retrying:", err);
+                throw err;
+            }
+
+            if (attempt < attempts) {
+                const backoff = MODEL_RETRY_BASE_MS * attempt;
+                console.error(`[retry] attempt ${attempt}/${attempts} failed, retrying in ${backoff}ms:`, err);
+                await new Promise(r => setTimeout(r, backoff));
+            }
+        }
+    }
+
+    throw lastError;
 }
 
 const sectionNames = Object.keys(FILE_NAMES);
@@ -91,13 +131,14 @@ function makeSectionAgent(section: string) {
         const query = cmdMatch ? text.replace(cmdMatch[0], "").trim() : text.trim();
 
         // Use instanceof check instead of _getType() — safe across all LangChain versions
-        const timeMsg = findSystemMessage(state.messages);
+        const timeMsg = findSystemMessage(state.messages)
+            ?? new SystemMessage(getTimeContextPrompt(new Date()));
 
         console.log(`[${section}_agent] Query: "${query || "Show my next class"}"`);
         console.log(`[${section}_agent] Time context:`, timeMsg?.content);
 
         try {
-            const response = await submodel.invoke([
+            const response = await invokeWithRetry([
                 ...(timeMsg ? [timeMsg] : []),
                 new SystemMessage(getSectionAgentPrompt(section, data)),
                 ...priorTurns(state.messages),
@@ -132,7 +173,7 @@ graph.addNode("roomAgent", async (state) => {
     console.log("[roomAgent] Time context:", timeMsg?.content);
 
     try {
-        const response = await submodel.invoke([
+        const response = await invokeWithRetry([
             ...(timeMsg ? [timeMsg] : []),
             new SystemMessage(getRoomAgentPrompt(data)),
             ...priorTurns(state.messages),

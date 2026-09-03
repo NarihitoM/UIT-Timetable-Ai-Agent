@@ -88,8 +88,8 @@ describe("Telegramcontroller.telegram", () => {
 
         expect(order).toEqual(["editMessageText", "del"]);
         expect(editMessageTextMock).toHaveBeenCalledWith(
-            "mocked answer",
-            expect.objectContaining({ chat_id: 111 })
+            expect.stringContaining("mocked answer"),
+            expect.objectContaining({ chat_id: 111, parse_mode: "MarkdownV2" })
         );
     });
 

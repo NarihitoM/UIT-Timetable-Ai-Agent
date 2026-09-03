@@ -6,6 +6,7 @@ import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
 import { RATE_LIMIT_SECONDS } from "../constants.ts";
 import { loadHistory, saveTurn } from "../lib/memory.ts";
+import { toTelegramMarkdown } from "../lib/format.ts";
 
 const inMemoryLocks = new Map<string, number>();
 
@@ -133,10 +134,17 @@ class Telegramcontroller extends Telegramcommand {
 
                     await saveTurn(chatid, text, finalAnswer);
 
-                    await bot.editMessageText(finalAnswer, {
-                        chat_id: chatid,
-                        message_id: waitMessage.message_id
-                    });
+                    const target = { chat_id: chatid, message_id: waitMessage.message_id };
+                    try {
+                        await bot.editMessageText(toTelegramMarkdown(finalAnswer), {
+                            ...target,
+                            parse_mode: "MarkdownV2"
+                        });
+                    } catch (e) {
+                        //Telegram rejects the whole message on one bad entity, so deliver it unformatted
+                        console.error("Formatted send failed, falling back to plain text:", e);
+                        await bot.editMessageText(finalAnswer, target);
+                    }
                 } finally {
                     // Hold the lock for the whole request (including delivery), not just the LLM call,
                     // so a slow editMessageText can't leave a window for an overlapping request.
