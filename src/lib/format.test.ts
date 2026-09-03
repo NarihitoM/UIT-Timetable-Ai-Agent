@@ -23,11 +23,18 @@ describe("toTelegramMarkdown", () => {
 
 describe("getTimeContextPrompt", () => {
     it("reports Myanmar time, not the server's UTC clock", () => {
-        // 18:00 UTC is 00:30 the next day in Yangon (UTC+6:30)
+        // 18:00 UTC is 12:30 AM the next day in Yangon (UTC+6:30)
         const prompt = getTimeContextPrompt(new Date("2026-09-03T18:00:00Z"));
 
-        expect(prompt).toContain("00:30");
+        expect(prompt).toContain("12:30 AM");
         expect(prompt).toContain("Friday");
-        expect(prompt).toContain("04 September 2026");
+        expect(prompt).toContain("September 4, 2026");
+    });
+
+    it("uses AM/PM rather than a 24 hour clock", () => {
+        const afternoon = getTimeContextPrompt(new Date("2026-09-03T09:20:00Z")); // 15:50 Yangon
+
+        expect(afternoon).toContain("3:50 PM");
+        expect(afternoon).not.toContain("15:50");
     });
 });

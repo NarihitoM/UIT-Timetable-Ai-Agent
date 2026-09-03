@@ -1,13 +1,13 @@
 export const getTimeContextPrompt = (now: Date) => {
-    const parts = new Intl.DateTimeFormat("en-GB", {
+    const parts = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Yangon",
         weekday: "long",
-        day: "2-digit",
+        day: "numeric",
         month: "long",
         year: "numeric",
-        hour: "2-digit",
+        hour: "numeric",
         minute: "2-digit",
-        hour12: false
+        hour12: true
     }).format(now);
 
     return `Right now it is ${parts} in Myanmar (Asia/Yangon).
@@ -22,6 +22,10 @@ const FORMAT_RULES = `FORMAT RULES (Telegram markdown):
 
 const CLASS_SHAPE = `For every class always include, in this order:
 🕐 time, 📚 course code and subject name, 👩‍🏫 teacher, 📝 session type, 🚪 room.
+
+The timetable data stores times on a 24 hour clock. Always show them to the user as
+12 hour with AM or PM, so 13:50 – 14:50 becomes 1:50 PM – 2:50 PM. Drop the leading
+zero on the hour, keep the two digit minutes, and put a space before AM/PM.
 
 Write "L" and "Lecture" as Lecture. Every other session type, TDA included, is copied
 exactly as it appears in the data. Never expand an abbreviation you were not given.
