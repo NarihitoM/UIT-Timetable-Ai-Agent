@@ -1,178 +1,178 @@
-📅 Fourth Year (Knowledge Engineering) Timetable
-🏫 University of Information Technology
-📚 2025-2026 Academic Year | Semester VIII | Fourth Year
+Fourth Year (Knowledge Engineering) Timetable
+University of Information Technology
+2025-2026 Academic Year | Semester VIII | Fourth Year
 Source: photo_2026-06-16_21-30-41_2.jpg
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📆 MONDAY
+MONDAY
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🕐 08:30 – 09:30
-❌ No Class
+Time: 08:30 – 09:30
+No Class
 
-🕐 09:40 – 10:40
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Mon Zar Kyaw
-📝 TDA | 🚪 Room 334
+Time: 09:40 – 10:40
+Course: CST-8506 – Professional Communications
+Teacher: Daw Mon Zar Kyaw
+Type: TDA | Room 334
 
-🕐 10:50 – 11:50
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 TDA | 🚪 Room 346
+Time: 10:50 – 11:50
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: TDA | Room 346
 
-🍽 11:50 – 12:40 Lunch Break
+Break: 11:50 – 12:40 Lunch Break
 
-🕐 12:40 – 13:40
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 L | 🚪 Room 215
+Time: 12:40 – 13:40
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: L | Room 215
 
-🕐 13:50 – 14:50
-📚 CS-8211 – Mathematical Theory of Game
-👩🏻‍🏫 Dr. Thandar Cho
-📝 L | 🚪 Room 215
+Time: 13:50 – 14:50
+Course: CS-8211 – Mathematical Theory of Game
+Teacher: Dr. Thandar Cho
+Type: L | Room 215
 
-🕐 15:00 – 16:00
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Mon Zar Kyaw
-📝 L | 🚪 Room 332
-
-━━━━━━━━━━━━━━━━━━━━━━
-📆 TUESDAY
-━━━━━━━━━━━━━━━━━━━━━━
-
-🕐 08:30 – 09:30
-📚 CS-8211 – Mathematical Theory of Game
-👩🏻‍🏫 Dr. Thandar Cho
-📝 TDA | 🚪 Room 215
-
-🕐 09:40 – 10:40
-📚 KE-8118 – Robotic Systems
-👩🏻‍🏫 Dr. Thet Thet Zin
-📝 TDA | 🚪 Room 431
-
-🕐 10:50 – 11:50
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 L | 🚪 Room 214
-
-🍽 11:50 – 12:40 Lunch Break
-
-🕐 12:40 – 13:40
-📚 KE-8118 – Robotic Systems
-👩🏻‍🏫 Dr. Thet Thet Zin
-📝 L | 🚪 Room 334
-
-🕐 13:50 – 14:50
-📚 CS-8117 – Computer Vision
-👩🏻‍🏫 Dr. Thiri Mar Lar Swe
-📝 L | 🚪 Room 215
-
-🕐 15:00 – 16:00
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 L | 🚪 Room 215
+Time: 15:00 – 16:00
+Course: CST-8506 – Professional Communications
+Teacher: Daw Mon Zar Kyaw
+Type: L | Room 332
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📆 WEDNESDAY
+TUESDAY
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🕐 08:30 – 09:30
-📚 CS-8117 – Computer Vision
-👩🏻‍🏫 Dr. Thiri Mar Lar Swe
-📝 TDA | 🚪 Room 215
+Time: 08:30 – 09:30
+Course: CS-8211 – Mathematical Theory of Game
+Teacher: Dr. Thandar Cho
+Type: TDA | Room 215
 
-🕐 09:40 – 10:40
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 TDA | 🚪 Room 215
+Time: 09:40 – 10:40
+Course: KE-8118 – Robotic Systems
+Teacher: Dr. Thet Thet Zin
+Type: TDA | Room 431
 
-🕐 10:50 – 11:50
-📚 KE-8118 – Robotic Systems
-👩🏻‍🏫 Dr. Thet Thet Zin
-📝 TDA | 🚪 Room 426
+Time: 10:50 – 11:50
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: L | Room 214
 
-🍽 11:50 – 12:40 Lunch Break
+Break: 11:50 – 12:40 Lunch Break
 
-🕐 12:40 – 13:40
-❌ No Class
+Time: 12:40 – 13:40
+Course: KE-8118 – Robotic Systems
+Teacher: Dr. Thet Thet Zin
+Type: L | Room 334
 
-🕐 13:50 – 14:50
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 TDA | 🚪 Room 215
+Time: 13:50 – 14:50
+Course: CS-8117 – Computer Vision
+Teacher: Dr. Thiri Mar Lar Swe
+Type: L | Room 215
 
-🕐 15:00 – 16:00
-❌ No Class
-
-━━━━━━━━━━━━━━━━━━━━━━
-📆 THURSDAY
-━━━━━━━━━━━━━━━━━━━━━━
-
-🕐 08:30 – 09:30
-❌ No Class
-
-🕐 09:40 – 10:40
-📚 CS-8211 – Mathematical Theory of Game
-👩🏻‍🏫 Dr. Thandar Cho
-📝 TDA | 🚪 Room 215
-
-🕐 10:50 – 11:50
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Mon Zar Kyaw
-📝 TDA | 🚪 Room 425
-
-🍽 11:50 – 12:40 Lunch Break
-
-🕐 12:40 – 13:40
-📚 CS-8211 – Mathematical Theory of Game
-👩🏻‍🏫 Dr. Thandar Cho
-📝 L | 🚪 Room 215
-
-🕐 13:50 – 14:50
-❌ No Class
-
-🕐 15:00 – 16:00
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Mon Zar Kyaw
-📝 L | 🚪 Room 333
+Time: 15:00 – 16:00
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: L | Room 215
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📆 FRIDAY
+WEDNESDAY
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🕐 08:30 – 09:30
-📚 CS-8117 – Computer Vision
-👩🏻‍🏫 Dr. Thiri Mar Lar Swe
-📝 TDA | 🚪 Room 215
+Time: 08:30 – 09:30
+Course: CS-8117 – Computer Vision
+Teacher: Dr. Thiri Mar Lar Swe
+Type: TDA | Room 215
 
-🕐 09:40 – 10:40
-❌ No Class
+Time: 09:40 – 10:40
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: TDA | Room 215
 
-🕐 10:50 – 11:50
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 TDA | 🚪 Room 215
+Time: 10:50 – 11:50
+Course: KE-8118 – Robotic Systems
+Teacher: Dr. Thet Thet Zin
+Type: TDA | Room 426
 
-🍽 11:50 – 12:40 Lunch Break
+Break: 11:50 – 12:40 Lunch Break
 
-🕐 12:40 – 13:40
-📚 KE-8118 – Robotic Systems
-👩🏻‍🏫 Dr. Thet Thet Zin
-📝 L | 🚪 Room 331
+Time: 12:40 – 13:40
+No Class
 
-🕐 13:50 – 14:50
-📚 CS-8117 – Computer Vision
-👩🏻‍🏫 Dr. Thiri Mar Lar Swe
-📝 L | 🚪 Room 214
+Time: 13:50 – 14:50
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: TDA | Room 215
 
-🕐 15:00 – 16:00
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 L | 🚪 Room 215
+Time: 15:00 – 16:00
+No Class
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📖 SUBJECT CODES
+THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+Time: 08:30 – 09:30
+No Class
+
+Time: 09:40 – 10:40
+Course: CS-8211 – Mathematical Theory of Game
+Teacher: Dr. Thandar Cho
+Type: TDA | Room 215
+
+Time: 10:50 – 11:50
+Course: CST-8506 – Professional Communications
+Teacher: Daw Mon Zar Kyaw
+Type: TDA | Room 425
+
+Break: 11:50 – 12:40 Lunch Break
+
+Time: 12:40 – 13:40
+Course: CS-8211 – Mathematical Theory of Game
+Teacher: Dr. Thandar Cho
+Type: L | Room 215
+
+Time: 13:50 – 14:50
+No Class
+
+Time: 15:00 – 16:00
+Course: CST-8506 – Professional Communications
+Teacher: Daw Mon Zar Kyaw
+Type: L | Room 333
+
+━━━━━━━━━━━━━━━━━━━━━━
+FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+
+Time: 08:30 – 09:30
+Course: CS-8117 – Computer Vision
+Teacher: Dr. Thiri Mar Lar Swe
+Type: TDA | Room 215
+
+Time: 09:40 – 10:40
+No Class
+
+Time: 10:50 – 11:50
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: TDA | Room 215
+
+Break: 11:50 – 12:40 Lunch Break
+
+Time: 12:40 – 13:40
+Course: KE-8118 – Robotic Systems
+Teacher: Dr. Thet Thet Zin
+Type: L | Room 331
+
+Time: 13:50 – 14:50
+Course: CS-8117 – Computer Vision
+Teacher: Dr. Thiri Mar Lar Swe
+Type: L | Room 214
+
+Time: 15:00 – 16:00
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: L | Room 215
+
+━━━━━━━━━━━━━━━━━━━━━━
+SUBJECT CODES
 ━━━━━━━━━━━━━━━━━━━━━━
 CS-8117 – Computer Vision | Dr. Thiri Mar Lar Swe
 CS-8211 – Mathematical Theory of Game | Dr. Thandar Cho

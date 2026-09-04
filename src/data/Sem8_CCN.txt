@@ -1,161 +1,161 @@
-📅 Fourth Year (Computer Communication and Networks) Timetable
-🏫 University of Information Technology
-📚 2025-2026 Academic Year | Semester VIII | Fourth Year
+Fourth Year (Computer Communication and Networks) Timetable
+University of Information Technology
+2025-2026 Academic Year | Semester VIII | Fourth Year
 Source: photo_2026-06-16_21-30-49_3.jpg
 ━━━━━━━━━━━━━━━━━━━━━━
-📆 MONDAY
+MONDAY
 ━━━━━━━━━━━━━━━━━━━━━━
-🕐 08:30 – 09:30
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 TDA | 🚪 Room 326
+Time: 08:30 – 09:30
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: TDA | Room 326
 
-🕐 09:40 – 10:40
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 TDA | 🚪 Room 215
+Time: 09:40 – 10:40
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: TDA | Room 215
 
-🕐 10:50 – 11:50
-📚 CT-8415 – Network and Internet Security
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 TDA | 🚪 Room 352
+Time: 10:50 – 11:50
+Course: CT-8415 – Network and Internet Security
+Teacher: Dr. Aung Htein Maw
+Type: TDA | Room 352
 
-🍽 11:50 – 12:40 Lunch Break
-🕐 12:40 – 13:40
-📚 CT-8415 – Network and Internet Security (Listed as CN-8415)
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 L | 🚪 Room 352
+Break: 11:50 – 12:40 Lunch Break
+Time: 12:40 – 13:40
+Course: CT-8415 – Network and Internet Security (Listed as CN-8415)
+Teacher: Dr. Aung Htein Maw
+Type: L | Room 352
 
-🕐 13:50 – 14:50
-📚 CN-8414 – Ethical Hacking and Penetration Testing
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 L | 🚪 Room 352
+Time: 13:50 – 14:50
+Course: CN-8414 – Ethical Hacking and Penetration Testing
+Teacher: Dr. Aung Htein Maw
+Type: L | Room 352
 
-🕐 15:00 – 16:00
-❌ No Class
+Time: 15:00 – 16:00
+No Class
 ━━━━━━━━━━━━━━━━━━━━━━
-📆 TUESDAY
+TUESDAY
 ━━━━━━━━━━━━━━━━━━━━━━
-🕐 08:30 – 09:30
-❌ No Class
-🕐 09:40 – 10:40
-📚 CN-8414 – Ethical Hacking and Penetration Testing
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 TDA | 🚪 Room 232
+Time: 08:30 – 09:30
+No Class
+Time: 09:40 – 10:40
+Course: CN-8414 – Ethical Hacking and Penetration Testing
+Teacher: Dr. Aung Htein Maw
+Type: TDA | Room 232
 
-🕐 10:50 – 11:50
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Thwe Thwe Oo
-📝 TDA | 🚪 Room 336
+Time: 10:50 – 11:50
+Course: CST-8506 – Professional Communications
+Teacher: Daw Thwe Thwe Oo
+Type: TDA | Room 336
 
-🍽 11:50 – 12:40 Lunch Break
-🕐 12:40 – 13:40
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 L | 🚪 Room 336
+Break: 11:50 – 12:40 Lunch Break
+Time: 12:40 – 13:40
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: L | Room 336
 
-🕐 13:50 – 14:50
-📚 CN-8414 – Ethical Hacking and Penetration Testing
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 L | 🚪 Room 352
+Time: 13:50 – 14:50
+Course: CN-8414 – Ethical Hacking and Penetration Testing
+Teacher: Dr. Aung Htein Maw
+Type: L | Room 352
 
-🕐 15:00 – 16:00
-📚 CST-8210 – Performance and Reliability Analysis
-👩🏻‍🏫 Dr. Sandar Win
-📝 L | 🚪 Room 333
-
-━━━━━━━━━━━━━━━━━━━━━━
-📆 WEDNESDAY
-━━━━━━━━━━━━━━━━━━━━━━
-🕐 08:30 – 09:30
-❌ No Class
-🕐 09:40 – 10:40
-📚 CST-8210 – Performance and Reliability Analysis
-👩🏻‍🏫 Dr. Sandar Win
-📝 TDA | 🚪 Room 426
-
-🕐 10:50 – 11:50
-📚 CN-8414 – Ethical Hacking and Penetration Testing
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 TDA | 🚪 Room 352
-
-🍽 11:50 – 12:40 Lunch Break
-🕐 12:40 – 13:40
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 TDA | 🚪 Room 334
-
-🕐 13:50 – 14:50
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Thwe Thwe Oo
-📝 TDA | 🚪 Room 334
-
-🕐 15:00 – 16:00
-❌ No Class
-━━━━━━━━━━━━━━━━━━━━━━
-📆 THURSDAY
-━━━━━━━━━━━━━━━━━━━━━━
-🕐 08:30 – 09:30
-❌ No Class
-🕐 09:40 – 10:40
-📚 CST-8210 – Performance and Reliability Analysis
-👩🏻‍🏫 Dr. Sandar Win
-📝 TDA | 🚪 Room 422
-
-🕐 10:50 – 11:50
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 TDA | 🚪 Room 215
-
-🍽 11:50 – 12:40 Lunch Break
-🕐 12:40 – 13:40
-📚 CST-8210 – Performance and Reliability Analysis
-👩🏻‍🏫 Dr. Sandar Win
-📝 L | 🚪 Room 333
-
-🕐 13:50 – 14:50
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 L | 🚪 Room 215
-
-🕐 15:00 – 16:00
-❌ No Class
-━━━━━━━━━━━━━━━━━━━━━━
-📆 FRIDAY
-━━━━━━━━━━━━━━━━━━━━━━
-🕐 08:30 – 09:30
-📚 CT-8415 – Network and Internet Security
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 TDA | 🚪 Room 352
-
-🕐 09:40 – 10:40
-📚 CST-8316 – Data Analysis and Management
-👩🏻‍🏫 Dr. Myint Myint Lwin
-📝 L | 🚪 Room 345
-
-🕐 10:50 – 11:50
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Thwe Thwe Oo
-📝 L | 🚪 Room 345
-
-🍽 11:50 – 12:40 Lunch Break
-🕐 12:40 – 13:40
-📚 CT-8415 – Network and Internet Security (Listed as CN-8415)
-👩🏻‍🏫 Dr. Aung Htein Maw
-📝 L | 🚪 Room 352
-
-🕐 13:50 – 14:50
-📚 CST-8114 – Distributed Programming
-👩🏻‍🏫 Dr. Thin Thin Wai
-📝 L | 🚪 Room 215
-
-🕐 15:00 – 16:00
-📚 CST-8506 – Professional Communications
-👩🏻‍🏫 Daw Thwe Thwe Oo
-📝 L | 🚪 Room 332
+Time: 15:00 – 16:00
+Course: CST-8210 – Performance and Reliability Analysis
+Teacher: Dr. Sandar Win
+Type: L | Room 333
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📖 SUBJECT CODES
+WEDNESDAY
+━━━━━━━━━━━━━━━━━━━━━━
+Time: 08:30 – 09:30
+No Class
+Time: 09:40 – 10:40
+Course: CST-8210 – Performance and Reliability Analysis
+Teacher: Dr. Sandar Win
+Type: TDA | Room 426
+
+Time: 10:50 – 11:50
+Course: CN-8414 – Ethical Hacking and Penetration Testing
+Teacher: Dr. Aung Htein Maw
+Type: TDA | Room 352
+
+Break: 11:50 – 12:40 Lunch Break
+Time: 12:40 – 13:40
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: TDA | Room 334
+
+Time: 13:50 – 14:50
+Course: CST-8506 – Professional Communications
+Teacher: Daw Thwe Thwe Oo
+Type: TDA | Room 334
+
+Time: 15:00 – 16:00
+No Class
+━━━━━━━━━━━━━━━━━━━━━━
+THURSDAY
+━━━━━━━━━━━━━━━━━━━━━━
+Time: 08:30 – 09:30
+No Class
+Time: 09:40 – 10:40
+Course: CST-8210 – Performance and Reliability Analysis
+Teacher: Dr. Sandar Win
+Type: TDA | Room 422
+
+Time: 10:50 – 11:50
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: TDA | Room 215
+
+Break: 11:50 – 12:40 Lunch Break
+Time: 12:40 – 13:40
+Course: CST-8210 – Performance and Reliability Analysis
+Teacher: Dr. Sandar Win
+Type: L | Room 333
+
+Time: 13:50 – 14:50
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: L | Room 215
+
+Time: 15:00 – 16:00
+No Class
+━━━━━━━━━━━━━━━━━━━━━━
+FRIDAY
+━━━━━━━━━━━━━━━━━━━━━━
+Time: 08:30 – 09:30
+Course: CT-8415 – Network and Internet Security
+Teacher: Dr. Aung Htein Maw
+Type: TDA | Room 352
+
+Time: 09:40 – 10:40
+Course: CST-8316 – Data Analysis and Management
+Teacher: Dr. Myint Myint Lwin
+Type: L | Room 345
+
+Time: 10:50 – 11:50
+Course: CST-8506 – Professional Communications
+Teacher: Daw Thwe Thwe Oo
+Type: L | Room 345
+
+Break: 11:50 – 12:40 Lunch Break
+Time: 12:40 – 13:40
+Course: CT-8415 – Network and Internet Security (Listed as CN-8415)
+Teacher: Dr. Aung Htein Maw
+Type: L | Room 352
+
+Time: 13:50 – 14:50
+Course: CST-8114 – Distributed Programming
+Teacher: Dr. Thin Thin Wai
+Type: L | Room 215
+
+Time: 15:00 – 16:00
+Course: CST-8506 – Professional Communications
+Teacher: Daw Thwe Thwe Oo
+Type: L | Room 332
+
+━━━━━━━━━━━━━━━━━━━━━━
+SUBJECT CODES
 ━━━━━━━━━━━━━━━━━━━━━━
 CN-8414 – Ethical Hacking and Penetration Testing | Dr. Aung Htein Maw
 CT-8415 – Network and Internet Security | Dr. Aung Htein Maw
