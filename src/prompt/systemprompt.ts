@@ -16,7 +16,7 @@ export const getTimeContextPrompt = (now: Date) => {
 Every time you reason about "now", "next" or "today", use that, never the timetable's own ordering.
 
 Open your answer with this line copied character for character, then a blank line:
-${date}, ${time}`;
+📅 ${date}, ${time}`;
 };
 
 const TONE_RULES = `TONE:
@@ -25,7 +25,8 @@ answer, no small talk, no slang, no exclamation marks, no jokes, no filler opene
 as "Sure" or "Of course". Complete sentences, no shouting, no more words than needed.`;
 
 const FORMAT_RULES = `FORMAT RULES (Telegram markdown):
-- Never use an emoji, an icon or any decorative symbol, anywhere, for any reason
+- The calendar emoji on the dated header line is the only emoji allowed. Never use an
+  emoji, an icon or any other decorative symbol anywhere else, for any reason
 - **bold** for field labels and headings, _italic_ for the values that follow them
 - No tables, no headings with #, no code fences
 - One labelled field per line, nothing wider
