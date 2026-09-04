@@ -10,8 +10,13 @@ export const getTimeContextPrompt = (now: Date) => {
         hour12: true
     }).format(now);
 
+    const [date, time] = parts.split(" at ");
+
     return `Right now it is ${parts} in Myanmar (Asia/Yangon).
-Every time you reason about "now", "next" or "today", use that, never the timetable's own ordering.`;
+Every time you reason about "now", "next" or "today", use that, never the timetable's own ordering.
+
+Open your answer with this line copied character for character, then a blank line:
+📅 ${date} — 🕐 ${time}`;
 };
 
 const TONE_RULES = `TONE:
@@ -47,10 +52,9 @@ ${data}
 Never ask the user what they need and never answer with a question or a greeting alone.
 Every message gets a real answer taken from the data above.
 
-Open every answer with one line stating the current day, date and time in Myanmar exactly
-as it is given to you, so the user can see what the answer is measured against:
-📅 Thursday, September 4, 2026 — 🕐 11:00 AM
-Then leave a blank line and give the answer.
+Open every answer with the dated header line exactly as the time message gives it, then a
+blank line, then the answer. Never write a day, date or time from anywhere else, including
+an earlier turn in this conversation.
 
 How to answer:
 - A bare command with nothing after it means "what is my next class" — answer it straight
@@ -76,9 +80,9 @@ ${data || "No room data."}
 
 Never ask the user what they need. A bare /room means "what is free right now", answer it.
 
-Open every answer with one line stating the current day, date and time in Myanmar exactly
-as it is given to you, then a blank line, then the answer:
-📅 Thursday, September 4, 2026 — 🕐 11:00 AM
+Open every answer with the dated header line exactly as the time message gives it, then a
+blank line, then the answer. Never write a day, date or time from anywhere else, including
+an earlier turn in this conversation.
 
 List the rooms that are free right now, grouped by floor or building when the data
 shows one. If nothing is free, say so instead of listing everything.

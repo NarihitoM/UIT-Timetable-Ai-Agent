@@ -31,6 +31,12 @@ describe("getTimeContextPrompt", () => {
         expect(prompt).toContain("September 4, 2026");
     });
 
+    it("carries the header line the agents are told to copy", () => {
+        const prompt = getTimeContextPrompt(new Date("2026-09-03T18:00:00Z"));
+
+        expect(prompt).toContain("📅 Friday, September 4, 2026 — 🕐 12:30 AM");
+    });
+
     it("uses AM/PM rather than a 24 hour clock", () => {
         const afternoon = getTimeContextPrompt(new Date("2026-09-03T09:20:00Z")); // 15:50 Yangon
 

@@ -27,9 +27,10 @@ function readRooms(): string | null {
     }
 }
 
-// ── Safe way to find the SystemMessage (no _getType() which can crash) ──────
-function findSystemMessage(messages: BaseMessage[]): SystemMessage | undefined {
-    return messages.find((m): m is SystemMessage => m instanceof SystemMessage);
+// Nothing puts a SystemMessage into state, and the history loaded from the database
+// only ever holds human and ai turns, so the clock is always read fresh here.
+function timeMessage(): SystemMessage {
+    return new SystemMessage(getTimeContextPrompt(new Date()));
 }
 
 // Earlier turns loaded from the database, without the message being answered right now
@@ -131,17 +132,18 @@ function makeSectionAgent(section: string) {
         const query = cmdMatch ? text.replace(cmdMatch[0], "").trim() : text.trim();
 
         // Use instanceof check instead of _getType() — safe across all LangChain versions
-        const timeMsg = findSystemMessage(state.messages)
-            ?? new SystemMessage(getTimeContextPrompt(new Date()));
+        const timeMsg = timeMessage();
 
         console.log(`[${section}_agent] Query: "${query || "Show my next class"}"`);
         console.log(`[${section}_agent] Time context:`, timeMsg?.content);
 
         try {
+            // The clock goes after the history on purpose. Older turns carry their own
+            // dated header, and whichever date the model sees last is the one it copies.
             const response = await invokeWithRetry([
-                ...(timeMsg ? [timeMsg] : []),
                 new SystemMessage(getSectionAgentPrompt(section, data)),
                 ...priorTurns(state.messages),
+                timeMsg,
                 new HumanMessage(query || "Show my next class")
             ]);
 
@@ -168,15 +170,15 @@ graph.addNode("roomAgent", async (state) => {
         return { messages: [new AIMessage("No room data available.")] };
     }
 
-    const timeMsg = findSystemMessage(state.messages);
+    const timeMsg = timeMessage();
 
-    console.log("[roomAgent] Time context:", timeMsg?.content);
+    console.log("[roomAgent] Time context:", timeMsg.content);
 
     try {
         const response = await invokeWithRetry([
-            ...(timeMsg ? [timeMsg] : []),
             new SystemMessage(getRoomAgentPrompt(data)),
             ...priorTurns(state.messages),
+            timeMsg,
             new HumanMessage("Show available rooms")
         ]);
 
