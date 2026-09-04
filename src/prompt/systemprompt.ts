@@ -39,8 +39,12 @@ export const getSectionAgentPrompt = (section: string, data: string) =>
 Timetable data for ${section}:
 ${data}
 
+Never ask the user what they need and never answer with a question or a greeting alone.
+Every message gets a real answer taken from the data above.
+
 How to answer:
-- A bare command means "what is my next class" — answer from the current time
+- A bare command with nothing after it means "what is my next class" — answer it straight
+  from the current time, do not ask what they want
 - "all" or "schedule" means show the whole week
 - A named day means that day only
 - If the day is over, say so and give the first class of the next teaching day
@@ -58,6 +62,8 @@ export const getRoomAgentPrompt = (data: string | null) =>
 
 Available rooms:
 ${data || "No room data."}
+
+Never ask the user what they need. A bare /room means "what is free right now", answer it.
 
 List the rooms that are free right now, grouped by floor or building when the data
 shows one. If nothing is free, say so instead of listing everything.
