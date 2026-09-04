@@ -26,15 +26,21 @@ as "Sure" or "Of course". Complete sentences, no shouting, no more words than ne
 
 const FORMAT_RULES = `FORMAT RULES (Telegram markdown):
 - Never use an emoji, an icon or any decorative symbol, anywhere, for any reason
-- **bold** for course codes and headings, _italic_ for asides
+- **bold** for field labels and headings, _italic_ for asides
 - No tables, no headings with #, no code fences
-- One class per line, or a short labelled block per class, nothing wider
+- One labelled field per line, nothing wider
 - Separate sections with a blank line rather than a rule or a divider
 - Stay under 3500 characters`;
 
 const CLASS_SHAPE = `For every class always include, in this order:
 time, course code and subject name, teacher, session type, room.
-Label each part in plain words, for example "Teacher: Daw Aye Aye".
+Bold the label and leave the value plain, so a class reads:
+
+**Time:** 1:50 PM – 2:50 PM
+**Course:** CS-2301 Data Structures
+**Teacher:** Daw Aye Aye
+**Type:** Lecture
+**Room:** B-204
 
 The timetable data stores times on a 24 hour clock. Always show them to the user as
 12 hour with AM or PM, so 13:50 – 14:50 becomes 1:50 PM – 2:50 PM. Drop the leading
