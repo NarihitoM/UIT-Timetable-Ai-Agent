@@ -4,7 +4,7 @@ import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
-import { RATE_LIMIT_SECONDS, TROLL_IMAGE, TYPING_REFRESH_MS } from "../constants.ts";
+import { RATE_LIMIT_SECONDS, TROLL_IMAGES, TYPING_REFRESH_MS } from "../constants.ts";
 import { loadHistory, saveTurn } from "../lib/memory.ts";
 import { toTelegramMarkdown } from "../lib/format.ts";
 
@@ -133,8 +133,13 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (text.includes("/ahp")) {
-                const sent = await bot.sendPhoto(chatid, TROLL_IMAGE);
-                await Telegramcontroller.remember(chatid, sent?.message_id);
+                const sent = await bot.sendMediaGroup(
+                    chatid,
+                    TROLL_IMAGES.map(media => ({ type: "photo", media }))
+                );
+                for (const message of sent) {
+                    await Telegramcontroller.remember(chatid, message?.message_id);
+                }
                 return res.status(200).send("OK");
             }
 

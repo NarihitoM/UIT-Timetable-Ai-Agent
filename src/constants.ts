@@ -45,4 +45,10 @@ export const MODEL_RETRY_ATTEMPTS = 3;
 export const MODEL_RETRY_BASE_MS = 300;
 export const TYPING_REFRESH_MS = 4000;
 
-export const TROLL_IMAGE = "https://dghwvwnzbspxjhxruvij.supabase.co/storage/v1/object/public/Troll/AHP.jpg";
+const TROLL_BUCKET = "https://dghwvwnzbspxjhxruvij.supabase.co/storage/v1/object/public/Troll";
+
+export const TROLL_IMAGES = [
+    `${TROLL_BUCKET}/AHP.jpg`,
+    `${TROLL_BUCKET}/Mr%20AHP.jpg`,
+    `${TROLL_BUCKET}/Mr%20Mr%20Son.jpg`
+];
