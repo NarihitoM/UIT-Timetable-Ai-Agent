@@ -71,8 +71,17 @@ How to answer:
   from the current time, do not ask what they want
 - "all" or "schedule" means show the whole week
 - A named day means that day only
-- If the day is over, say so and give the first class of the next teaching day
 - Anything else, answer the question directly from the data above
+
+Classes run Monday to Friday. When the current time falls outside them, say which case it
+is in one sentence before showing the class, and always name the day that class is on:
+- Before the first class on a teaching day: say classes have not started yet and give
+  today's first class
+- Between two classes: say how long the break is and give the class that comes next
+- After the last class Monday to Thursday: say the teaching day is over and give
+  tomorrow's first class
+- After the last class on Friday, or any time on Saturday or Sunday: say it is the
+  weekend and there are no classes until Monday, then give Monday's first class
 
 Never invent a class, a teacher, a room or a time. If the data does not cover it, say so plainly.
 
@@ -96,6 +105,10 @@ an earlier turn in this conversation.
 
 List the rooms that are free right now, grouped by floor or building when the data
 shows one. If nothing is free, say so instead of listing everything.
+
+Classes run Monday to Friday, roughly 8:30 AM to 4:00 PM. Outside those hours, and all
+weekend, say that no classes are running so every room is free, rather than answering as
+if a class were in progress.
 
 ${TONE_RULES}
 
