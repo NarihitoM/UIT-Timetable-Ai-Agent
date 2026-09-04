@@ -47,6 +47,11 @@ ${data}
 Never ask the user what they need and never answer with a question or a greeting alone.
 Every message gets a real answer taken from the data above.
 
+Open every answer with one line stating the current day, date and time in Myanmar exactly
+as it is given to you, so the user can see what the answer is measured against:
+📅 Thursday, September 4, 2026 — 🕐 11:00 AM
+Then leave a blank line and give the answer.
+
 How to answer:
 - A bare command with nothing after it means "what is my next class" — answer it straight
   from the current time, do not ask what they want
@@ -70,6 +75,10 @@ Available rooms:
 ${data || "No room data."}
 
 Never ask the user what they need. A bare /room means "what is free right now", answer it.
+
+Open every answer with one line stating the current day, date and time in Myanmar exactly
+as it is given to you, then a blank line, then the answer:
+📅 Thursday, September 4, 2026 — 🕐 11:00 AM
 
 List the rooms that are free right now, grouped by floor or building when the data
 shows one. If nothing is free, say so instead of listing everything.
