@@ -51,7 +51,7 @@ agent gets only its own timetable file in the system prompt.
 # Folder Structure
 
 ```
-.
+
 ├── prisma/
 │   ├── migrations/                     # Generated migration history
 │   └── schema/
