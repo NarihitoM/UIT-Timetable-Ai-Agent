@@ -1,0 +1,197 @@
+# Third Year (CS) Section C Timetable
+
+University of Information Technology
+2025-2026 Academic Year | Semester VI | Third Year
+Source: photo_2026-06-16_21-30-39_2.jpg
+
+## MONDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-6106 – Social Issues and Ethics
+- **Teacher:** Dr. Aung Nway Oo
+- **Type:** L
+- **Room:** 331
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-6107 – Computer Organization
+- **Teacher:** Daw Aye Aye Aung
+- **Type:** L
+- **Room:** 333
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-6308 – Management Principles and Engineering Economics
+- **Teacher:** Daw San San Nwe
+- **Type:** L
+- **Room:** 325
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-6107 – Computer Organization
+- **Teacher:** Daw Aye Aye Aung
+- **Type:** TDA
+- **Room:** 431
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-6204 – Linear Algebra
+- **Teacher:** Dr. Khin Myo Myo Min
+- **Type:** L
+- **Room:** 335
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-6406 – Network Design & Engineering
+- **Teacher:** Dr. Thu Zar Hsan
+- **Type:** L
+- **Room:** 335
+
+## TUESDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-6204 – Linear Algebra
+- **Teacher:** Dr. Khin Myo Myo Min
+- **Type:** TDA
+- **Room:** 214
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-6107 – Computer Organization
+- **Teacher:** Daw Aye Aye Aung
+- **Type:** L
+- **Room:** 331
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-6308 – Management Principles and Engineering Economics
+- **Teacher:** Daw San San Nwe
+- **Type:** L
+- **Room:** 331
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-6106 – Social Issues and Ethics
+- **Teacher:** Dr. Aung Nway Oo
+- **Type:** TDA
+- **Room:** 422
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-6107 – Computer Organization
+- **Teacher:** Daw Aye Aye Aung
+- **Type:** TDA
+- **Room:** 233
+
+- **Time:** 15:00 – 16:00
+- **Course:** Elective Tracks (TDA):
+• CST-6108 | Room 236
+• CS-6310 | Room 431
+
+## WEDNESDAY
+
+- **Time:** 08:30 – 10:40
+- **Class:** No class
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-6406 – Network Design & Engineering
+- **Teacher:** Dr. Thu Zar Hsan
+- **Type:** TDA
+- **Room:** 332
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-6106 – Social Issues and Ethics
+- **Teacher:** Dr. Aung Nway Oo
+- **Type:** TDA
+- **Room:** 424
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-6204 – Linear Algebra
+- **Teacher:** Dr. Khin Myo Myo Min
+- **Type:** TDA
+- **Room:** 214
+
+- **Time:** 15:00 – 16:00
+- **Class:** No class
+
+## THURSDAY
+
+- **Time:** 08:30 – 09:30
+- **Class:** No class
+
+- **Time:** 09:40 – 10:40
+- **Course:** Elective Tracks (L):
+• CST-6108 | Room 233
+• CS-6310 | Room 324
+• CST-6410 | Room 214
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-6204 – Linear Algebra
+- **Teacher:** Dr. Khin Myo Myo Min
+- **Type:** L
+- **Room:** 214
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-6308 – Management Principles and Engineering Economics
+- **Teacher:** Daw San San Nwe
+- **Type:** TDA
+- **Room:** 421
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-6406 – Network Design & Engineering
+- **Teacher:** Dr. Thu Zar Hsan
+- **Type:** TDA
+- **Room:** 235
+
+- **Time:** 15:00 – 16:00
+- **Course:** Elective Tracks (TDA):
+• CST-6108 | Room 235
+• CS-6310 | Room 424
+• CST-6410 | Room 215
+
+## FRIDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-6106 – Social Issues and Ethics
+- **Teacher:** Dr. Aung Nway Oo
+- **Type:** L
+- **Room:** 332
+
+- **Time:** 09:40 – 10:40
+- **Course:** Elective Tracks (L):
+• CST-6108 | Room 235
+• CS-6310 | Room 346
+• CST-6410 | Room 214
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-6406 – Network Design & Engineering
+- **Teacher:** Dr. Thu Zar Hsan
+- **Type:** L
+- **Room:** 332
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-6308 – Management Principles and Engineering Economics
+- **Teacher:** Daw San San Nwe
+- **Type:** TDA
+- **Room:** 424
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-6410 – Foundations of Cybersecurity
+- **Teacher:** Dr. Aung Htein Maw
+- **Type:** TDA
+- **Room:** 233
+
+- **Time:** 15:00 – 16:00
+- **Class:** No class
+
+## Subject codes
+
+CST-6106 – Social Issues and Ethics | Dr. Aung Nway Oo
+CST-6107 – Computer Organization | Daw Aye Aye Aung
+CST-6204 – Linear Algebra | Dr. Khin Myo Myo Min
+CST-6308 – Management Principles and Engineering Economics | Daw San San Nwe
+CST-6406 – Network Design & Engineering | Dr. Thu Zar Hsan
+CST-6108 – Enterprise Application Development Using Java | Dr. Thiri Mar Lar Swe
+CS-6310 – Introduction to Entrepreneurship | Dr. Lai Yee Win Lwin
+CST-6410 – Foundations of Cybersecurity | Dr. Aung Htein Maw

@@ -1,0 +1,186 @@
+# Fourth Year (High Performance Computing) Timetable
+
+University of Information Technology
+2025-2026 Academic Year | Semester VIII | Fourth Year
+Source: photo_2026-06-16_21-30-51_3.jpg
+
+## MONDAY
+
+- **Time:** 08:30 – 09:30
+- **Class:** No class
+- **Time:** 09:40 – 10:40
+- **Course:** CST-8114 – Distributed Programming
+- **Teacher:** Dr. Thin Thin Wai
+- **Type:** TDA
+- **Room:** 215
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-8506 – Professional Communications
+- **Teacher:** Daw Thwe Thwe Oo
+- **Type:** TDA
+- **Room:** 336
+
+- **Break:** 11:50 – 12:40 Lunch Break
+- **Time:** 12:40 – 13:40
+- **Course:** HPC-8115 – Mobile and Ubiquitous Computing
+- **Teacher:** Dr. Dim Em Nyaung
+- **Type:** L
+- **Room:** 336
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-8316 – Data Analysis and Management
+- **Teacher:** Dr. Myint Myint Lwin
+- **Type:** L
+- **Room:** 214
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-8506 – Professional Communications
+- **Teacher:** Daw Thwe Thwe Oo
+- **Type:** L
+- **Room:** 336
+
+## TUESDAY
+
+- **Time:** 08:30 – 09:30
+- **Class:** No class
+- **Time:** 09:40 – 10:40
+- **Course:** HPC-8116 – High Performance Computing Technology
+- **Teacher:** Dr. Hmway Hmway Tar
+- **Type:** TDA
+- **Room:** 335
+
+- **Time:** 10:50 – 11:50
+- **Course:** HPC-8116 – High Performance Computing Technology
+- **Teacher:** Dr. Hmway Hmway Tar
+- **Type:** L
+- **Room:** 335
+
+- **Break:** 11:50 – 12:40 Lunch Break
+- **Time:** 12:40 – 13:40
+- **Course:** CST-8506 – Professional Communications
+- **Teacher:** Daw Thwe Thwe Oo
+- **Type:** L
+- **Room:** 333
+
+- **Time:** 13:50 – 14:50
+- **Course:** HPC-8116 – High Performance Computing Technology
+- **Teacher:** Dr. Hmway Hmway Tar
+- **Type:** L
+- **Room:** 336
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-8210 – Performance and Reliability Analysis
+- **Teacher:** Dr. Sandar Win
+- **Type:** L
+- **Room:** 333
+
+## WEDNESDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-8316 – Data Analysis and Management
+- **Teacher:** Dr. Myint Myint Lwin
+- **Type:** TDA
+- **Room:** 422
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-8210 – Performance and Reliability Analysis
+- **Teacher:** Dr. Sandar Win
+- **Type:** L
+- **Room:** 426
+
+- **Time:** 10:50 – 11:50
+- **Course:** HPC-8115 – Mobile and Ubiquitous Computing
+- **Teacher:** Dr. Dim Em Nyaung
+- **Type:** TDA
+- **Room:** 423
+
+- **Break:** 11:50 – 12:40 Lunch Break
+- **Time:** 12:40 – 13:40
+- **Class:** No class
+- **Time:** 13:50 – 14:50
+- **Class:** No class
+- **Time:** 15:00 – 16:00
+- **Course:** HPC-8116 – High Performance Computing Technology
+- **Teacher:** Dr. Hmway Hmway Tar
+- **Type:** TDA
+- **Room:** 421
+
+## THURSDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** HPC-8115 – Mobile and Ubiquitous Computing
+- **Teacher:** Dr. Dim Em Nyaung
+- **Type:** TDA
+- **Room:** 423
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-8210 – Performance and Reliability Analysis
+- **Teacher:** Dr. Sandar Win
+- **Type:** TDA
+- **Room:** 422
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-8114 – Distributed Programming
+- **Teacher:** Dr. Thin Thin Wai
+- **Type:** TDA
+- **Room:** 215
+
+- **Break:** 11:50 – 12:40 Lunch Break
+- **Time:** 12:40 – 13:40
+- **Course:** CST-8210 – Performance and Reliability Analysis
+- **Teacher:** Dr. Sandar Win
+- **Type:** L
+- **Room:** 333
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-8114 – Distributed Programming
+- **Teacher:** Dr. Thin Thin Wai
+- **Type:** L
+- **Room:** 215
+
+- **Time:** 15:00 – 16:00
+- **Course:** HPC-8115 – Mobile and Ubiquitous Computing
+- **Teacher:** Dr. Dim Em Nyaung
+- **Type:** L
+- **Room:** 334
+
+## FRIDAY
+
+- **Time:** 08:30 – 09:30
+- **Class:** No class
+- **Time:** 09:40 – 10:40
+- **Course:** CST-8506 – Professional Communications
+- **Teacher:** Daw Thwe Thwe Oo
+- **Type:** TDA
+- **Room:** 425
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-8316 – Data Analysis and Management
+- **Teacher:** Dr. Myint Myint Lwin
+- **Type:** TDA
+- **Room:** 335
+
+- **Break:** 11:50 – 12:40 Lunch Break
+- **Time:** 12:40 – 13:40
+- **Course:** CST-8316 – Data Analysis and Management
+- **Teacher:** Dr. Myint Myint Lwin
+- **Type:** L
+- **Room:** 214
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-8114 – Distributed Programming
+- **Teacher:** Dr. Thin Thin Wai
+- **Type:** L
+- **Room:** 215
+
+- **Time:** 15:00 – 16:00
+- **Class:** No class
+
+## Subject codes
+
+CST-8114 – Distributed Programming | Dr. Thin Thin Wai
+CST-8210 – Performance and Reliability Analysis | Dr. Sandar Win
+CST-8316 – Data Analysis and Management | Dr. Myint Myint Lwin
+CST-8506 – Professional Communications | Daw Thwe Thwe Oo
+HPC-8115 – Mobile and Ubiquitous Computing | Dr. Dim Em Nyaung
+HPC-8116 – High Performance Computing Technology | Dr. Hmway Hmway Tar

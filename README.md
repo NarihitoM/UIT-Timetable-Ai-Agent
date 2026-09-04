@@ -29,7 +29,7 @@ What it does:
 - Rate limits each chat to one agent request every 15 seconds
 
 What it does not do:
-- Edit or upload timetables. The data is plain text in `src/data/`, changed by commit
+- Edit or upload timetables. The data is markdown in `src/data/`, changed by commit
 - Notify or remind you. It only answers when asked
 - Handle photos, voice or documents. Text commands only
 
@@ -64,7 +64,7 @@ agent gets only its own timetable file in the system prompt.
 │   │   └── telegram.workflow.ts        # Supervisor, section agents, room agent, edges
 │   ├── config/
 │   │   └── env.ts                      # Loads .env
-│   ├── data/                           # Timetable text files, one per section
+│   ├── data/                           # Timetable markdown files, one per section
 │   ├── lib/
 │   │   ├── memory.ts                   # Loads and saves chat history
 │   │   ├── prisma.ts                   # Prisma client

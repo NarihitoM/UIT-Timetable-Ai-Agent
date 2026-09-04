@@ -1,0 +1,218 @@
+# Sem4C Timetable
+
+University of Information Technology
+2025-2026 Academic Year | Semester IV | Second Year
+
+## MONDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-4404 – Network Design and Engineering
+- **Teacher:** Dr. Ei Thin Su
+- **Type:** TDA
+- **Room:** 233
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-4306 – Management Principles and Engineering Economics
+- **Teacher:** Daw Lay Myat Myat Thein
+- **Type:** TDA
+- **Room:** 335
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-4405 – Computer Architecture and Organization
+- **Teacher:** Daw Shwe Sin Myat Than
+- **Type:** Lecture
+- **Room:** 345
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-4104 – Artificial Intelligence
+- **Teacher:** Daw Ei Ei Moe
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-4404 – Network Design and Engineering
+- **Teacher:** Dr. Ei Thin Su
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-4503 – IELTS Academic Skills and Strategies
+- **Teacher:** Daw Khin Cho Latt
+- **Type:** Lecture
+- **Room:** 322
+
+## TUESDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-4307 / CST-4406 / CST-4407 / CST-4408
+- **Teacher:** Daw May Thet Swe / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+- **Type:** Lecture
+- **Rooms:** CST-4307 Room 233, CST-4406 Room 433, CST-4407 Room 434, CST-4408 Room 236
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-4405 – Computer Architecture and Organization
+- **Teacher:** Daw Shwe Sin Myat Than
+- **Type:** TDA
+- **Room:** 235
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-4503 – IELTS Academic Skills and Strategies
+- **Teacher:** Daw Khin Cho Latt
+- **Type:** TDA
+- **Room:** 244 E-Lab
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-4204 – Linear Algebra
+- **Teacher:** Daw Phyu Phyu Aung
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-4104 – Artificial Intelligence
+- **Teacher:** Daw Ei Ei Moe
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-4306 – Management Principles and Engineering Economics
+- **Teacher:** Daw Lay Myat Myat Thein
+- **Type:** Lecture
+- **Room:** 322
+
+## WEDNESDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-4105 / CST-4408
+- **Teacher:** Dr. Dim Em Nyaung / Dr. Aung Htein Maw
+- **Type:** TDA
+- **Rooms:** CST-4105 Room 231, CST-4408 Room 421
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-4503 – IELTS Academic Skills and Strategies
+- **Teacher:** Daw Khin Cho Latt
+- **Type:** TDA
+- **Room:** 422
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-4306 – Management Principles and Engineering Economics
+- **Teacher:** Daw Lay Myat Myat Thein
+- **Type:** TDA
+- **Room:** 422
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-4405 – Computer Architecture and Organization
+- **Teacher:** Daw Shwe Sin Myat Than
+- **Type:** TDA
+- **Room:** 431
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-4307 / CST-4406 / CST-4407 / CST-4408
+- **Teacher:** Daw May Thet Swe / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+- **Type:** TDA
+- **Rooms:** CST-4307 Room 231, CST-4406 Room 433, CST-4407 Room 434, CST-4408 Room 424
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-4404 – Network Design and Engineering
+- **Teacher:** Dr. Ei Thin Su
+- **Type:** TDA
+- **Room:** 233
+
+## THURSDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-4104 – Artificial Intelligence
+- **Teacher:** Daw Ei Ei Moe
+- **Type:** TDA
+- **Room:** 431
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-4204 – Linear Algebra
+- **Teacher:** Daw Phyu Phyu Aung
+- **Type:** TDA
+- **Room:** 425
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-4105 – Enterprise Applications Development using Java
+- **Teacher:** Dr. Dim Em Nyaung
+- **Type:** Lecture
+- **Room:** 233
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-4503 – IELTS Academic Skills and Strategies
+- **Teacher:** Daw Khin Cho Latt
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-4404 – Network Design and Engineering
+- **Teacher:** Dr. Ei Thin Su
+- **Type:** Lecture
+- **Room:** 325
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-4204 – Linear Algebra
+- **Teacher:** Daw Phyu Phyu Aung
+- **Type:** Lecture
+- **Room:** 321
+
+## FRIDAY
+
+- **Time:** 08:30 – 09:30
+- **Course:** CST-4105 / CST-4307 / CST-4406 / CST-4407
+- **Teacher:** Dr. Dim Em Nyaung / Daw May Thet Swe / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing
+- **Type:** TDA
+- **Rooms:** CST-4105 Room 235, CST-4307 Room 233, CST-4406 Room 433, CST-4407 Room 434
+
+- **Time:** 09:40 – 10:40
+- **Course:** CST-4204 – Linear Algebra
+- **Teacher:** Daw Phyu Phyu Aung
+- **Type:** TDA
+- **Room:** 423
+
+- **Time:** 10:50 – 11:50
+- **Course:** CST-4104 – Artificial Intelligence
+- **Teacher:** Daw Ei Ei Moe
+- **Type:** TDA
+- **Room:** 424
+
+- **Break:** 11:50 – 12:40 Lunch Break
+
+- **Time:** 12:40 – 13:40
+- **Course:** CST-4306 – Management Principles and Engineering Economics
+- **Teacher:** Daw Lay Myat Myat Thein
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 13:50 – 14:50
+- **Course:** CST-4405 – Computer Architecture and Organization
+- **Teacher:** Daw Shwe Sin Myat Than
+- **Type:** Lecture
+- **Room:** 322
+
+- **Time:** 15:00 – 16:00
+- **Course:** CST-4105 / CST-4307 / CST-4406 / CST-4407 / CST-4408
+- **Teacher:** Dr. Dim Em Nyaung / Daw May Thet Swe / Daw Akari Myint Soe / Dr. Thiri Thitsar Khaing / Dr. Aung Htein Maw
+- **Type:** Lecture
+- **Rooms:** CST-4105 Room 235, CST-4307 Room 232, CST-4406 Room 334, CST-4407 Room 335, CST-4408 Room 336
+
+## Subject codes
+
+CST-4104 – Artificial Intelligence | Daw Ei Ei Moe
+CST-4204 – Linear Algebra | Daw Phyu Phyu Aung
+CST-4306 – Management Principles and Engineering Economics | Daw Lay Myat Myat Thein
+CST-4404 – Network Design and Engineering | Dr. Ei Thin Su
+CST-4405 – Computer Architecture and Organization | Daw Shwe Sin Myat Than
+CST-4503 – IELTS Academic Skills and Strategies | Daw Khin Cho Latt
+CST-4105 – Enterprise Applications Development using Java (Keystone) | Dr. Dim Em Nyaung
+CST-4307 – Advanced Web Technology with PHP (Keystone) | Daw May Thet Swe
+CST-4406 – Data and Computer Communications | Daw Akari Myint Soe
+CST-4407 – Engineering Circuits | Dr. Thiri Thitsar Khaing
+CST-4408 – Foundations of Cybersecurity | Dr. Aung Htein Maw

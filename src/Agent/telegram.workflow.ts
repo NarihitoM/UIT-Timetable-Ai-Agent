@@ -7,7 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { FILE_NAMES, DATA_DIR, SECTIONS, sectionMatchPattern, MODEL_RETRY_ATTEMPTS, MODEL_RETRY_BASE_MS } from "../constants.ts";
 
-const ROOM_FILE = "AvailableRooms.txt";
+const ROOM_FILE = "AvailableRooms.md";
 
 function readSection(section: string): string | null {
     const file = FILE_NAMES[section];
@@ -131,7 +131,6 @@ function makeSectionAgent(section: string) {
         const cmdMatch = text.match(/\/\w+/);
         const query = cmdMatch ? text.replace(cmdMatch[0], "").trim() : text.trim();
 
-        // Use instanceof check instead of _getType() — safe across all LangChain versions
         const timeMsg = timeMessage();
 
         console.log(`[${section}_agent] Query: "${query || "Show my next class"}"`);
