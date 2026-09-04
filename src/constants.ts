@@ -44,3 +44,5 @@ export const RATE_LIMIT_SECONDS = 30;
 export const MODEL_RETRY_ATTEMPTS = 3;
 export const MODEL_RETRY_BASE_MS = 300;
 export const TYPING_REFRESH_MS = 4000;
+
+export const TROLL_IMAGE = "https://dghwvwnzbspxjhxruvij.supabase.co/storage/v1/object/public/Troll/AHP.jpg";

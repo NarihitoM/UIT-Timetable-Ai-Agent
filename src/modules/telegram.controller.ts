@@ -4,7 +4,7 @@ import bot from "../lib/telegram.ts";
 import { Telegramcommand } from "./telegram.command.ts";
 import { type Request, type Response } from "express";
 import { redisclient } from "../lib/redis.ts";
-import { RATE_LIMIT_SECONDS, TYPING_REFRESH_MS } from "../constants.ts";
+import { RATE_LIMIT_SECONDS, TROLL_IMAGE, TYPING_REFRESH_MS } from "../constants.ts";
 import { loadHistory, saveTurn } from "../lib/memory.ts";
 import { toTelegramMarkdown } from "../lib/format.ts";
 
@@ -129,6 +129,12 @@ class Telegramcontroller extends Telegramcommand {
 
             if (Telegramcontroller.commands[3] && text.includes(Telegramcontroller.commands[3])) {
                 await Telegramcontroller.reply(chatid, "Source Code: https://github.com/NarihitoM/UIT-Timetable-Ai-Agent");
+                return res.status(200).send("OK");
+            }
+
+            if (text.includes("/ahp")) {
+                const sent = await bot.sendPhoto(chatid, TROLL_IMAGE);
+                await Telegramcontroller.remember(chatid, sent?.message_id);
                 return res.status(200).send("OK");
             }
 
