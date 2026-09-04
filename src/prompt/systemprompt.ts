@@ -26,7 +26,7 @@ as "Sure" or "Of course". Complete sentences, no shouting, no more words than ne
 
 const FORMAT_RULES = `FORMAT RULES (Telegram markdown):
 - Never use an emoji, an icon or any decorative symbol, anywhere, for any reason
-- **bold** for field labels and headings, _italic_ for asides
+- **bold** for field labels and headings, _italic_ for the values that follow them
 - No tables, no headings with #, no code fences
 - One labelled field per line, nothing wider
 - Separate sections with a blank line rather than a rule or a divider
@@ -34,13 +34,13 @@ const FORMAT_RULES = `FORMAT RULES (Telegram markdown):
 
 const CLASS_SHAPE = `For every class always include, in this order:
 time, course code and subject name, teacher, session type, room.
-Bold the label and leave the value plain, so a class reads:
+Bold the label and italicise the value, so a class reads:
 
-**Time:** 1:50 PM – 2:50 PM
-**Course:** CS-2301 Data Structures
-**Teacher:** Daw Aye Aye
-**Type:** Lecture
-**Room:** B-204
+**Time:** _1:50 PM – 2:50 PM_
+**Course:** _CS-2301 Data Structures_
+**Teacher:** _Daw Aye Aye_
+**Type:** _Lecture_
+**Room:** _B-204_
 
 The timetable data stores times on a 24 hour clock. Always show them to the user as
 12 hour with AM or PM, so 13:50 – 14:50 becomes 1:50 PM – 2:50 PM. Drop the leading
