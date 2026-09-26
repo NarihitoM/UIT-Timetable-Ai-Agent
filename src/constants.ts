@@ -47,8 +47,15 @@ export const TYPING_REFRESH_MS = 4000;
 
 const TROLL_BUCKET = "https://dghwvwnzbspxjhxruvij.supabase.co/storage/v1/object/public/Troll";
 
-export const TROLL_IMAGES = [
-    `${TROLL_BUCKET}/AHP.jpg`,
-    `${TROLL_BUCKET}/Mr%20AHP.jpg`,
-    `${TROLL_BUCKET}/Mr%20Mr%20Son.jpg`
+export const TROLL_IMAGE_BATCHES = [
+    [
+        `${TROLL_BUCKET}/AHP.jpg`,
+        `${TROLL_BUCKET}/Mr%20AHP.jpg`,
+        `${TROLL_BUCKET}/Mr%20Mr%20Son.jpg`
+    ],
+    [
+        `${TROLL_BUCKET}/AhpCrying.jpg`,
+        `${TROLL_BUCKET}/AhpEating.jpg`,
+        `${TROLL_BUCKET}/Ahpmock.jpg`
+    ]
 ];
