@@ -51,7 +51,8 @@ export const TROLL_IMAGE_BATCHES = [
     [
         `${TROLL_BUCKET}/AHP.jpg`,
         `${TROLL_BUCKET}/Mr%20AHP.jpg`,
-        `${TROLL_BUCKET}/Mr%20Mr%20Son.jpg`
+        `${TROLL_BUCKET}/Mr%20Mr%20Son.jpg`,
+        `${TROLL_BUCKET}/AhpSave.jpg`
     ],
     [
         `${TROLL_BUCKET}/AhpCrying.jpg`,
