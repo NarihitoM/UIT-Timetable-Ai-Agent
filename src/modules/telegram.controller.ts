@@ -123,7 +123,7 @@ class Telegramcontroller extends Telegramcommand {
             }
 
             if (Telegramcontroller.commands[2] && text.includes(Telegramcontroller.commands[2])) {
-                await Telegramcontroller.reply(chatid, "Contributors: \nHein Htet Aung & Hein Thu Aung\n");
+                await Telegramcontroller.reply(chatid, "Contributors:\nHein Htet Aung - https://narihito-portfolio.vercel.app/\nHein Thu Aung (Velluz)");
                 return res.status(200).send("OK");
             }
 
